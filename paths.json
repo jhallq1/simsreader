@@ -1,0 +1,43 @@
+{
+  "nodeModules": {
+    "modules": "./node_modules",
+    "js": [
+      "./node_modules/jquery/dist/jquery.js",
+      "./node_modules/bootstrap/dist/js/bootstrap.js",
+      "./node_modules/angular/angular.js",
+      "./node_modules/angular-animate/angular-animate.js",
+      "./node_modules/angular-aria/angular-aria.js",
+      "./node_modules/angular-messages/angular-messages.js",
+      "./node_modules/angular-route/angular-route.js",
+      "./node_modules/angular-sanitize/angular-sanitize.js",
+      "./node_modules/angular-ui-notification/dist/angular-ui-notification.js"
+    ],
+    "css": [
+      "./node_modules/bootstrap/dist/css/*.css",
+      "./node_modules/angular-ui-notification/dist/angular-ui-notification.css"
+    ]
+  },
+  "src": "./src",
+  "index": "./src/index.html",
+  "js": [
+    "./src/**/*.js",
+    "!./src/**/*.mocha.js"
+  ],
+  "templates": ["./src/**/*.html"],
+  "css": ["./src/**/*.css"],
+  "dest": {
+    "dev": "./dev",
+    "prod": "./prod",
+    "prodapi": "./prod-api",
+    "src": {
+      "js": "./src/js"
+    }
+  },
+  "clean": {
+    "dev": "./dev/**/*.*",
+    "js": "./dev/js",
+    "assets": "./dev/assets",
+    "templates": "./dev/templates",
+    "css": "./dev/css/vendors"
+  }
+}

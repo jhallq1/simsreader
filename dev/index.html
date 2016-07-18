@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="simsReader">
+  <head>
+    <meta charset="utf-8">
+    <title>simsReader.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, intial-scale=1">
+
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/templates/templates.js"></script>
+
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <base href="/">
+  </head>
+  <body ng-controller="mainController">
+    <!-- navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">simsReader</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/register">Register</a></li>
+          </ul>
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><p class="navbar-text">Already have an account?</p></li>
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b><span class="caret"></span></a>
+                <ul id="login-dp" class="dropdown-menu">
+                  <li>
+                    <div class="row">
+                      <div class="col-md-12">
+                        Login via
+                        <div class="social-buttons">
+                          <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+                          <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+                        </div>
+                        or
+                        <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+                          <div class="form-group">
+                            <label class="sr-only" for="inputEmail">Email address</label>
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email address" required>
+                          </div>
+                          <div class="form-group">
+                            <label class="sr-only" for="inputPassword">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+                            <div class="help-blick text-right"><a href="">Forgot password?</a></div>
+                          </div>
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox">Keep me logged in
+                            </label>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="bottom text-center">
+                        New here? <a href="/register">Join Us</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+          </ul>
+        </div> <!-- /.navbar-collapse -->
+      </div> <!-- /.container-fluid -->
+    </nav>
+    <!-- end navbar -->
+
+    <div id="main">
+      <div ng-view>
+      </div>
+    </div>
+
+  </body>
+</html>
