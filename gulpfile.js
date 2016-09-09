@@ -38,8 +38,13 @@ gulp.task('build-css', function() {
   .pipe(gulp.dest(paths.dest.dev + "/css"));
 });
 
+gulp.task('build-fonts', function() {
+  return gulp.src(paths.fonts)
+  .pipe(gulp.dest(paths.dest.dev + "/fonts"));
+});
+
 gulp.task('build', function() {
-  return rs('clean', 'build-index', 'build-templates', 'build-css', 'build-js');
+  return rs('clean', 'build-index', 'build-templates', 'build-css', 'build-js', 'build-fonts');
 });
 
 gulp.task('watch', function() {

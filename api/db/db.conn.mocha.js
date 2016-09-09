@@ -1,58 +1,57 @@
 /* jslint node: true */
 /* jshint esversion: 6 */
+'use strict';
 
-const mysql = require('mysql'),
+const mysql = require('promise-mysql'),
       expect = require('chai').expect,
       secrets = require('./secrets.mocha.json');
 
-var conn = mysql.createConnection(secrets);
+let connection;
 
-function testConnection(connection) {
-  return new Promise(function(resolve, reject) {
-    return connection.connect(function(err, res) {
-      if (err) {
-        return resolve(err.stack);
-      }
-
-      return resolve(connection.threadId);
+function dbConnect() {
+  if (connection) {
+    return new Promise(function(resolve, reject) {
+      return resolve(connection);
     });
+  }
+
+  return mysql.createConnection(secrets)
+  .then(function(conn) {
+    connection = conn;
+    return conn;
   })
-  .catch(function(err) {
-    console.log(err);
+  .catch(function(error) {
+    throw error;
   });
 }
 
+dbConnect();
+
 describe ('DB: Connects to db', function() {
   it ('returns threadId', function() {
-    var connection = mysql.createConnection(secrets);
-    return testConnection(connection)
+    return dbConnect()
     .then(function(res) {
-      expect(res).to.be.a('number');
-      expect(connection.state).to.equal('authenticated');
+      expect(res.connection.threadId).to.be.a('number');
+    });
+  });
+
+  it ("is connected", function() {
+    return dbConnect()
+    .then(function(res) {
+      expect(res.connection.state).to.equal("authenticated");
     });
   });
 
   it ('returns err', function() {
     secrets.user = 'wrong';
-    var connection = mysql.createConnection(secrets);
-    return testConnection(connection)
-    .then(function(res) {
-      expect(res).to.be.a('string');
+    return dbConnect()
+    .catch(function(err) {
+      expect(err).to.exist();
     });
   });
 });
 
-if (conn.state === "disconnected") {
-  describe ('DB: It is connected', function() {
-    it ("is connected", function() {
-      return testConnection(conn)
-      .then(function(res) {
-        expect(conn.state).to.equal("authenticated");
-      });
-    });
-  });
-}
-
 module.exports = {
-  conn: conn
+  connection: connection,
+  connect: dbConnect
 };

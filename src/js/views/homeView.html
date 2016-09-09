@@ -1,4 +1,140 @@
-<div class="jumbotron text-center">
-  <h1>Home Page</h1>
-  <p>{{ message }}</p>
+<div class="container">
+  <section ng-init="tab = 1" ng-controller="panelController as panel">
+  <!-- tab nav bar -->
+  <ul class="nav nav-pills">
+    <li ng-class="{ active:panel.isSelected(1) }">
+      <a href ng-click="panel.selectTab(1)">Newest Stories</a>
+    </li>
+    <li ng-class="{ active:panel.isSelected(2) }">
+      <a href ng-click="panel.selectTab(2)">Recently Updated</a>
+    </li>
+    <li ng-class="{ active:panel.isSelected(3) }">
+      <a href ng-click="panel.selectTab(3)">Most Popular</a>
+    </li>
+    <li ng-class="{ active:panel.isSelected(4) }">
+      <a href ng-click="panel.selectTab(4)">Tags</a>
+    </li>
+  </ul>
+  <!-- end tab nav bar -->
+
+  <!-- panel 1 -->
+  <div class="panel" ng-show="panel.isSelected(1)">
+    <div class="row">
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>
+        <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>
+        <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>  <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>
+        <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>        <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+      <div class="col-md-4 portfolio-item">
+        <a href="">
+          <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+        </a>
+        <h3>
+          <a href="">Name of Story</a>
+        </h3>
+        <p>Author</p>
+        <p>Date Added &#124; View Count &#124; Save Story <span class="glyphicon glyphicon-heart-empty"></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique pulvinar lacus at commodo. Donec aliquam mauris ac placerat blandit. Mauris ut ante lacus. Etiam non ex iaculis, vulputate sapien non, congue nibh. Pellentesque eu nulla quis magna aliquet malesuada.</p>
+        <p>TAGS: <span class="glyphicon glyphicon-tags"></p>
+      </div>
+    </div>
+
+    <!-- pagination -->
+    <div class="row text-center">
+      <div class="col-lg-12">
+        <ul class="pagination">
+          <li>
+            <a href="">&laquo;</a>
+          </li>
+          <li class="active">
+            <a href="">1</a>
+          </li>
+          <li>
+            <a href="">2</a>
+          </li>
+          <li>
+            <a href="">3</a>
+          </li>
+          <li>
+            <a href="">4</a>
+          </li>
+          <li>
+            <a href="">5</a>
+          </li>
+          <li>
+            <a href="">&raquo;</a>
+          </li>
+        </ul>
+      </div>
+    <!-- end pagination -->
+  </div>
+  <!-- end panel 1 -->
+
+  <div class="panel" ng-show="panel.isSelected(2)">
+    <h4>Recently Updated Stories</h4>
+  </div>
+  <div class="panel" ng-show="panel.isSelected(3)">
+    <h4>Most Popular Stories</h4>
+  </div>
+  <div class="panel" ng-show="panel.isSelected(4)">
+    <h4>Filter By Tags</h4>
+  </div>
+
+  </section>
 </div>

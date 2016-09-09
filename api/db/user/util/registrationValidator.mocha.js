@@ -1,18 +1,3 @@
-// need a function in tools folder to validate user registration paylod: test that no fields are null/empty strings/etc
-// there are no special characters in username
-// that email passes a comprehensive regex to resemble an email
-// password is at least 8 characters
-//
-// if it fails it should throw an error with each incorrect field and why (ex:
-// {
-// response: {
-// username: "Special characters are not allowed",
-// password: "Must be at least 8 characters",
-// etc...
-// }
-// }
-//if passes resolves true
-
 /* jslint node: true */
 /* jshint esversion: 6 */
 const expect = require('chai').expect,
@@ -20,90 +5,127 @@ const expect = require('chai').expect,
 
 data = {};
 msg = "";
+response = {};
 
-function formValidation(data, msg) {
-  if (data.username.length === 0 || data.email.length === 0 || data.password.length === 0) {
-    msg = "All fields mandatory";
-  } else {
-    msg = "All fields completed";
+function formCompleted(data) {
+  if (validator.isNull(data.username) || (validator.isNull(data.email)) || (validator.isNull(data.password))) {
+    response.incomplete = 'All fields mandatory';
+    return;
   }
-  return msg;
+  return 'All fields completed';
 }
 
-function usernameValid(data, msg) {
-  var alphaExp = /^[0-9a-zA-Z]+$/;
-  if (data.username.match(alphaExp)) {
+function usernameValid(data) {
+  if (validator.isAlphanumeric(data.username) && validator.isLength(data.username, {min: 4, max: 16})) {
     msg = "Username is valid";
   } else {
-    msg = "Username cannot contain special characters";
+    response.invalidUsername = "Username must contain at least 4 characters and cannot contain special characters";
   }
-  return msg;
+  return;
 }
 
-function emailValid(data, msg) {
-  var emailExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (data.email.match(emailExp)) {
+function emailValid(data) {
+  if (validator.isEmail(data.email.toLowerCase())) {
+    data.email = data.email.toLowerCase();
     msg = "Email is valid";
   } else {
-    msg = "Must submit valid email";
+    response.invalidEmail = "Must submit valid email";
   }
-  return msg;
+  return;
 }
 
 function pwValid() {
-  if (data.password.length > 7) {
+  if (validator.isLength(data.password, {min: 8})) {
     msg = "Password is valid";
   } else {
-    msg = "Password must have at least 8 characters";
+    response.invalidPw = "Password must have at least 8 characters";
   }
-  return msg;
+  return;
 }
+
+function pwMatch() {
+  if (data.password === data.passwordMatch) {
+    msg = "Passwords match";
+  } else {
+    response.nomatch = "Passwords do not match";
+  }
+}
+
+var registrationValidator = {
+  formCompleted: formCompleted,
+  usernameValid: usernameValid,
+  emailValid: emailValid,
+  pwValid: pwValid,
+  pwMatch: pwMatch
+};
+
 
 describe ('Validates user registration form data /', function() {
 
   beforeEach(function() {
     data = {
       username: "test",
-      email: "test@test.com",
-      password: 'testtest'
+      email: "tEsT111@TeSt.CoM",
+      password: 'testtest',
+      passwordMatch: 'testtest'
     };
 
     msg = "";
+
+    response = {};
   });
 
   it ('verifies no fields are empty', function() {
-    expect(formValidation(data, msg)).to.equal("All fields completed");
+    expect(registrationValidator.formCompleted(data)).to.equal("All fields completed");
   });
 
   it ('throws an error if a field is empty', function() {
     data.password = "";
-    expect(formValidation(data, msg)).to.equal("All fields mandatory");
+    registrationValidator.formCompleted(data);
+    expect(response.incomplete).to.equal("All fields mandatory");
   });
 
-  it ('checks for special chars in username', function() {
-    expect(usernameValid(data, msg)).to.equal("Username is valid");
+  it ('checks for min length and special chars in username', function() {
+    registrationValidator.usernameValid(data);
+    expect(msg).to.equal("Username is valid");
   });
 
-  it ('throws an error if the username contains special chars', function() {
+  it ('throws an error if the username is shorter than 4 chars or contains special chars', function() {
     data.username = "tes%2^*%t";
-    expect(usernameValid(data, msg)).to.equal("Username cannot contain special characters");
+    registrationValidator.usernameValid(data);
+    expect(response.invalidUsername).to.equal("Username must contain at least 4 characters and cannot contain special characters");
   });
 
   it ('allows standard formatted emails', function() {
-    expect(emailValid(data, msg)).to.equal("Email is valid");
+    registrationValidator.emailValid(data);
+    expect(msg).to.equal("Email is valid");
   });
 
   it ('throws an error if the email is invalid', function() {
     data.email = "blahblahblah.com";
-    expect(emailValid(data, msg)).to.equal("Must submit valid email");
+    registrationValidator.emailValid(data);
+    expect(response.invalidEmail).to.equal("Must submit valid email");
   });
 
   it ('allows passwords length greater than 8', function() {
-    expect(pwValid(data, msg)).to.equal("Password is valid");
+    registrationValidator.pwValid(data);
+    expect(msg).to.equal("Password is valid");
   });
 
   it ('throws error if less than 8 characters', function() {
     data.password = "test";
-    expect(pwValid(data, msg)).to.equal("Password must have at least 8 characters");
+    registrationValidator.pwValid(data);
+    expect(response.invalidPw).to.equal("Password must have at least 8 characters");
+  });
+
+  it ('checks for matching passwords', function() {
+    registrationValidator.pwMatch(data);
+    expect(msg).to.equal("Passwords match");
+  });
+
+  it ('throws error if passwords do not match', function() {
+    data.passwordMatch = "testtesc";
+    registrationValidator.pwMatch(data);
+    expect(response.nomatch).to.equal("Passwords do not match");
   });
 });

@@ -10,42 +10,36 @@
 /* jshint esversion: 6 */
 
 //console.log(__dirname);
+'use strict';
 
-const expect = require('chai').expect,
-      db = require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js'),
-      email = require('../user/getUserByEmail.js');
+const chai = require('chai'),
+      expect = require('chai').expect;
 
+let db,
+    username = "";
 
-var username = "";
-
-function getUserByUsername(username) {
-    return new Promise(function(resolve, reject) {
-      return db.conn.query("SELECT * FROM `members` WHERE `username` = ?", username, function(err, res) {
-          if (err) {
-            return reject(err);
-          }
-
-          return resolve(res);
-      });
-    })
-    .catch(function(err) {
-      throw err;
-    });
+function getUserByUsername(db) {
+    return db.query("SELECT * FROM `members` WHERE `username` = ?", username);
 }
 
-describe ('Username: db is connected', function() {
-  it ('is connected', function() {
-    expect(db.conn.state).to.equal('authenticated');
-  });
-});
+describe ('GetByUsername: db is connected', function() {
 
-describe ('Username: finds user by username', function() {
   beforeEach(function() {
     username = "mochalatte";
+
+    return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
+    .then(function(connection) {
+      db = connection;
+      return db;
+    });
+  });
+
+  it ('db state is authenticated', function() {
+    expect(db.connection.state).to.equal('authenticated');
   });
 
   it ('returns first user', function() {
-    return getUserByUsername(username)
+    return getUserByUsername(db)
     .then(function(res) {
       expect(res[0].username).to.equal('mochalatte');
     });
@@ -53,7 +47,7 @@ describe ('Username: finds user by username', function() {
 
   it('catches err if thrown', function() {
     username = null;
-    return getUserByUsername(username)
+    return getUserByUsername(db)
     .catch(function(err) {
       expect(err.code).to.equal('ER_PARSE_ERROR');
     });

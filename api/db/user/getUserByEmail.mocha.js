@@ -7,41 +7,39 @@
 // 7. insert username and email and pw
 // 8. alert user
 
+'use strict';
+
 /* jslint node: true */
 /* jshint esversion: 6 */
-const expect = require('chai').expect,
-      db = require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js');
+const chai = require('chai'),
+      expect = require('chai').expect;
 
-email = "";
+let db,
+    email = "";
 
-function getUserByEmail() {
-  return new Promise(function(resolve, reject) {
-    return db.conn.query("SELECT * FROM `members` WHERE `email` = ?", email, function(err, res) {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
-  })
-  .catch(function(err) {
-    throw err;
-  });
+function getUserByEmail(db) {
+  return db.query("SELECT * FROM `members` WHERE `email` = ?", email);
 }
 
 describe ('Register: db is connected', function() {
-  it ('is connected', function() {
-    expect(db.conn.state).to.equal('authenticated');
-  });
-});
 
-describe ('Finds user by email', function() {
   beforeEach(function() {
     email = "abc@test.com";
+
+    return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
+    .then(function(connection) {
+      db = connection;
+      return db;
+    });
+  });
+
+  it ('db state is authenticated', function() {
+    expect(db.connection.state).to.equal('authenticated');
   });
 
   it ('returns first user', function() {
-    return getUserByEmail()
+
+    return getUserByEmail(db)
     .then(function(res) {
       expect(res[0].email).to.equal('abc@test.com');
     });
@@ -49,9 +47,16 @@ describe ('Finds user by email', function() {
 
   it('catches err if thrown', function() {
     email = null;
-    return getUserByEmail()
+
+    return getUserByEmail(db)
     .catch(function(err) {
       expect(err.code).to.equal('ER_PARSE_ERROR');
     });
   });
 });
+//
+// describe ('Finds user by email', function() {
+//
+//
+//
+// });

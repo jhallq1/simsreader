@@ -50723,12 +50723,240 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
+/**
+ * angular-ui-notification - Angular.js service providing simple notifications using Bootstrap 3 styles with css transitions for animating
+ * @author Alex_Crack
+ * @version v0.2.0
+ * @link https://github.com/alexcrack/angular-ui-notification
+ * @license MIT
+ */
+angular.module('ui-notification',[]);
+
+angular.module('ui-notification').provider('Notification', function() {
+
+    this.options = {
+        delay: 5000,
+        startTop: 10,
+        startRight: 10,
+        verticalSpacing: 10,
+        horizontalSpacing: 10,
+        positionX: 'right',
+        positionY: 'top',
+        replaceMessage: false,
+        templateUrl: 'angular-ui-notification.html',
+        onClose: undefined,
+        closeOnClick: true,
+        maxCount: 0 // 0 - Infinite
+    };
+
+    this.setOptions = function(options) {
+        if (!angular.isObject(options)) throw new Error("Options should be an object!");
+        this.options = angular.extend({}, this.options, options);
+    };
+
+    this.$get = ["$timeout", "$http", "$compile", "$templateCache", "$rootScope", "$injector", "$sce", "$q", "$window", function($timeout, $http, $compile, $templateCache, $rootScope, $injector, $sce, $q, $window) {
+        var options = this.options;
+
+        var startTop = options.startTop;
+        var startRight = options.startRight;
+        var verticalSpacing = options.verticalSpacing;
+        var horizontalSpacing = options.horizontalSpacing;
+        var delay = options.delay;
+
+        var messageElements = [];
+        var isResizeBound = false;
+
+        var notify = function(args, t){
+            var deferred = $q.defer();
+
+            if (typeof args !== 'object') {
+                args = {message:args};
+            }
+
+            args.scope = args.scope ? args.scope : $rootScope;
+            args.template = args.templateUrl ? args.templateUrl : options.templateUrl;
+            args.delay = !angular.isUndefined(args.delay) ? args.delay : delay;
+            args.type = t || options.type ||  '';
+            args.positionY = args.positionY ? args.positionY : options.positionY;
+            args.positionX = args.positionX ? args.positionX : options.positionX;
+            args.replaceMessage = args.replaceMessage ? args.replaceMessage : options.replaceMessage;
+            args.onClose = args.onClose ? args.onClose : options.onClose;
+            args.closeOnClick = (args.closeOnClick !== null && args.closeOnClick !== undefined) ? args.closeOnClick : options.closeOnClick;
+
+            $http.get(args.template,{cache: $templateCache}).success(function(template) {
+
+                var scope = args.scope.$new();
+                scope.message = $sce.trustAsHtml(args.message);
+                scope.title = $sce.trustAsHtml(args.title);
+                scope.t = args.type.substr(0,1);
+                scope.delay = args.delay;
+                scope.onClose = args.onClose;
+
+                var reposite = function() {
+                    var j = 0;
+                    var k = 0;
+                    var lastTop = startTop;
+                    var lastRight = startRight;
+                    var lastPosition = [];
+                    for(var i = messageElements.length - 1; i >= 0; i --) {
+                        var element  = messageElements[i];
+                        if (args.replaceMessage && i < messageElements.length - 1) {
+                            element.addClass('killed');
+                            continue;
+                        }
+                        var elHeight = parseInt(element[0].offsetHeight);
+                        var elWidth  = parseInt(element[0].offsetWidth);
+                        var position = lastPosition[element._positionY+element._positionX];
+
+                        if ((top + elHeight) > window.innerHeight) {
+                            position = startTop;
+                            k ++;
+                            j = 0;
+                        }
+
+                        var top = (lastTop = position ? (j === 0 ? position : position + verticalSpacing) : startTop);
+                        var right = lastRight + (k * (horizontalSpacing + elWidth));
+
+                        element.css(element._positionY, top + 'px');
+                        if (element._positionX == 'center') {
+                            element.css('left', parseInt(window.innerWidth / 2 - elWidth / 2) + 'px');
+                        } else {
+                            element.css(element._positionX, right + 'px');
+                        }
+
+                        lastPosition[element._positionY+element._positionX] = top + elHeight;
+
+                        if (options.maxCount > 0 && messageElements.length > options.maxCount && i === 0) {
+                            element.scope().kill(true);
+                        }
+
+                        j ++;
+                    }
+                };
+
+                var templateElement = $compile(template)(scope);
+                templateElement._positionY = args.positionY;
+                templateElement._positionX = args.positionX;
+                templateElement.addClass(args.type);
+
+                var closeEvent = function(e) {
+                    e = e.originalEvent || e;
+                    if (e.type === 'click' || (e.propertyName === 'opacity' && e.elapsedTime >= 1)){
+                        if (scope.onClose) {
+                            scope.$apply(scope.onClose(templateElement));
+                        }
+
+                        templateElement.remove();
+                        messageElements.splice(messageElements.indexOf(templateElement), 1);
+                        scope.$destroy();
+                        reposite();
+                    }
+                };
+
+                if (args.closeOnClick) {
+                    templateElement.addClass('clickable');
+                    templateElement.bind('click', closeEvent);
+                }
+
+                templateElement.bind('webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd', closeEvent);
+
+                if (angular.isNumber(args.delay)) {
+                    $timeout(function() {
+                        templateElement.addClass('killed');
+                    }, args.delay);
+                }
+
+                setCssTransitions('none');
+
+                angular.element(document.getElementsByTagName('body')).append(templateElement);
+                var offset = -(parseInt(templateElement[0].offsetHeight) + 50);
+                templateElement.css(templateElement._positionY, offset + "px");
+                messageElements.push(templateElement);
+
+                if(args.positionX == 'center'){
+                    var elWidth = parseInt(templateElement[0].offsetWidth);
+                    templateElement.css('left', parseInt(window.innerWidth / 2 - elWidth / 2) + 'px');
+                }
+
+                $timeout(function(){
+                    setCssTransitions('');
+                });
+
+                function setCssTransitions(value){
+                    ['-webkit-transition', '-o-transition', 'transition'].forEach(function(prefix){
+                        templateElement.css(prefix, value);
+                    });
+                }
+
+                scope._templateElement = templateElement;
+
+                scope.kill = function(isHard) {
+                    if (isHard) {
+                        if (scope.onClose) {
+                            scope.$apply(scope.onClose(scope._templateElement));
+                        }
+
+                        messageElements.splice(messageElements.indexOf(scope._templateElement), 1);
+                        scope._templateElement.remove();
+                        scope.$destroy();
+                        $timeout(reposite);
+                    } else {
+                        scope._templateElement.addClass('killed');
+                    }
+                };
+
+                $timeout(reposite);
+
+                if (!isResizeBound) {
+                    angular.element($window).bind('resize', function(e) {
+                        $timeout(reposite);
+                    });
+                    isResizeBound = true;
+                }
+
+                deferred.resolve(scope);
+
+            }).error(function(data){
+                throw new Error('Template ('+args.template+') could not be loaded. ' + data);
+            });
+
+            return deferred.promise;
+        };
+
+        notify.primary = function(args) {
+            return this(args, 'primary');
+        };
+        notify.error = function(args) {
+            return this(args, 'error');
+        };
+        notify.success = function(args) {
+            return this(args, 'success');
+        };
+        notify.info = function(args) {
+            return this(args, 'info');
+        };
+        notify.warning = function(args) {
+            return this(args, 'warning');
+        };
+
+        notify.clearAll = function() {
+            angular.forEach(messageElements, function(element) {
+                element.addClass('killed');
+            });
+        };
+
+        return notify;
+    }];
+});
+
+angular.module("ui-notification").run(["$templateCache", function($templateCache) {$templateCache.put("angular-ui-notification.html","<div class=\"ui-notification\"><h3 ng-show=\"title\" ng-bind-html=\"title\"></h3><div class=\"message\" ng-bind-html=\"message\"></div></div>");}]);
 var app = angular.module('simsReader', [
   'ngRoute',
-  'templateCache'
+  'templateCache',
+  'ui-notification',
 ]);
 
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', function($routeProvider, $locationProvider, NotificationProvider) {
   $routeProvider
     .when('/', {
       templateUrl : 'js/views/homeView.html',
@@ -50739,52 +50967,252 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
       controller : 'mainController'
     })
     .when('/register', {
-      templateUrl : 'js/views/registerView.html',
+      templateUrl : 'js/views/registerForm.html',
+      controller : ''
+    })
+    .when('/story', {
+      templateUrl : 'js/views/storyView.html',
+      controller : 'storyController'
+    })
+    .when('/user', {
+      templateUrl : 'js/views/userView.html',
+      controller : ''
+    })
+    .when('/verify/:accessToken', {
+      templateUrl : 'js/views/regconfView.html',
       controller : 'registerController'
     })
     .otherwise({
       redirectTo: '/'
     });
 
+    NotificationProvider.setOptions({
+        delay: 10000,
+        startTop: 20,
+        startRight: 10,
+        verticalSpacing: 20,
+        horizontalSpacing: 20,
+        positionX: 'right',
+        positionY: 'bottom'
+    });
+
   $locationProvider.html5Mode(true);
 }]);
 
-app.controller('mainController', function($scope) {
-  $scope.message = 'WORDS ON YOUR HOME SCREEN';
+app.run(['userService', function(userService) {
+  userService.getIsLoggedIn()
+  .then(function(res) {
+    if (res) {
+      userService.getUser();
+    }
+  });
+}]);
+
+app.controller('mainController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
+  $scope.userService = userService;
+}]);
+
+app.controller('panelController', function() {
+  this.tab = 1;
+
+  this.selectTab = function(setTab) {
+    this.tab = setTab;
+  };
+
+  this.isSelected = function(checkTab) {
+    return this.tab === checkTab;
+  };
 });
 
-app.controller('registerController', ['$http', '$scope', function($http, $scope) {
-  $scope.submitForm = function(isValid) {
-    if (isValid) {
-      $http({
-        method: 'POST',
-        url: 'http://localhost:2112/register',
-        data: {username: $scope.username, emailAddress: $scope.emailAddress, password: $scope.password1}
-      })
-      .then(function(res) {
-        console.log(res);
-      });
-    }
-  };
+app.controller('headerController', [function() {
 
-  $scope.isMatch = function() {
-    if ($scope.password2 == $scope.password1) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+}]);
 
-  $scope.registerUser = function(user) {
-    $timeout(function() {
-      GetByEmail(user.email)
-        .then(function(duplicateUser) {
-          if (duplicateUser !== null) {
-            deferred.resolve({ success: false, message: 'An account has already been registered with this email address' });
+app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
+  $scope.isverified = false;
+
+  $http.get(locationService.origin + "/verify/" +  $routeParams.accessToken)
+  .then(
+    function success(res) {
+      $scope.isverified = true;
+      Notification.success(res.data.msg);
+    },
+    function error(error) {
+      $window.location.href = '/index.html';
+    }
+  );
+}]);
+
+app.controller('storyController', ['$http', '$scope', function($http, $scope) {
+
+}]);
+
+app.controller('CommentController', function() {
+  this.comment = {};
+
+  this.addComment = function(story) {
+    chapter.comment.push(this.comment);
+  };
+});
+
+app.directive('login', ['$http', 'Notification', 'locationService', 'userService', function($http, Notification, locationService, userService) {
+  return {
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'js/views/loginView.html',
+    link: function($scope, ele, attr) {
+      $scope.submitForm = function(form) {
+        if (!form) {
+          return;
+        }
+        $http({
+          method: 'POST',
+          url: locationService.origin + '/login',
+          data: {
+            email: $scope.email,
+            password: $scope.password
+          },
+          withCredentials: true
+        })
+        .then(function(res) {
+          if (res.data && res.data.items && res.data.items.login) {
+            console.log("login:", res);
+            Notification.success(res.data.msg);
+            userService.setIsLoggedIn(true);
           } else {
-            deferred.resolve({ success: true });
+            Notification.error(res.data.msg);
+            userService.setIsLoggedIn(false);
           }
         });
+      };
+    }
+  };
+}]);
+
+app.directive('logout', ['userService', '$http', 'locationService', '$location', 'Notification', function(userService, $http, locationService, $location, Notification) {
+  return {
+    restrict: 'E',
+    scope: {},
+    template: "<a type=\"button\" class=\"btn btn-default logout-btn\" ng-click=\"logout()\">Logout</a>",
+    link: function($scope, ele, attr) {
+      $scope.logout = function() {
+        $http({
+          method: 'GET',
+          url: locationService.origin + '/logout',
+          withCredentials: true
+        })
+        .then(function() {
+          if (userService.isloggedin()) {
+            Notification.success("Logged out");
+            $location.path('/home');
+            userService.setIsLoggedIn(false);
+          }
+        });
+      };
+    }
+  };
+}]);
+
+app.directive('register', ['$http', 'Notification', 'locationService', 'templateCache', function($http, Notification, locationService, templateCache) {
+  return {
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'js/views/registerForm.html',
+    link: function($scope, ele, attr) {
+      $scope.submitForm = function(isValid) {
+        if (isValid) {
+          $http({
+            method: 'POST',
+            url: locationService.origin + '/register',
+            data: {username: $scope.username, email: $scope.emailAddress, password: $scope.password, passwordMatch: $scope.passwordMatch}
+          })
+          .then(function(res) {
+            if (res.data && res.data.items && res.data.items.status) {
+              Notification.success(res.data.msg);
+              $scope.showSuccessMsg = true;
+            } else {
+              Notification.error(res.data.msg);
+            }
+          });
+        } else {
+          Notification.error("Registration form has invalid fields");
+        }
+      };
+
+      $scope.isMatch = function() {
+        if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+    }
+  };
+}]);
+
+app.service('locationService', function() {
+  return {
+    origin: window.location.protocol + "//" + window.location.hostname + ':2112'
+  };
+});
+
+app.service('userService', ['$http', 'locationService', function($http, locationService) {
+
+  let isloggedin = false,
+      user = {};
+
+  let _getIsLoggedIn = function() {
+    return isloggedin || false;
+  };
+
+  let _setIsLoggedIn = function(bool) {
+    isloggedin = bool;
+  };
+
+  let setUser = function(newUser) {
+    user = newUser || {};
+  };
+
+  let getIsLoggedIn = function() {
+    return $http({
+      method: 'get',
+      url: locationService.origin + '/isloggedin',
+      withCredentials: true
+    })
+    .then(function(res) {
+      if (res.data && res.data.items) {
+        isloggedin = true;
+        user = res.data;
+      } else {
+        isloggedin = false;
+        user = {};
+      }
+      return isloggedin;
     });
+  };
+
+  let getUserByEmail = function(email) {
+    return $http({
+      method: 'post',
+      url: locationService.origin + '/getUserByEmail',
+      withCredentials: true,
+      data: {email: email}
+    })
+    .then(function(res) {
+      user = res || {};
+      return user;
+    });
+  };
+
+  return {
+    getIsLoggedIn: getIsLoggedIn,
+    setIsLoggedIn: _setIsLoggedIn,
+    isloggedin: _getIsLoggedIn,
+    getUserByEmail: getUserByEmail,
+    getUser: function() {
+      return user;
+    },
+    setUser: setUser
+    //updateUser: updateUser
   };
 }]);

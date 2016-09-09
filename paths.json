@@ -25,6 +25,7 @@
   ],
   "templates": ["./src/**/*.html"],
   "css": ["./src/**/*.css"],
+  "fonts": ["./src/fonts/*.*"],
   "dest": {
     "dev": "./dev",
     "prod": "./prod",

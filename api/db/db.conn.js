@@ -1,25 +1,52 @@
 /* jslint node: true */
 /* jshint esversion: 6 */
-const mysql = require('mysql'),
+'use strict';
+
+const mysql = require('promise-mysql'),
       secrets = require('./secrets.json'),
       conn = mysql.createConnection(secrets);
 
-function connectDb() {
-  return new Promise(function(resolve, reject) {
-    return conn.connect(function(err, res) {
-      if (err) {
-        return resolve(err.stack);
-      }
+let dbConn = {};
 
-      return resolve(conn.threadId);
-    });
+function setDbConn(newDbConn) {
+  dbConn = newDbConn;
+};
+
+function getDbConn() {
+  return dbConn;
+};
+
+function dbConnect() {
+  return mysql.createConnection(secrets)
+  .then(function(res) {
+    setDbConn(res);
+    return dbConn;
+  })
+  .catch(function(error) {
+    console.log(error);
+    throw error;
   });
 }
 
-if (conn.state === "disconnected") {
-  connectDb();
+function init() {
+  if (!dbConn.connection) {
+    return dbConnect()
+    .then(function(res) {
+      console.log("*****************");
+      console.log("* Connected to DB");
+      console.log("*****************");
+      return res;
+    })
+    .catch(function(error) {
+      console.log(error);
+      throw error;
+    });
+  } else {
+    return Promise.resolve(getDbConn());
+  }
 }
 
 module.exports = {
-  conn: conn
+  conn: getDbConn,
+  init: init
 };
