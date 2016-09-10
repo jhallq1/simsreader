@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -6,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body style=" font-size: 14px; font-family: sans-serif; width: 500px; height: 500px0; margin: 0 auto;">
-    <p>Hi there, </p>
+    <p>Hi {{username}}, </p>
     <br>
     <div> Please verify your account with us by clicking the following button: </div>
     <br>
-    <button style="background-color: #337ab7; color: #fff; border-radius: 4px; padding: 10px 15px; margin-left: 25%; margin-bottom: 10px;" name="verifyBtn" href="http://www.simsreader.com/verify/{{emailToken}}">Verify Your Account</button>
+    <button style="background-color: #337ab7; color: #fff; border-radius: 4px; padding: 10px 15px; margin-left: 25%; margin-bottom: 10px;" name="verifyBtn" href="http://www.simsreader.com/verify/{{verification_token}}">Verify Your Account</button>
     <br><br>
     <div> Alternatively, open the following url in your browser: </div>
     <br>
-    <a style="text-align:center;" href="http://www.simsreader.com/verify/{{emailToken}}">http://www.simsreader.com/verify/{{emailToken}}</a>
+    <a style="text-align:center;" href="http://www.simsreader.com/verify/{{verification_token}}">http://www.simsreader.com/verify/{{verification_token}}</a>
     <br><br>
     <div>Thanks!</div>
     <br>

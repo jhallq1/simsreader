@@ -50967,7 +50967,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
       controller : 'mainController'
     })
     .when('/register', {
-      templateUrl : 'js/views/registerForm.html',
+      templateUrl : 'js/views/registerView.html',
       controller : ''
     })
     .when('/story', {
@@ -51113,7 +51113,7 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
   };
 }]);
 
-app.directive('register', ['$http', 'Notification', 'locationService', 'templateCache', function($http, Notification, locationService, templateCache) {
+app.directive('register', ['$http', 'Notification', 'locationService', function($http, Notification, locationService) {
   return {
     restrict: 'E',
     scope: {},
@@ -51138,7 +51138,6 @@ app.directive('register', ['$http', 'Notification', 'locationService', 'template
           Notification.error("Registration form has invalid fields");
         }
       };
-
       $scope.isMatch = function() {
         if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
           return true;

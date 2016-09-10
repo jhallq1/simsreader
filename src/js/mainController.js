@@ -15,7 +15,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
       controller : 'mainController'
     })
     .when('/register', {
-      templateUrl : 'js/views/registerForm.html',
+      templateUrl : 'js/views/registerView.html',
       controller : ''
     })
     .when('/story', {

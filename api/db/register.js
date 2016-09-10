@@ -8,12 +8,22 @@ const registrationValidator = require('./user/util/registrationValidator.js').re
       pwEncrypt = require('./user/util/encryption.js'),
       token = require('./user/util/tokenGenerator.js'),
       insertUser = require('./user/insertUser.js'),
-      assetGenerator = require('./user/util/assetFolderGenerator.js');
+      assetGenerator = require('./user/util/assetFolderGenerator.js'),
+      checkEmailSent = require(`${global.apiPath}/db/email/checkEmailSent.js`),
+      insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
+      emailer = require(`${global.apiPath}/db/email/transport.js`);
 
 let data;
+let type_id = 1;
+
 let response = {
   log: 'info',
   send: true
+};
+
+let email_prams = {
+  subject: "Please Verify Your Simsreader Account",
+  template: "register"
 };
 
 function registerUser(user) {
@@ -25,7 +35,7 @@ function registerUser(user) {
     return response;
   }
 
-  user.token = token;
+  user.verification_token = token;
 
   return checkEmail.getUserByEmail(user.email, db)
   .then(function(res) {
@@ -62,8 +72,21 @@ function registerUser(user) {
     return insertUser(user, db);
   })
   .then(function(res) {
-    if (res.insertId) {
-      user.id = res.insertId;
+    user.id = res.insertId;
+    return checkEmailSent(user, type_id, db);
+  })
+  .then(function(res) {
+    if (res) {
+      response.msg = "This email is already verified";
+      throw response;
+    }
+    return emailer(email_prams.subject, null, email_prams.template, user.email, {username: user.username, verification_token: user.verification_token});
+  })
+  .then(function() {
+    return insertEmail(user, type_id, db);
+  })
+  .then(function(res) {
+    if (user.id) {
       return {
         log: "info",
         send: true,

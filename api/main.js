@@ -2,6 +2,8 @@
 /* jshint esversion: 6 */
 
 'use strict';
+var Promise = require('bluebird');
+
 global.apiPath = __dirname.split('\\').join('/');
 
 const express = require('express'),

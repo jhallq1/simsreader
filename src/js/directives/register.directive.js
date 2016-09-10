@@ -1,4 +1,4 @@
-app.directive('register', ['$http', 'Notification', 'locationService', 'templateCache', function($http, Notification, locationService, templateCache) {
+app.directive('register', ['$http', 'Notification', 'locationService', function($http, Notification, locationService) {
   return {
     restrict: 'E',
     scope: {},
@@ -23,7 +23,6 @@ app.directive('register', ['$http', 'Notification', 'locationService', 'template
           Notification.error("Registration form has invalid fields");
         }
       };
-
       $scope.isMatch = function() {
         if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
           return true;

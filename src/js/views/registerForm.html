@@ -49,7 +49,7 @@
             ng-model="passwordMatch"
             placeholder="Confirm Password"
             required />
-          <p ng-show="passwordMatch.$invalid || !isMatch() && (passwordMatch.length > 7 && password.length > 7)" class="help-block">Passwords do not match!</p>
+          <p ng-show="(passwordMatch.$invalid || !isMatch()) && (passwordMatch.length > 7)" class="help-block">Passwords do not match!</p>
         </div>
         <button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid || !isMatch()">Submit</button>
       </form>
