@@ -3,6 +3,7 @@
 const expect = require('chai').expect,
       loginValidator = require('./util/loginValidator.js').loginValidator,
       checkEmail = require('./getUserByEmail.js'),
+      toSimpleUser = require('./toSimpleUser.js'),
       pwVerify = require('./util/encryption.js');
 
 let data;

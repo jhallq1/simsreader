@@ -51012,6 +51012,14 @@ app.run(['userService', function(userService) {
   });
 }]);
 
+app.controller('headerController', [function() {
+
+}]);
+
+app.controller('loginController', [function() {
+
+}]);
+
 app.controller('mainController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
   $scope.userService = userService;
 }]);
@@ -51027,14 +51035,6 @@ app.controller('panelController', function() {
     return this.tab === checkTab;
   };
 });
-
-app.controller('headerController', [function() {
-
-}]);
-
-app.controller('loginController', [function() {
-
-}]);
 
 app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
   $scope.isverified = false;
@@ -51084,9 +51084,9 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
         })
         .then(function(res) {
           if (res.data && res.data.items && res.data.items.login) {
-            console.log("login:", res);
             Notification.success(res.data.msg);
             userService.setIsLoggedIn(true);
+            userService.setUser(res.data.items.user);
           } else {
             Notification.error(res.data.msg);
             userService.setIsLoggedIn(false);
@@ -51189,7 +51189,7 @@ app.service('userService', ['$http', 'locationService', function($http, location
     .then(function(res) {
       if (res.data && res.data.items) {
         isloggedin = true;
-        user = res.data;
+        user = res.data.items;
       } else {
         isloggedin = false;
         user = {};
@@ -51206,7 +51206,7 @@ app.service('userService', ['$http', 'locationService', function($http, location
       data: {email: email}
     })
     .then(function(res) {
-      user = res || {};
+      user = res.data.items.user || {};
       return user;
     });
   };

@@ -14,7 +14,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <base href="/">
   </head>
-  <body>
+  <body ng-cloak>
     <!-- navbar -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
@@ -45,7 +45,7 @@
           </form>
           <ul class="nav navbar-nav navbar-right" ng-if="userService.isloggedin()">
             <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown"><span><b>Hi, {{userService.getUser().items.username}}</b></span><span class="caret"></span></a>
+              <a href="" class="dropdown-toggle" data-toggle="dropdown"><span><b>Hi, {{userService.getUser().username}}</b></span><span class="caret"></span></a>
                 <ul id="login-dp" class="dropdown-menu">
                   <li>
                     <logout></logout>
