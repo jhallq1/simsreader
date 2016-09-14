@@ -50959,28 +50959,32 @@ var app = angular.module('simsReader', [
 app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', function($routeProvider, $locationProvider, NotificationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl : 'js/views/homeView.html',
+      templateUrl : 'views/homeView.html',
       controller : 'mainController'
     })
     .when('/home', {
-      templateUrl : 'js/views/homeView.html',
+      templateUrl : 'views/homeView.html',
       controller : 'mainController'
     })
     .when('/register', {
-      templateUrl : 'js/views/registerView.html',
+      templateUrl : 'views/registerView.html',
       controller : ''
     })
     .when('/story', {
-      templateUrl : 'js/views/storyView.html',
+      templateUrl : 'views/storyView.html',
       controller : 'storyController'
     })
     .when('/user', {
-      templateUrl : 'js/views/userView.html',
+      templateUrl : 'views/userView.html',
       controller : ''
     })
-    .when('/verify/:accessToken', {
-      templateUrl : 'js/views/regconfView.html',
+    .when('/verify/:verification_token', {
+      templateUrl : 'views/regconfView.html',
       controller : 'registerController'
+    })
+    .when('/forgotPassword', {
+      templateUrl : 'views/forgotPasswordView.html',
+      controller : 'loginController'
     })
     .otherwise({
       redirectTo: '/'
@@ -51028,10 +51032,14 @@ app.controller('headerController', [function() {
 
 }]);
 
+app.controller('loginController', [function() {
+
+}]);
+
 app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
   $scope.isverified = false;
 
-  $http.get(locationService.origin + "/verify/" +  $routeParams.accessToken)
+  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
   .then(
     function success(res) {
       $scope.isverified = true;
@@ -51059,7 +51067,7 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
   return {
     restrict: 'E',
     scope: {},
-    templateUrl: 'js/views/loginView.html',
+    templateUrl: 'views/loginView.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(form) {
         if (!form) {
@@ -51117,7 +51125,7 @@ app.directive('register', ['$http', 'Notification', 'locationService', function(
   return {
     restrict: 'E',
     scope: {},
-    templateUrl: 'js/views/registerForm.html',
+    templateUrl: 'views/registerForm.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(isValid) {
         if (isValid) {

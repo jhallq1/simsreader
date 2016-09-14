@@ -14,16 +14,16 @@ let error = {
   redirect: true
 };
 
-function isVerified(db, token) {
-  return db.query("SELECT `verification_token`, `verified` FROM `members` WHERE `verification_token` = ?", token)
+function isVerified(db, verification_token) {
+  return db.query("SELECT `verification_token`, `verified` FROM `members` WHERE `verification_token` = ?", verification_token)
   .catch(function(err) {
     logger.error(err);
     throw error;
   });
 }
 
-function updateVerified(db, token) {
-  return db.query("UPDATE members SET verified = '1' WHERE verification_token = ?", token)
+function updateVerified(db, verification_token) {
+  return db.query("UPDATE members SET verified = '1' WHERE verification_token = ?", verification_token)
   .then(function(res) {
     response.res = res;
     response.msg = "Account is now verified";
@@ -35,11 +35,11 @@ function updateVerified(db, token) {
   });
 }
 
-function verifyToken(db, token) {
-  return isVerified(db, token)
+function verifyToken(db, verification_token) {
+  return isVerified(db, verification_token)
   .then(function(res) {
     if (res.length && res[0].verified === 0) {
-      return updateVerified(db, token);
+      return updateVerified(db, verification_token);
     } else {
       throw error;
     }

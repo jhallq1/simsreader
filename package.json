@@ -30,6 +30,7 @@
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.6",
+    "colors": "^1.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-mysql-session": "^1.1.1",

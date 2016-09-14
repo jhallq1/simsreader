@@ -2,7 +2,7 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
   return {
     restrict: 'E',
     scope: {},
-    templateUrl: 'js/views/loginView.html',
+    templateUrl: 'views/loginView.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(form) {
         if (!form) {

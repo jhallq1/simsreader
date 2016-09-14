@@ -1,9 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect,
-      loginValidator = require('./user/util/loginValidator.js').loginValidator,
-      checkEmail = require('./user/getUserByEmail.js'),
-      pwVerify = require('./user/util/encryption.js');
+      loginValidator = require('./util/loginValidator.js').loginValidator,
+      checkEmail = require('./getUserByEmail.js'),
+      pwVerify = require('./util/encryption.js');
 
 let data;
 

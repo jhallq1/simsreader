@@ -7,28 +7,32 @@ var app = angular.module('simsReader', [
 app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', function($routeProvider, $locationProvider, NotificationProvider) {
   $routeProvider
     .when('/', {
-      templateUrl : 'js/views/homeView.html',
+      templateUrl : 'views/homeView.html',
       controller : 'mainController'
     })
     .when('/home', {
-      templateUrl : 'js/views/homeView.html',
+      templateUrl : 'views/homeView.html',
       controller : 'mainController'
     })
     .when('/register', {
-      templateUrl : 'js/views/registerView.html',
+      templateUrl : 'views/registerView.html',
       controller : ''
     })
     .when('/story', {
-      templateUrl : 'js/views/storyView.html',
+      templateUrl : 'views/storyView.html',
       controller : 'storyController'
     })
     .when('/user', {
-      templateUrl : 'js/views/userView.html',
+      templateUrl : 'views/userView.html',
       controller : ''
     })
-    .when('/verify/:accessToken', {
-      templateUrl : 'js/views/regconfView.html',
+    .when('/verify/:verification_token', {
+      templateUrl : 'views/regconfView.html',
       controller : 'registerController'
+    })
+    .when('/forgotPassword', {
+      templateUrl : 'views/forgotPasswordView.html',
+      controller : 'loginController'
     })
     .otherwise({
       redirectTo: '/'

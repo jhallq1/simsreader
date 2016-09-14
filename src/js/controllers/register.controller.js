@@ -1,7 +1,7 @@
 app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
   $scope.isverified = false;
 
-  $http.get(locationService.origin + "/verify/" +  $routeParams.accessToken)
+  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
   .then(
     function success(res) {
       $scope.isverified = true;

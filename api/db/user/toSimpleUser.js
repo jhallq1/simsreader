@@ -4,6 +4,7 @@ module.exports = function toSimpleUser(user) {
     email: user.email,
     bio: user.bio,
     last_login: user.last_login,
-    registration_date: user.registration_date
+    registration_date: user.registration_date,
+    id: user.id
   };
 };

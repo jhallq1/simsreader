@@ -4,17 +4,18 @@
 
 const mysql = require('promise-mysql'),
       secrets = require('./secrets.json'),
-      conn = mysql.createConnection(secrets);
+      conn = mysql.createConnection(secrets),
+      colors = require('colors');
 
 let dbConn = {};
 
 function setDbConn(newDbConn) {
   dbConn = newDbConn;
-};
+}
 
 function getDbConn() {
   return dbConn;
-};
+}
 
 function dbConnect() {
   return mysql.createConnection(secrets)
@@ -32,9 +33,9 @@ function init() {
   if (!dbConn.connection) {
     return dbConnect()
     .then(function(res) {
-      console.log("*****************");
-      console.log("* Connected to DB");
-      console.log("*****************");
+      console.log("*****************".cyan);
+      console.log("* Connected to DB".cyan);
+      console.log("*****************\n".cyan);
       return res;
     })
     .catch(function(error) {

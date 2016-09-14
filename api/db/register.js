@@ -11,7 +11,8 @@ const registrationValidator = require('./user/util/registrationValidator.js').re
       assetGenerator = require('./user/util/assetFolderGenerator.js'),
       checkEmailSent = require(`${global.apiPath}/db/email/checkEmailSent.js`),
       insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
-      emailer = require(`${global.apiPath}/db/email/transport.js`);
+      emailer = require(`${global.apiPath}/db/email/transport.js`),
+      toSimpleUser = require(`${global.apiPath}/db/user/toSimpleUser.js`);
 
 let data;
 let type_id = 1;
@@ -92,7 +93,7 @@ function registerUser(user) {
         send: true,
         msg: "Registration successful. You will receive an email confirming your account. Please check your inbox.",
         items: {
-          user: simpleUser(user),
+          user: toSimpleUser(user),
           status: true
         }
       };
@@ -112,14 +113,6 @@ function registerUser(user) {
 
     throw response;
   });
-}
-
-function simpleUser(user) {
-  return {
-    email: user.email,
-    id: user.id,
-    username: user.username
-  };
 }
 
 module.exports = {

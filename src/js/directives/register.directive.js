@@ -2,7 +2,7 @@ app.directive('register', ['$http', 'Notification', 'locationService', function(
   return {
     restrict: 'E',
     scope: {},
-    templateUrl: 'js/views/registerForm.html',
+    templateUrl: 'views/registerForm.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(isValid) {
         if (isValid) {

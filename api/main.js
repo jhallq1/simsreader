@@ -21,7 +21,8 @@ const express = require('express'),
       secrets = require('./db/secrets.json'),
       userFactory = require('./db/userfactory.js'),
       updateTimestamp = require('./db/user/updateTimestamp.js'),
-      userToken = require('./db/user/verifyToken.js');
+      userToken = require('./db/user/verifyToken.js'),
+      colors = require('colors');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -116,8 +117,8 @@ app.get('/isloggedin', function(req, res) {
 /**************************/
 /* verify token
 /**************************/
-app.get('/verify/:accessToken', function(req, res) {
-  return userToken.verifyToken(db.conn(), req.params.accessToken)
+app.get('/verify/:verification_token', function(req, res) {
+  return userToken.verifyToken(db.conn(), req.params.verification_token)
   .then(function(response) {
     return responseHandler(response, res);
   })
@@ -182,5 +183,5 @@ function responseHandler(response, res, statusCode) {
 }
 
 app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
+  console.log(`\nListening on port ${port}\n`.magenta);
 });
