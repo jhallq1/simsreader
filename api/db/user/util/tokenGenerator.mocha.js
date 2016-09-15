@@ -12,6 +12,5 @@ const hash = crypto.createHmac('sha256', secret)
 describe ('tokenGenerator: generates random ver token', function () {
   it ('returns a sha256 token of length 64', function() {
     expect(hash).to.have.lengthOf(64);
-    console.log(hash);
   });
 });

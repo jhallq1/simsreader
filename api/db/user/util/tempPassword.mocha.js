@@ -3,38 +3,35 @@
 'use strict';
 
 const expect = require('chai').expect,
+      crypto = require('crypto'),
       pwEncrypt = require('./encryption.js');
 
 let tempPassword = "";
 
 function generateTempPassword() {
-  var charSet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  tempPassword = crypto.randomBytes(4).toString('hex');
 
-  for (let i = 0; i < (Math.floor(Math.random() * (16 - 8)) + 8); i ++) {
-    tempPassword += charSet.charAt(Math.random() * charSet.length);
+  if (tempPassword.length === 8) {
+    return pwEncrypt.hashPass(tempPassword)
+    .then(function(hash) {
+      tempPassword = hash;
+    });
   }
+
   return tempPassword;
 }
 
 function insertTempPassword(db, user) {
-  return pwEncrypt.hashPass(tempPassword)
-  .then(function(hash) {
-    tempPassword = hash;
-  })
-  .then(function(res) {
-    return db.query(`UPDATE members SET password = '${user.tempPassword}' WHERE email = ?`, user.email)
-    .catch(function(error) {
-      throw error;
-    });
+  return db.query(`UPDATE members SET password = '${tempPassword}' WHERE email = ?`, user.email)
+  .catch(function(error) {
+    throw error;
   });
 }
 
 describe ('tempPassword: ', function() {
   let user, db;
 
-  beforeEach(function() {
-    user = {email:  "abcd@test.com"};
-
+  before(function() {
     return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
     .then(function(connection) {
       db = connection;
@@ -42,8 +39,15 @@ describe ('tempPassword: ', function() {
     });
   });
 
-  it ("generates temp pw", function() {
-    return generateTempPassword();
+  beforeEach(function() {
+    user = {email:  "abcd@test.com"};
+  });
+
+  it ('generates random pw of length 8 and encrypts it', function() {
+    return generateTempPassword()
+    .then(function() {
+      expect(tempPassword.length).to.equal(270);
+    });
   });
 
   it ("inserts temp pw into db", function() {
@@ -61,14 +65,14 @@ describe ('tempPassword: ', function() {
     });
   });
 
-  // after(function() {
-  //   return db.query("UPDATE members SET password = 'abcdabcd' WHERE email = ?", user.email)
-  //   .catch(function(error) {
-  //     return {
-  //       log: "error",
-  //       send: true,
-  //       msg: "An internal error has occurred"
-  //     };
-  //   });
-  // });
+  afterEach(function() {
+    return db.query("UPDATE members SET password = 'abcdabcd' WHERE email = ?", user.email)
+    .catch(function(error) {
+      return {
+        log: "error",
+        send: true,
+        msg: "An internal error has occurred"
+      };
+    });
+  });
 });

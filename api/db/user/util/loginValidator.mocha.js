@@ -38,7 +38,7 @@ var loginValidator = {
   pwValid: pwValid
 };
 
-describe ('loginValidator: validates login form data', function() {
+describe ('loginValidator:', function() {
   beforeEach(function() {
     data = {
       email: "abc@test.com",

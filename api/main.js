@@ -110,6 +110,7 @@ app.get('/isloggedin', function(req, res) {
   if (!req.session || !req.session.isloggedin) {
     return responseHandler({msg: 'Please login', send: true}, res);
   }
+  console.log("/isloggedin call", res);
   return responseHandler({items: req.session.user, send: true}, res);
 });
 

@@ -1,3 +1,5 @@
+'use strict';
+
 const validator = require('validator');
 
 module.exports = function loginValidator(data) {

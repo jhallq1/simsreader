@@ -1,10 +1,4 @@
-// 1. query the db
-// 2. check for existing username
-// 3. if username already exists, alert user
-// 4. query db
-// 5. check if new username exists
-// 6. if exists, repeat 3-5
-// 7. if unique, insert username into db
+/*global describe, it, before, beforeEach, after, afterEach */
 
 /* jslint node: true */
 /* jshint esversion: 6 */
@@ -19,10 +13,20 @@ let db,
     username = "";
 
 function getUserByUsername(db) {
-    return db.query("SELECT * FROM `members` WHERE `username` = ?", username);
+  return db.query("SELECT * FROM `members` WHERE `username` = ?", username)
+  .then(function(res) {
+    if (res[0] && res[0].username === username) {
+      return res;
+    } else {
+      return "Cannot find username";
+    }
+  })
+  .catch(function(err) {
+    throw err;
+  });
 }
 
-describe ('GetByUsername: db is connected', function() {
+describe ('GetUserByUsername:', function() {
 
   beforeEach(function() {
     username = "mochalatte";
@@ -34,10 +38,6 @@ describe ('GetByUsername: db is connected', function() {
     });
   });
 
-  it ('db state is authenticated', function() {
-    expect(db.connection.state).to.equal('authenticated');
-  });
-
   it ('returns first user', function() {
     return getUserByUsername(db)
     .then(function(res) {
@@ -45,7 +45,15 @@ describe ('GetByUsername: db is connected', function() {
     });
   });
 
-  it('catches err if thrown', function() {
+  it ('returns msg if cannot locate username in db', function() {
+    username = "userNOTinDB";
+    return getUserByUsername(db)
+    .then(function(res) {
+      expect(res).to.equal('Cannot find username');
+    });
+  });
+
+  it ('catches err if thrown', function() {
     username = null;
     return getUserByUsername(db)
     .catch(function(err) {

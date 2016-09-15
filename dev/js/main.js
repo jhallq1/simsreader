@@ -51084,9 +51084,10 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
         })
         .then(function(res) {
           if (res.data && res.data.items && res.data.items.login) {
+            res.data.items = res.data.items.user;
             Notification.success(res.data.msg);
             userService.setIsLoggedIn(true);
-            userService.setUser(res.data.items.user);
+            userService.setUser(res.data.items);
           } else {
             Notification.error(res.data.msg);
             userService.setIsLoggedIn(false);
@@ -51114,6 +51115,7 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
             Notification.success("Logged out");
             $location.path('/home');
             userService.setIsLoggedIn(false);
+            userService.setUser({});
           }
         });
       };
@@ -51189,6 +51191,7 @@ app.service('userService', ['$http', 'locationService', function($http, location
     .then(function(res) {
       if (res.data && res.data.items) {
         isloggedin = true;
+        res.data.redirect = false;
         user = res.data.items;
       } else {
         isloggedin = false;

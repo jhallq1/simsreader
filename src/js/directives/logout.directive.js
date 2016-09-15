@@ -15,6 +15,7 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
             Notification.success("Logged out");
             $location.path('/home');
             userService.setIsLoggedIn(false);
+            userService.setUser({});
           }
         });
       };

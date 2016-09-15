@@ -21,7 +21,7 @@ function insertUser() {
   });
 }
 
-describe ('insertuser: db is connected', function() {
+describe ('insertuser:', function() {
 
   beforeEach(function() {
     token = require('E:\\Programming\\simsreader\\api\\db\\user\\util\\tokenGenerator.js');

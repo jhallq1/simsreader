@@ -20,7 +20,7 @@ function getAccessToken(db) {
   });
 }
 
-describe ('getAccessToken: db is connected', function(res) {
+describe ('getAccessToken:', function(res) {
 
   beforeEach(function() {
     email = "mochalatte@test.com";

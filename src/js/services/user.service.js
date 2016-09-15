@@ -24,6 +24,7 @@ app.service('userService', ['$http', 'locationService', function($http, location
     .then(function(res) {
       if (res.data && res.data.items) {
         isloggedin = true;
+        res.data.redirect = false;
         user = res.data.items;
       } else {
         isloggedin = false;
