@@ -1,6 +1,7 @@
-/*******************
-*@param type_id: 1
-/******************/
+/*******************************
+*@param verification type_id: 1
+*@param pw recovery type_id: 2
+/******************************/
 
 module.exports = function checkEmailSent(user, type_id, db) {
   return db.query("SELECT COUNT(*) FROM email WHERE email = ? AND type_id = ?", [user.email, type_id])

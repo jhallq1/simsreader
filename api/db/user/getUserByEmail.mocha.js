@@ -1,11 +1,4 @@
-// 1. query the db
-// 2. check for existing email
-// 3. if email already exists, alert user
-// 4. check for existing username
-// 5. if username is already taken, alert username
-// 6. encrypt pw
-// 7. insert username and email and pw
-// 8. alert user
+/*global describe, it, before, beforeEach, after, afterEach */
 
 'use strict';
 
@@ -14,14 +7,23 @@
 const chai = require('chai'),
       expect = require('chai').expect;
 
-let db,
-    email = "";
-
-function getUserByEmail(db) {
-  return db.query("SELECT * FROM `members` WHERE `email` = ?", email);
+function getUserByEmail(email, db) {
+  return db.query("SELECT * FROM `members` WHERE `email` = ?", email)
+  .then(function(res) {
+    if (res[0] && res[0].email === email) {
+      return res;
+    } else {
+      return "Cannot find email";
+    }
+  })
+  .catch(function(err) {
+    throw err;
+  });
 }
 
-describe ('Register: db is connected', function() {
+describe ('getUserByEmail:', function() {
+  let db,
+      email = "";
 
   beforeEach(function() {
     email = "abc@test.com";
@@ -33,30 +35,26 @@ describe ('Register: db is connected', function() {
     });
   });
 
-  it ('db state is authenticated', function() {
-    expect(db.connection.state).to.equal('authenticated');
-  });
-
-  it ('returns first user', function() {
-
-    return getUserByEmail(db)
+  it ('returns first user matching email', function() {
+    return getUserByEmail(email, db)
     .then(function(res) {
       expect(res[0].email).to.equal('abc@test.com');
     });
   });
 
-  it('catches err if thrown', function() {
-    email = null;
+  it ('returns msg if cannot locate email in db', function() {
+    email = "userNOTinDB@test.com";
+    return getUserByEmail(email, db)
+    .then(function(res) {
+      expect(res).to.equal('Cannot find email');
+    });
+  });
 
-    return getUserByEmail(db)
+  it ('catches err if thrown', function() {
+    email = null;
+    return getUserByEmail(email, db)
     .catch(function(err) {
       expect(err.code).to.equal('ER_PARSE_ERROR');
     });
   });
 });
-//
-// describe ('Finds user by email', function() {
-//
-//
-//
-// });

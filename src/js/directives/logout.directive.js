@@ -10,12 +10,12 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
           url: locationService.origin + '/logout',
           withCredentials: true
         })
-        .then(function() {
+        .then(function(res) {
           if (userService.isloggedin()) {
             Notification.success("Logged out");
             $location.path('/home');
             userService.setIsLoggedIn(false);
-            userService.setUser({});
+            userService.setUser(res || {});
           }
         });
       };

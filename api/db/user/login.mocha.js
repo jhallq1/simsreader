@@ -9,16 +9,15 @@ const expect = require('chai').expect,
       pwVerify = require('./util/encryption.js');
 
 let db = require('../db.conn.js').conn();
-let data, user;
 
 let response = {
   log: 'info',
   send: true
 };
 
-function loginUser(user) {
+function loginUser(user, db) {
   let response_user = {};
-  data = loginValidator(user);
+  let data = loginValidator(user);
 
   if (Object.keys(data).length > 0) {
     response.msg = data;
@@ -30,7 +29,7 @@ function loginUser(user) {
      });
   }
 
-  return checkEmail(data.email, db)
+  return checkEmail.getUserByEmail(user.email, db)
   .then(function(res) {
     if (res && res.length && res[0].email === user.email) {
       response_user = res[0];
@@ -51,11 +50,9 @@ function loginUser(user) {
   .then(function(res) {
     if (res === true) {
       response.msg = "Login Successful";
-      response.items = {
-        login: true,
-        validation: true,
-        user: response_user
-      };
+      response_user.login = true;
+      response_user.validation = true;
+      response.items = response_user;
       return response;
     }
   })
@@ -65,14 +62,9 @@ function loginUser(user) {
 }
 
 describe ('login.js: ', function() {
-  beforeEach(function() {
-    let user;
+  let user;
 
-    let data = {
-      email: "abc@test.com",
-      password: "testtest"
-    };
-
+  before(function() {
     return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
     .then(function(connection) {
       db = connection;
@@ -80,10 +72,48 @@ describe ('login.js: ', function() {
     });
   });
 
-  it ('logins user', function() {
-    return loginUser(user)
+  beforeEach(function() {
+    user = {
+      email: "abc@test.com",
+      password: "testtest"
+    };
+  });
+
+  it ('fetches user object', function() {
+    return loginUser(user, db)
     .then(function(res) {
-      expect(response).to.be.a('object');
+      return expect(res.items.username).to.equal('test');
+    });
+  });
+
+  it ('catches error if does not pass validation', function() {
+    user.email = "abc.com";
+    return loginUser(user, db)
+    .catch(function(err) {
+      return expect(err.validation).to.equal(false);
+    });
+  });
+
+  it ('catches error if cannot locate email', function() {
+    user.email = "0000000000000@testtest.com";
+    return loginUser(user, db)
+    .catch(function(err) {
+      return expect(err.msg).to.equal("Email not found");
+    });
+  });
+
+  it ('matches passwords successfully', function() {
+    return loginUser(user, db)
+    .then(function(res) {
+      return expect(res.msg).to.equal("Login Successful");
+    });
+  });
+
+  it ('catches error if passwords do not match', function() {
+    user.password = "notmypassword";
+    return loginUser(user, db)
+    .catch(function(err) {
+      return expect(err.msg).to.equal("Invalid login information");
     });
   });
 });

@@ -6,23 +6,16 @@ const expect = require('chai').expect,
       crypto = require('crypto'),
       pwEncrypt = require('./encryption.js');
 
-let tempPassword = "";
-
 function generateTempPassword() {
-  tempPassword = crypto.randomBytes(4).toString('hex');
-
-  if (tempPassword.length === 8) {
-    return pwEncrypt.hashPass(tempPassword)
-    .then(function(hash) {
-      tempPassword = hash;
-    });
-  }
-
-  return tempPassword;
+  return pwEncrypt.hashPass(crypto.randomBytes(4).toString('hex'))
+  .catch(function(err) {
+    // logger.error(err);
+    throw err;
+  });
 }
 
-function insertTempPassword(db, user) {
-  return db.query(`UPDATE members SET password = '${tempPassword}' WHERE email = ?`, user.email)
+function insertTempPassword(email, hash, db) {
+  return db.query(`UPDATE members SET password = '${hash}' WHERE email = ?`, email)
   .catch(function(error) {
     throw error;
   });
@@ -43,25 +36,32 @@ describe ('tempPassword: ', function() {
     user = {email:  "abcd@test.com"};
   });
 
-  it ('generates random pw of length 8 and encrypts it', function() {
+  it ('generates random pw of length 8 and encryption length equal to 270', function() {
     return generateTempPassword()
-    .then(function() {
-      expect(tempPassword.length).to.equal(270);
+    .then(function(hash) {
+      expect(crypto.randomBytes(4).toString('hex').length).to.equal(8);
+      return expect(hash.length).to.equal(270);
     });
   });
 
   it ("inserts temp pw into db", function() {
-    return insertTempPassword(db, user)
+    return generateTempPassword()
+    .then(function(hash) {
+      return insertTempPassword(user.email, hash, db);
+    })
     .then(function(res) {
-      expect(res.affectedRows).to.equal(1);
+      return expect(res.affectedRows).to.equal(1);
     });
   });
 
   it ('catches error if cannot update password to temp', function() {
     user.email = "notindb@test.com";
-    return insertTempPassword(db, user)
-    .then(function(error) {
-      expect(error.affectedRows).to.equal(0);
+    return generateTempPassword()
+    .then(function(hash) {
+      return insertTempPassword(user.email, hash, db);
+    })
+    .then(function(res) {
+      return expect(res.affectedRows).to.equal(0);
     });
   });
 

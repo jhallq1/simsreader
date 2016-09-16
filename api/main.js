@@ -88,7 +88,7 @@ app.post('/login', function(req, res) {
   return login.loginUser(req.body)
   .then(function(response) {
     req.session.isloggedin = true;
-    req.session.user =  response.items.user;
+    req.session.user =  response.items;
 
     updateTimestamp(db.conn(), req.body.email)
     .catch(function(error) {
@@ -103,14 +103,14 @@ app.post('/login', function(req, res) {
 
 app.get('/logout', function(req, res) {
   req.session.isloggedin = false;
-  return responseHandler({msg: "Goodbye!", send: true}, res);
+  return responseHandler({msg: "Goodbye!", items: {}, send: true}, res);
 });
 
 app.get('/isloggedin', function(req, res) {
   if (!req.session || !req.session.isloggedin) {
     return responseHandler({msg: 'Please login', send: true}, res);
   }
-  console.log("/isloggedin call", res);
+
   return responseHandler({items: req.session.user, send: true}, res);
 });
 
@@ -169,7 +169,7 @@ function responseHandler(response, res, statusCode) {
   }
 
   if (res && response.send) {
-    if (res.redirect) {
+    if (response.redirect) {
       res.send(JSON.stringify({"msg": response.msg, "items": response.items, "redirect": true}));
     } else {
       res.send(JSON.stringify({"msg": response.msg, "items": response.items}));
@@ -184,5 +184,5 @@ function responseHandler(response, res, statusCode) {
 }
 
 app.listen(port, function() {
-  console.log(`\nListening on port ${port}\n`.magenta);
+  console.log(`\nListening on port ${port}\n`.cyan);
 });

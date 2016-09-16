@@ -3,16 +3,12 @@
 /* jslint node: true */
 /* jshint esversion: 6 */
 
-//console.log(__dirname);
 'use strict';
 
 const chai = require('chai'),
       expect = require('chai').expect;
 
-let db,
-    username = "";
-
-function getUserByUsername(db) {
+function getUserByUsername(username, db) {
   return db.query("SELECT * FROM `members` WHERE `username` = ?", username)
   .then(function(res) {
     if (res[0] && res[0].username === username) {
@@ -27,6 +23,8 @@ function getUserByUsername(db) {
 }
 
 describe ('GetUserByUsername:', function() {
+  let db,
+      username = "";
 
   beforeEach(function() {
     username = "mochalatte";
@@ -38,8 +36,8 @@ describe ('GetUserByUsername:', function() {
     });
   });
 
-  it ('returns first user', function() {
-    return getUserByUsername(db)
+  it ('returns first user matching username', function() {
+    return getUserByUsername(username, db)
     .then(function(res) {
       expect(res[0].username).to.equal('mochalatte');
     });
@@ -47,7 +45,7 @@ describe ('GetUserByUsername:', function() {
 
   it ('returns msg if cannot locate username in db', function() {
     username = "userNOTinDB";
-    return getUserByUsername(db)
+    return getUserByUsername(username, db)
     .then(function(res) {
       expect(res).to.equal('Cannot find username');
     });
@@ -55,7 +53,7 @@ describe ('GetUserByUsername:', function() {
 
   it ('catches err if thrown', function() {
     username = null;
-    return getUserByUsername(db)
+    return getUserByUsername(username, db)
     .catch(function(err) {
       expect(err.code).to.equal('ER_PARSE_ERROR');
     });

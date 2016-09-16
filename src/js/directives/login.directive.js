@@ -19,7 +19,6 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
         })
         .then(function(res) {
           if (res.data && res.data.items && res.data.items.login) {
-            res.data.items = res.data.items.user;
             Notification.success(res.data.msg);
             userService.setIsLoggedIn(true);
             userService.setUser(res.data.items);

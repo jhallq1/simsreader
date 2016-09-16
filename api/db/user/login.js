@@ -48,11 +48,9 @@ function loginUser(user) {
   .then(function(res) {
     if (res === true) {
       response.msg = "Login Successful";
-      response.items = {
-        login: true,
-        validation: true,
-        user: response_user
-      };
+      response_user.login = true;
+      response_user.validation = true;
+      response.items = response_user;
       return response;
     }
   })
