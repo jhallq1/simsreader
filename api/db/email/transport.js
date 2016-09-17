@@ -31,5 +31,8 @@ module.exports = function emailer(subject, text, template, recipient, variables)
         }
       );
     });
+  })
+  .catch(function(err) {
+    throw err;
   });
 };

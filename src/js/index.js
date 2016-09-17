@@ -32,7 +32,13 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     })
     .when('/forgotPassword', {
       templateUrl : 'views/forgotPasswordView.html',
-      controller : 'loginController'
+      controller : 'forgotPasswordController',
+      isLoggedOut: true
+    })
+    .when('/resetPassword', {
+      templateUrl : 'views/resetPasswordView.html',
+      controller : 'resetPasswordController',
+      isLoggedOut: true
     })
     .otherwise({
       redirectTo: '/'
@@ -51,11 +57,22 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
   $locationProvider.html5Mode(true);
 }]);
 
-app.run(['userService', function(userService) {
+app.run(['userService', '$rootScope', '$location', function(userService, $rootScope, $location) {
   userService.getIsLoggedIn()
   .then(function(res) {
     if (res) {
       userService.getUser();
     }
+
+    $rootScope.$on("$routeChangeStart", function(event, next, current) {
+      if(next.isLoggedOut && userService.isloggedin()) {
+          event.preventDefault();
+      }
+
+      // if we want them to be logged in AND they are logged out, prevent controller load
+      if(next.isLoggedIn && !userService.isloggedin()) {
+          event.preventDefault();
+      }
+    });
   });
 }]);

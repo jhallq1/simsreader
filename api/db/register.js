@@ -105,7 +105,7 @@ function registerUser(user) {
         log: "error",
         logmsg: errorResponse,
         send: true,
-        msg: "An internal error has occured."
+        msg: "An internal error has occurred."
       };
 
       return response;

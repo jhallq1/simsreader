@@ -22,7 +22,10 @@ const express = require('express'),
       userFactory = require('./db/userfactory.js'),
       updateTimestamp = require('./db/user/updateTimestamp.js'),
       userToken = require('./db/user/verifyToken.js'),
-      colors = require('colors');
+      colors = require('colors'),
+      emailer = require(`${global.apiPath}/db/email/transport.js`),
+      requestTempPassword = require('./db/user/forgotPassword.js'),
+      resetPassword = require('./db/user/resetPassword.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -114,7 +117,6 @@ app.get('/isloggedin', function(req, res) {
   return responseHandler({items: req.session.user, send: true}, res);
 });
 
-
 /**************************/
 /* verify token
 /**************************/
@@ -129,13 +131,47 @@ app.get('/verify/:verification_token', function(req, res) {
 });
 
 /**************************/
+/* request password reset
+/**************************/
+app.post('/forgotPassword', function(req, res) {
+  if (req.session.isloggedin) {
+    return responseHandler({"msg": "Cannot recover password while logged in."}, res, 401);
+  }
+
+  return requestTempPassword.forgotPassword(req.body.email)
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+/**************************/
+/* reset password
+/**************************/
+app.post('/resetPassword', function(req, res) {
+  if (req.session.isloggedin) {
+    return responseHandler({"msg": "Cannot reset while logged in."}, res, 401);
+  }
+
+  return resetPassword.resetPassword(req.body)
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+/**************************/
 /* response handler
 /**************************/
 function responseHandler(response, res, statusCode) {
   if (!response) {
     logger.error('No response passed to response handler');
     if (res) {
-      res.end(400, "Internal error has occured.");
+      res.end(400, "Internal error has occurred.");
     }
 
     return false;

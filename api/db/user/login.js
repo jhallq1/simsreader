@@ -24,7 +24,7 @@ function loginUser(user) {
        send: true,
        msg: response.msg,
        validation: false
-     });
+    });
   }
 
   return checkEmail.getUserByEmail(user.email, db)
