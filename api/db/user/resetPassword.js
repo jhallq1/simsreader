@@ -12,6 +12,40 @@ let response = {
   send: true
 };
 
+function checkExp(user) {
+  let db = require(`${global.apiPath}/db/db.conn.js`).conn();
+  data = resetPasswordValidator(user);
+
+  if (Object.keys(data).length > 0) {
+    response.msg = data;
+    return Promise.reject({
+       log: "warn",
+       send: true,
+       msg: response.msg,
+       validation: false
+    });
+  }
+
+  return updatePassword.checkExpiration(db, user. email, user.token)
+  .then(function(res) {
+    if (true) {
+      return res;
+    }
+  })
+  .catch(function(error) {
+    if (error) {
+      response = {
+        log: "error",
+        logmsg: error,
+        send: true,
+        msg: "This link has already expired."
+      };
+      return response;
+    }
+    throw response;
+  });
+}
+
 function resetPassword(user) {
   let db = require(`${global.apiPath}/db/db.conn.js`).conn();
   data = resetPasswordValidator(user);
@@ -28,18 +62,10 @@ function resetPassword(user) {
 
   return checkEmail.getUserByEmail(user.email, db)
   .then(function(res) {
-
     if (res && res.length && res[0].email === user.email) {
       return res;
     }
-
-   throw {
-      log: "warn",
-      send: true,
-      msg: "Email not found",
-      login: false,
-      validation: true
-    };
+    throw "Email not found";
   })
   .then(function(res) {
     return pwVerify.verifyHash(user.tempPassword, res[0].password);
@@ -68,11 +94,12 @@ function resetPassword(user) {
         msg: "An internal error has occurred."
       };
       return response;
-    }  
+    }
     throw response;
   });
 }
 
 module.exports = {
-  resetPassword: resetPassword
+  resetPassword: resetPassword,
+  checkExp: checkExp
 };

@@ -5,7 +5,9 @@ const checkEmail = require('./getUserByEmail.js'),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
       insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
       crypto = require('crypto'),
-      toSimpleUser = require(`${global.apiPath}/db/user/toSimpleUser.js`);
+      toSimpleUser = require(`${global.apiPath}/db/user/toSimpleUser.js`),
+      insertPasswordToken = require('./util/passwordToken.js'),
+      tokenGenerator = require('./util/tokenGenerator.js');
 
 let type_id = 2;
 
@@ -21,6 +23,7 @@ let email_prams = {
 
 function forgotPassword(email) {
   let db = require(`${global.apiPath}/db/db.conn.js`).conn();
+  let passwordToken = tokenGenerator;
   let tempPassword = crypto.randomBytes(4).toString('hex');
   let user;
 
@@ -33,11 +36,14 @@ function forgotPassword(email) {
 
     throw "Email not found";
   })
+  .then(function(res) {
+    return insertPasswordToken.insertPasswordToken(user, passwordToken, db);
+  })
   .then(function() {
     return tempPw.insertTempPassword(email, tempPassword, db);
   })
   .then(function(res) {
-    return emailer(email_prams.subject, null, email_prams.template, email, {username: user.username, tempPassword: tempPassword});
+    return emailer(email_prams.subject, null, email_prams.template, email, {username: user.username, tempPassword: tempPassword, passwordToken: passwordToken});
   })
   .then(function() {
     return insertEmail(user, type_id, db);

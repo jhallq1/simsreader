@@ -50987,7 +50987,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
       controller : 'forgotPasswordController',
       isLoggedOut: true
     })
-    .when('/resetPassword', {
+    .when('/resetPassword/:passwordToken', {
       templateUrl : 'views/resetPasswordView.html',
       controller : 'resetPasswordController',
       isLoggedOut: true
@@ -51028,6 +51028,149 @@ app.run(['userService', '$rootScope', '$location', function(userService, $rootSc
     });
   });
 }]);
+
+app.controller('forgotPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', function($http, Notification, locationService, $scope, userService) {
+
+  $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
+    if (userService.isloggedin()) {
+      $window.location.href = '/index.html';
+    }
+  });
+
+  $scope.submitForm = function(isValid) {
+    if (isValid) {
+      $http({
+        method: 'POST',
+        url: locationService.origin + '/forgotPassword',
+        withCredentials: true,
+        data: {email: $scope.email}
+      })
+      .then(function(res) {
+        if (res.data && res.data.items && res.data.items.status) {
+          Notification.success(res.data.msg);
+          $scope.showSuccessMsg = true;
+        } else {
+          Notification.error(res.data.msg);
+        }
+      })
+      .catch(function(err) {
+        if (err.status === 401) {
+          $window.location.href = '/index.html';
+          Notification.error("Cannot request temporary password while logged in. That's silly.");
+        }
+      });
+    } else {
+      Notification.error("Email address is invalid");
+    }
+  };
+  }
+]);
+
+app.controller('headerController', [function() {
+
+}]);
+
+app.controller('loginController', [function() {
+
+}]);
+
+app.controller('mainController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
+  $scope.userService = userService;
+}]);
+
+app.controller('panelController', function() {
+  this.tab = 1;
+
+  this.selectTab = function(setTab) {
+    this.tab = setTab;
+  };
+
+  this.isSelected = function(checkTab) {
+    return this.tab === checkTab;
+  };
+});
+
+app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
+  $scope.isverified = false;
+
+  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
+  .then(
+    function success(res) {
+      $scope.isverified = true;
+      Notification.success(res.data.msg);
+    },
+    function error(error) {
+      $window.location.href = '/index.html';
+    }
+  );
+}]);
+
+app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', '$routeParams', function($http, Notification, locationService, $scope, userService, $window, $routeParams) {
+
+  $http.get(locationService.origin + "/resetPassword/" +  $routeParams.passwordToken)
+  .then(
+    function success(res) {
+    },
+    function error(error) {
+      Notification.error("An internal error has occurred.");
+      $window.location.href = '/index.html';
+    }
+  );
+
+  $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
+    if (userService.isloggedin()) {
+      $window.location.href = '/index.html';
+    }
+  });
+
+  $scope.isMatch = function() {
+    if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $scope.submitForm = function(isValid) {
+    if (isValid) {
+      $http({
+        method: 'POST',
+        url: locationService.origin + '/resetPassword',
+        withCredentials: true,
+        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch, token: $routeParams.passwordToken}
+      })
+      .then(function(res) {
+        if (res.data && res.data.items && res.data.items.status) {
+          Notification.success(res.data.msg);
+          $scope.showSuccessMsg = true;
+        } else {
+          Notification.error(res.data.msg);
+        }
+      })
+      .catch(function(err) {
+        if (err.status === 401) {
+          $window.location.href = '/index.html';
+          Notification.error("Cannot reset password while logged in. That's silly.");
+        }
+      });
+    } else {
+      Notification.error("Form has invalid fields");
+    }
+  };
+  }
+]);
+
+app.controller('storyController', ['$http', '$scope', function($http, $scope) {
+
+}]);
+
+app.controller('CommentController', function() {
+  this.comment = {};
+
+  this.addComment = function(story) {
+    chapter.comment.push(this.comment);
+  };
+});
 
 app.directive('login', ['$http', 'Notification', 'locationService', 'userService', function($http, Notification, locationService, userService) {
   return {
@@ -51123,139 +51266,6 @@ app.directive('register', ['$http', 'Notification', 'locationService', function(
     }
   };
 }]);
-
-app.controller('forgotPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', function($http, Notification, locationService, $scope, userService) {
-
-  $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
-    if (userService.isloggedin()) {
-      $window.location.href = '/index.html';
-    }
-  });
-
-  $scope.submitForm = function(isValid) {
-    if (isValid) {
-      $http({
-        method: 'POST',
-        url: locationService.origin + '/forgotPassword',
-        withCredentials: true,
-        data: {email: $scope.email}
-      })
-      .then(function(res) {
-        if (res.data && res.data.items && res.data.items.status) {
-          Notification.success(res.data.msg);
-          $scope.showSuccessMsg = true;
-        } else {
-          Notification.error(res.data.msg);
-        }
-      })
-      .catch(function(err) {
-        if (err.status === 401) {
-          $window.location.href = '/index.html';
-          Notification.error("Cannot request temporary password while logged in. That's silly.");
-        }
-      });
-    } else {
-      Notification.error("Email address is invalid");
-    }
-  };
-  }
-]);
-
-app.controller('headerController', [function() {
-
-}]);
-
-app.controller('loginController', [function() {
-
-}]);
-
-app.controller('mainController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
-  $scope.userService = userService;
-}]);
-
-app.controller('panelController', function() {
-  this.tab = 1;
-
-  this.selectTab = function(setTab) {
-    this.tab = setTab;
-  };
-
-  this.isSelected = function(checkTab) {
-    return this.tab === checkTab;
-  };
-});
-
-app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
-  $scope.isverified = false;
-
-  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
-  .then(
-    function success(res) {
-      $scope.isverified = true;
-      Notification.success(res.data.msg);
-    },
-    function error(error) {
-      $window.location.href = '/index.html';
-    }
-  );
-}]);
-
-app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', function($http, Notification, locationService, $scope, userService, $window) {
-  
-  $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
-    if (userService.isloggedin()) {
-      $window.location.href = '/index.html';
-    }
-  });
-
-  $scope.isMatch = function() {
-    if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  $scope.submitForm = function(isValid) {
-    if (isValid) {
-      $http({
-        method: 'POST',
-        url: locationService.origin + '/resetPassword',
-        withCredentials: true,
-        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch}
-      })
-      .then(function(res) {
-        if (res.data && res.data.items && res.data.items.status) {
-          Notification.success(res.data.msg);
-          $scope.showSuccessMsg = true;
-        } else {
-          Notification.error(res.data.msg);
-        }
-      })
-      .catch(function(err) {
-        if (err.status === 401) {
-          $window.location.href = '/index.html';
-          Notification.error("Cannot reset password while logged in. That's silly.");
-        }
-      });
-    } else {
-      Notification.error("Form has invalid fields");
-    }
-  };
-  }
-]);
-
-app.controller('storyController', ['$http', '$scope', function($http, $scope) {
-
-}]);
-
-app.controller('CommentController', function() {
-  this.comment = {};
-
-  this.addComment = function(story) {
-    chapter.comment.push(this.comment);
-  };
-});
 
 app.service('locationService', function() {
   return {

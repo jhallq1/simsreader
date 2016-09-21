@@ -25,7 +25,8 @@ const express = require('express'),
       colors = require('colors'),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
       requestTempPassword = require('./db/user/forgotPassword.js'),
-      resetPassword = require('./db/user/resetPassword.js');
+      resetPassword = require('./db/user/resetPassword.js'),
+      pwResetToken = require('./db/user/util/updatePassword.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -150,12 +151,28 @@ app.post('/forgotPassword', function(req, res) {
 /**************************/
 /* reset password
 /**************************/
+app.get('/resetPassword/:passwordToken', function(req, res) {
+  return pwResetToken.checkExpiration(db.conn(), req.params.passwordToken)
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res, 401);
+  });
+});
+
 app.post('/resetPassword', function(req, res) {
   if (req.session.isloggedin) {
     return responseHandler({"msg": "Cannot reset while logged in."}, res, 401);
   }
 
-  return resetPassword.resetPassword(req.body)
+  return resetPassword.checkExp(req.body)
+  .then(function(response) {
+    if (response === true) {
+      return resetPassword.resetPassword(req.body);
+    }
+    return responseHandler({msg: 'This link has already expired.', send: true}, res);
+  })
   .then(function(response) {
     return responseHandler(response, res);
   })

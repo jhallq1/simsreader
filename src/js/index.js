@@ -35,7 +35,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
       controller : 'forgotPasswordController',
       isLoggedOut: true
     })
-    .when('/resetPassword', {
+    .when('/resetPassword/:passwordToken', {
       templateUrl : 'views/resetPasswordView.html',
       controller : 'resetPasswordController',
       isLoggedOut: true

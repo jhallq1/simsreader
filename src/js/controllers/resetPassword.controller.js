@@ -1,5 +1,15 @@
-app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', function($http, Notification, locationService, $scope, userService, $window) {
-  
+app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', '$routeParams', function($http, Notification, locationService, $scope, userService, $window, $routeParams) {
+
+  $http.get(locationService.origin + "/resetPassword/" +  $routeParams.passwordToken)
+  .then(
+    function success(res) {
+    },
+    function error(error) {
+      Notification.error("An internal error has occurred.");
+      $window.location.href = '/index.html';
+    }
+  );
+
   $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
     if (userService.isloggedin()) {
       $window.location.href = '/index.html';
@@ -20,7 +30,7 @@ app.controller('resetPasswordController', ['$http', 'Notification', 'locationSer
         method: 'POST',
         url: locationService.origin + '/resetPassword',
         withCredentials: true,
-        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch}
+        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch, token: $routeParams.passwordToken}
       })
       .then(function(res) {
         if (res.data && res.data.items && res.data.items.status) {
