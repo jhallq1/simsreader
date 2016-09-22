@@ -166,10 +166,10 @@ app.post('/resetPassword', function(req, res) {
     return responseHandler({"msg": "Cannot reset while logged in."}, res, 401);
   }
 
-  return resetPassword.checkExp(req.body)
+  return resetPassword.checkExp(req.body, db.conn())
   .then(function(response) {
     if (response === true) {
-      return resetPassword.resetPassword(req.body);
+      return resetPassword.resetPassword(req.body, db.conn());
     }
     return responseHandler({msg: 'This link has already expired.', send: true}, res);
   })

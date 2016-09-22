@@ -12,8 +12,7 @@ let response = {
   send: true
 };
 
-function checkExp(user) {
-  let db = require(`${global.apiPath}/db/db.conn.js`).conn();
+function checkExp(user, db) {
   data = resetPasswordValidator(user);
 
   if (Object.keys(data).length > 0) {
@@ -26,7 +25,7 @@ function checkExp(user) {
     });
   }
 
-  return updatePassword.checkExpiration(db, user. email, user.token)
+  return updatePassword.checkExpiration(db, user.email, user.token)
   .then(function(res) {
     if (true) {
       return res;
@@ -46,8 +45,7 @@ function checkExp(user) {
   });
 }
 
-function resetPassword(user) {
-  let db = require(`${global.apiPath}/db/db.conn.js`).conn();
+function resetPassword(user, db) {
   data = resetPasswordValidator(user);
 
   if (Object.keys(data).length > 0) {
@@ -91,7 +89,7 @@ function resetPassword(user) {
         log: "error",
         logmsg: err,
         send: true,
-        msg: "An internal error has occurred."
+        msg: "Invalid token and/or credentials."
       };
       return response;
     }
