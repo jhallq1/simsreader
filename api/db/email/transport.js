@@ -8,9 +8,9 @@ let transporter = nodemailer.createTransport(secrets);
 
 module.exports = function emailer(subject, text, template, recipient, variables) {
   return new Promise(function(resolve, reject) {
-    return fs.readFile(`${global.apiPath}/db/email/templates/${template}.email.html`, function(err, html) {
-      if (err) {
-        return reject(err);
+    return fs.readFile(`db/email/templates/${template}.email.html`, function(error, html) {
+      if (error) {
+        return reject(error);
       }
 
       var send = transporter.templateSender({
@@ -23,16 +23,16 @@ module.exports = function emailer(subject, text, template, recipient, variables)
 
       return send(
         { to: recipient }, variables,
-        function(err, info) {
-          if (err) {
-            return reject(err);
+        function(error, info) {
+          if (error) {
+            return reject(error);
           }
           return resolve(true);
         }
       );
     });
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 };

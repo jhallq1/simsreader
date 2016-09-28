@@ -4,11 +4,12 @@
 
 const expect = require('chai').expect,
       loginValidator = require('./util/loginValidator.js'),
-      checkEmail = require('./getUserByEmail.js'),
+      checkEmail = require('../db/user/getUserByEmail.js'),
       toSimpleUser = require('./toSimpleUser.js'),
-      pwVerify = require('./util/encryption.js');
+      pwVerify = require('../db/user/util/encryption.js'),
+      pwEncrypt = require('../db/user/util/encryption.js');
 
-let db = require('../db.conn.js').conn();
+let db = require('../db/db.conn.js').conn();
 
 let response = {
   log: 'info',
@@ -56,8 +57,8 @@ function loginUser(user, db) {
       return response;
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 
@@ -69,6 +70,12 @@ describe ('login.js: ', function() {
     .then(function(connection) {
       db = connection;
       return db;
+    })
+    .then(function() {
+      return pwEncrypt.hashPass('testtest')
+      .then(function(tempPassword) {
+        return db.query(`UPDATE members SET password = '${tempPassword}' WHERE email = ?`, 'abc@test.com');
+      });
     });
   });
 
@@ -79,26 +86,19 @@ describe ('login.js: ', function() {
     };
   });
 
-  it ('fetches user object', function() {
-    return loginUser(user, db)
-    .then(function(res) {
-      return expect(res.items.username).to.equal('test');
-    });
-  });
-
   it ('catches error if does not pass validation', function() {
     user.email = "abc.com";
     return loginUser(user, db)
-    .catch(function(err) {
-      return expect(err.validation).to.equal(false);
+    .catch(function(error) {
+      return expect(error.validation).to.equal(false);
     });
   });
 
   it ('catches error if cannot locate email', function() {
     user.email = "0000000000000@testtest.com";
     return loginUser(user, db)
-    .catch(function(err) {
-      return expect(err.msg).to.equal("Email not found");
+    .catch(function(error) {
+      return expect(error.msg).to.equal("Email not found");
     });
   });
 
@@ -112,8 +112,8 @@ describe ('login.js: ', function() {
   it ('catches error if passwords do not match', function() {
     user.password = "notmypassword";
     return loginUser(user, db)
-    .catch(function(err) {
-      return expect(err.msg).to.equal("Invalid login information");
+    .catch(function(error) {
+      return expect(error.msg).to.equal("Invalid login information");
     });
   });
 });

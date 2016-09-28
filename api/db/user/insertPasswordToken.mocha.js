@@ -1,26 +1,10 @@
 /*global describe, it, before, beforeEach, after, afterEach */
 
-//Forgot Password Flow:
-//after user submits Forgot Password Form, check members table for email
-//if email exists, pull user_id
-//if email does not exist, throw err
-//check tokens table for type_id===2 where user_id===user_id
-//if found, generate new token
-//update existing token with new token
-//update existing exp date with new exp Date
-//if cannot find token, generate new token, add to db with exp Date
-
-//generate a temp password
-
-//email user with temp password and url containing token
-
-//update email table
-
 'use strict';
 
 const expect = require('chai').expect,
       checkEmail = require('E:\\Programming\\simsreader\\api\\db\\user\\getUserByEmail.js'),
-      tokenGenerator = require('./tokenGenerator.js'),
+      tokenGenerator = require('./util/tokenGenerator.js'),
       moment = require('moment');
 
 let flag;
@@ -43,12 +27,12 @@ function insertPasswordToken(email, passwordToken, db) {
       return db.query(`INSERT INTO tokens SET ?`, {user_id: user.id, type_id: 2, token: passwordToken, expiration: moment().add(1, 'h').format('YYYY-MM-DD HH:mm:ss')});
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 
-describe ("forgotPasswordTool:", function() {
+describe ("insertPasswordToken:", function() {
   let email, db, passwordToken, expDate, user_id;
 
   before(function() {

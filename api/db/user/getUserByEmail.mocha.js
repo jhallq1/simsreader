@@ -16,8 +16,8 @@ function getUserByEmail(email, db) {
       return "Cannot find email";
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 
@@ -53,8 +53,8 @@ describe ('getUserByEmail:', function() {
   it ('catches err if thrown', function() {
     email = null;
     return getUserByEmail(email, db)
-    .catch(function(err) {
-      expect(err.code).to.equal('ER_PARSE_ERROR');
+    .catch(function(error) {
+      expect(error.code).to.equal('ER_PARSE_ERROR');
     });
   });
 });

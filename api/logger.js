@@ -12,6 +12,7 @@ let logger = new (winston.Logger)({
       name: 'error',
       level: 'error',
       filename: 'logs/error.log',
+      humanReadableUnhandledException: true,
       json: true,
       timestamp: true
     }),

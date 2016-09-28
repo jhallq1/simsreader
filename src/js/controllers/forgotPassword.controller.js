@@ -32,5 +32,4 @@ app.controller('forgotPasswordController', ['$http', 'Notification', 'locationSe
       Notification.error("Email address is invalid");
     }
   };
-  }
-]);
+}]);

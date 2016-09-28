@@ -1,14 +1,10 @@
 app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', '$routeParams', function($http, Notification, locationService, $scope, userService, $window, $routeParams) {
 
   $http.get(locationService.origin + "/resetPassword/" +  $routeParams.passwordToken)
-  .then(
-    function success(res) {
-    },
-    function error(error) {
-      Notification.error("An internal error has occurred.");
-      $window.location.href = '/index.html';
-    }
-  );
+  .catch(function() {
+    Notification.error("An internal error has occurred.");
+    $window.location.href = '/index.html';
+  });
 
   $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
     if (userService.isloggedin()) {
@@ -17,11 +13,7 @@ app.controller('resetPasswordController', ['$http', 'Notification', 'locationSer
   });
 
   $scope.isMatch = function() {
-    if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
-      return true;
-    } else {
-      return false;
-    }
+    return $scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7 ? true : false;
   };
 
   $scope.submitForm = function(isValid) {
@@ -30,7 +22,14 @@ app.controller('resetPasswordController', ['$http', 'Notification', 'locationSer
         method: 'POST',
         url: locationService.origin + '/resetPassword',
         withCredentials: true,
-        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch, token: $routeParams.passwordToken}
+        data: {
+          username: $scope.username,
+          email: $scope.email,
+          tempPassword: $scope.tempPassword,
+          password: $scope.password,
+          passwordMatch: $scope.passwordMatch,
+          token: $routeParams.passwordToken
+        }
       })
       .then(function(res) {
         if (res.data && res.data.items && res.data.items.status) {

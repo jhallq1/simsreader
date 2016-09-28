@@ -7,7 +7,7 @@ const logger = require('./logger.js'),
 
 describe('The default logger', function () {
   it('should log without errors', function (done) {
-    logger.debug('Test debug', function (err) {
+    logger.debug('Test debug', function (error) {
       logger.info('Mocha Logger Test Debug');
       done();
     });

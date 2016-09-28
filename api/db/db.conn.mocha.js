@@ -45,8 +45,8 @@ describe ('DB: Connects to db', function() {
   it ('returns err', function() {
     secrets.user = 'wrong';
     return dbConnect()
-    .catch(function(err) {
-      expect(err).to.exist();
+    .catch(function(error) {
+      expect(error).to.exist();
     });
   });
 });

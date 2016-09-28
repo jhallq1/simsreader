@@ -55,6 +55,5 @@ app.service('userService', ['$http', 'locationService', function($http, location
       return user;
     },
     setUser: setUser
-    //updateUser: updateUser
   };
 }]);

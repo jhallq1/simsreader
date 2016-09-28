@@ -11,7 +11,7 @@ function getAccessToken(db) {
   .then(function(res) {
     return res[0].verification_token;
   })
-  .catch(function(err) {
+  .catch(function(error) {
     return {
       log: "error",
       send: true,
@@ -46,8 +46,8 @@ describe ('getAccessToken:', function(res) {
   it('catches err if thrown', function() {
     email = null;
     return getAccessToken(db)
-    .catch(function(err) {
-      expect(err.msg).to.equal('Cannot find email');
+    .catch(function(error) {
+      expect(error.msg).to.equal('Cannot find email');
     });
   });
 });

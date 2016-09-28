@@ -5,9 +5,8 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
     templateUrl: 'views/loginView.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(form) {
-        if (!form) {
-          return;
-        }
+        if (!form) return;
+
         $http({
           method: 'POST',
           url: locationService.origin + '/login',

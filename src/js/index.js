@@ -16,7 +16,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     })
     .when('/register', {
       templateUrl : 'views/registerView.html',
-      controller : ''
+      controller : 'registerController'
     })
     .when('/story', {
       templateUrl : 'views/storyView.html',
@@ -28,7 +28,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     })
     .when('/verify/:verification_token', {
       templateUrl : 'views/regconfView.html',
-      controller : 'registerController'
+      controller : 'emailVerController'
     })
     .when('/forgotPassword', {
       templateUrl : 'views/forgotPasswordView.html',

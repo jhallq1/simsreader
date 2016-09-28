@@ -1,9 +1,9 @@
 'use strict';
 
 const loginValidator = require('./util/loginValidator.js'),
-      checkEmail = require('./getUserByEmail.js'),
-      checkUsername = require('./getUserByUsername.js'),
-      pwVerify = require('./util/encryption.js');
+      checkEmail = require('../db/user/getUserByEmail.js'),
+      checkUsername = require('../db/user/getUserByUsername.js'),
+      pwVerify = require('../db/user/util/encryption.js');
 
 let data;
 
@@ -14,7 +14,7 @@ let response = {
 
 function loginUser(user) {
   let response_user = {};
-  let db = require('../db.conn.js').conn();
+  let db = require('../db/db.conn.js').conn();
   data = loginValidator(user);
 
   if (Object.keys(data).length > 0) {
@@ -54,8 +54,8 @@ function loginUser(user) {
       return response;
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 

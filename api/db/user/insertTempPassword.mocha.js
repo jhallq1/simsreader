@@ -4,13 +4,13 @@
 
 const expect = require('chai').expect,
       crypto = require('crypto'),
-      pwEncrypt = require('./encryption.js');
+      pwEncrypt = require('./util/encryption.js');
 
 function generateTempPassword() {
   return pwEncrypt.hashPass(crypto.randomBytes(4).toString('hex'))
-  .catch(function(err) {
+  .catch(function(error) {
     // logger.error(err);
-    throw err;
+    throw error;
   });
 }
 

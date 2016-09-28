@@ -4,7 +4,7 @@ module.exports = {
     .then(function(res) {
       return res[0].verification_token;
     })
-    .catch(function(err) {
+    .catch(function(error) {
       return {
         log: "error",
         send: true,

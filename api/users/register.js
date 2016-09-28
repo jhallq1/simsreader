@@ -2,17 +2,17 @@
 /* jshint esversion: 6 */
 'use strict';
 
-const registrationValidator = require('./user/util/registrationValidator.js').registrationValidator,
-      checkEmail = require('./user/getUserByEmail.js'),
-      checkUsername = require('./user/getUserByUsername.js'),
-      pwEncrypt = require('./user/util/encryption.js'),
-      token = require('./user/util/tokenGenerator.js'),
-      insertUser = require('./user/insertUser.js'),
-      assetGenerator = require('./user/util/assetFolderGenerator.js'),
+const registrationValidator = require('./util/registrationValidator.js').registrationValidator,
+      checkEmail = require('../db/user/getUserByEmail.js'),
+      checkUsername = require('../db/user/getUserByUsername.js'),
+      pwEncrypt = require('../db/user/util/encryption.js'),
+      token = require('../db/user/util/tokenGenerator.js'),
+      insertUser = require('../db/user/insertUser.js'),
+      assetGenerator = require('../db/user/util/assetFolderGenerator.js'),
       checkEmailSent = require(`${global.apiPath}/db/email/checkEmailSent.js`),
       insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
-      toSimpleUser = require(`${global.apiPath}/db/user/toSimpleUser.js`);
+      toSimpleUser = require('./toSimpleUser.js');
 
 let data;
 let type_id = 1;
@@ -28,7 +28,7 @@ let email_prams = {
 };
 
 function registerUser(user) {
-  let db = require('./db.conn.js').conn();
+  let db = require('../db/db.conn.js').conn();
   data = registrationValidator(user);
 
   if (Object.keys(data).length > 0) {
@@ -60,8 +60,8 @@ function registerUser(user) {
       }
       return pwEncrypt.hashPass(user.password);
     })
-    .catch(function(err) {
-      throw err;
+    .catch(function(error) {
+      throw error;
     });
   })
   .then(function(hash) {

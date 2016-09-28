@@ -1,13 +1,13 @@
 'use strict';
 
-const checkEmail = require('./getUserByEmail.js'),
-      tempPw = require('./util/tempPassword.js'),
+const checkEmail = require('../db/user/getUserByEmail.js'),
+      insertTempPw = require('../db/user/insertTempPassword.js'),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
       insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
       crypto = require('crypto'),
-      toSimpleUser = require(`${global.apiPath}/db/user/toSimpleUser.js`),
-      insertPasswordToken = require('./util/passwordToken.js'),
-      tokenGenerator = require('./util/tokenGenerator.js');
+      toSimpleUser = require(`${global.apiPath}/users/toSimpleUser.js`),
+      insertPasswordToken = require('../db/user/insertPasswordToken.js'),
+      tokenGenerator = require('../db/user/util/tokenGenerator.js');
 
 let type_id = 2;
 
@@ -40,7 +40,7 @@ function forgotPassword(email) {
     return insertPasswordToken.insertPasswordToken(user, passwordToken, db);
   })
   .then(function() {
-    return tempPw.insertTempPassword(email, tempPassword, db);
+    return insertTempPw.insertTempPassword(email, tempPassword, db);
   })
   .then(function(res) {
     return emailer(email_prams.subject, null, email_prams.template, email, {username: user.username, tempPassword: tempPassword, passwordToken: passwordToken});

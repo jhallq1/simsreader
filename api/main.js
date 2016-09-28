@@ -8,8 +8,8 @@ global.apiPath = __dirname.split('\\').join('/');
 
 const express = require('express'),
       port = 2112,
-      register = require('./db/register.js'),
-      login = require('./db/user/login.js'),
+      register = require('./users/register.js'),
+      login = require('./users/login.js'),
       bodyParser = require('body-parser'),
       app = express(),
       db = require('./db/db.conn.js'),
@@ -19,14 +19,15 @@ const express = require('express'),
       crypto = require('crypto'),
       cookieParser = require('cookie-parser'),
       secrets = require('./db/secrets.json'),
-      userFactory = require('./db/userfactory.js'),
       updateTimestamp = require('./db/user/updateTimestamp.js'),
       userToken = require('./db/user/verifyToken.js'),
       colors = require('colors'),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
-      requestTempPassword = require('./db/user/forgotPassword.js'),
-      resetPassword = require('./db/user/resetPassword.js'),
-      pwResetToken = require('./db/user/util/updatePassword.js');
+      requestTempPassword = require('./users/forgotPassword.js'),
+      resetPassword = require('./users/resetPassword.js'),
+      checkExpiration = require('./db/user/checkTokenExpiration.js'),
+      checkEmail = require('./db/user/getUserByEmail.js'),
+      validator = require('./users/util/registrationValidator.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -63,9 +64,12 @@ app.use(bodyParser.json());
 /* User calls
 /**************************/
 app.post('/getUserByEmail', function (req, res) {
-  return userFactory.getUserByEmail(req.body.email)
+  return validator.registrationValidator(req.body.email)
   .then(function(response) {
-    return responseHandler({items: response, send: true}, res);
+    return checkEmail.getUserByEmail(req.body.email)
+    .then(function(response) {
+      return responseHandler({items: response, send: true}, res);
+    });
   })
   .catch(function(error) {
     return responseHandler(error, res);
@@ -122,7 +126,7 @@ app.get('/isloggedin', function(req, res) {
 /* verify token
 /**************************/
 app.get('/verify/:verification_token', function(req, res) {
-  return userToken.verifyToken(db.conn(), req.params.verification_token)
+  return userToken.verifyToken(req.params.verification_token, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
   })
@@ -152,11 +156,12 @@ app.post('/forgotPassword', function(req, res) {
 /* reset password
 /**************************/
 app.get('/resetPassword/:passwordToken', function(req, res) {
-  return pwResetToken.checkExpiration(db.conn(), req.params.passwordToken)
+  return checkExpiration.checkTokenExpiration(db.conn(), req.params.passwordToken)
   .then(function(response) {
     return responseHandler(response, res);
   })
   .catch(function(error) {
+    console.log(error);
     return responseHandler(error, res, 401);
   });
 });

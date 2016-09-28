@@ -11,8 +11,8 @@ function insertPasswordToken(user, passwordToken, db) {
       return db.query(`INSERT INTO tokens SET ?`, {user_id: user.id, type_id: 2, token: passwordToken, expiration: moment().add(1, 'h').format('YYYY-MM-DD HH:mm:ss')});
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 

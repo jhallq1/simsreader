@@ -17,8 +17,8 @@ function getUserByUsername(username, db) {
       return "Cannot find username";
     }
   })
-  .catch(function(err) {
-    throw err;
+  .catch(function(error) {
+    throw error;
   });
 }
 
@@ -54,8 +54,8 @@ describe ('GetUserByUsername:', function() {
   it ('catches err if thrown', function() {
     username = null;
     return getUserByUsername(username, db)
-    .catch(function(err) {
-      expect(err.code).to.equal('ER_PARSE_ERROR');
+    .catch(function(error) {
+      expect(error.code).to.equal('ER_PARSE_ERROR');
     });
   });
 });

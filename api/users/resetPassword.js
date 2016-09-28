@@ -1,9 +1,10 @@
 'use strict';
 
 const resetPasswordValidator = require('./util/resetPasswordValidator.js'),
-      checkEmail = require('./getUserByEmail.js'),
-      pwVerify = require('./util/encryption.js'),
-      updatePassword = require('./util/updatePassword.js');
+      checkEmail = require('../db/user/getUserByEmail.js'),
+      pwVerify = require('../db/user/util/encryption.js'),
+      changePassword = require('../db/user/changePassword.js'),
+      checkTokenExp = require('../db/user/checkTokenExpiration.js');
 
 let data;
 
@@ -25,7 +26,7 @@ function checkExp(user, db) {
     });
   }
 
-  return updatePassword.checkExpiration(db, user.email, user.token)
+  return checkTokenExp.checkTokenExpiration(db, user.email, user.token)
   .then(function(res) {
     if (true) {
       return res;
@@ -69,7 +70,7 @@ function resetPassword(user, db) {
     return pwVerify.verifyHash(user.tempPassword, res[0].password);
   })
   .then(function(res) {
-    return updatePassword.updatePassword(user.email, user.password, db);
+    return changePassword.changePassword(user.email, user.password, db);
   })
   .then(function(res) {
     if (res) {
@@ -83,11 +84,12 @@ function resetPassword(user, db) {
       };
     }
   })
-  .catch(function(err) {
-    if (err) {
+  .catch(function(error) {
+    if (error) {
+      console.log(error);
       response = {
         log: "error",
-        logmsg: err,
+        logmsg: error,
         send: true,
         msg: "Invalid token and/or credentials."
       };

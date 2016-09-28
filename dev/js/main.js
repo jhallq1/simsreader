@@ -50968,7 +50968,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     })
     .when('/register', {
       templateUrl : 'views/registerView.html',
-      controller : ''
+      controller : 'registerController'
     })
     .when('/story', {
       templateUrl : 'views/storyView.html',
@@ -50980,7 +50980,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     })
     .when('/verify/:verification_token', {
       templateUrl : 'views/regconfView.html',
-      controller : 'registerController'
+      controller : 'emailVerController'
     })
     .when('/forgotPassword', {
       templateUrl : 'views/forgotPasswordView.html',
@@ -51029,6 +51029,29 @@ app.run(['userService', '$rootScope', '$location', function(userService, $rootSc
   });
 }]);
 
+app.controller('CommentController', function() {
+  this.comment = {};
+
+  this.addComment = function(story) {
+    chapter.comment.push(this.comment);
+  };
+});
+
+app.controller('emailVerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
+  $scope.isverified = false;
+
+  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
+  .then(
+    function success(res) {
+      $scope.isverified = true;
+      Notification.success(res.data.msg);
+    },
+    function error(error) {
+      $window.location.href = '/index.html';
+    }
+  );
+}]);
+
 app.controller('forgotPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', function($http, Notification, locationService, $scope, userService) {
 
   $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
@@ -51063,15 +51086,6 @@ app.controller('forgotPasswordController', ['$http', 'Notification', 'locationSe
       Notification.error("Email address is invalid");
     }
   };
-  }
-]);
-
-app.controller('headerController', [function() {
-
-}]);
-
-app.controller('loginController', [function() {
-
 }]);
 
 app.controller('mainController', ['$scope', '$http', 'userService', function($scope, $http, userService) {
@@ -51090,32 +51104,40 @@ app.controller('panelController', function() {
   };
 });
 
-app.controller('registerController', ['$scope', '$routeParams', '$http', 'locationService', 'Notification', '$window', function($scope, $routeParams, $http, locationService, Notification, $window) {
-  $scope.isverified = false;
+app.controller('registerController', ['$http', 'Notification', 'locationService', '$scope', function($http, Notification, locationService, $scope) {
 
-  $http.get(locationService.origin + "/verify/" +  $routeParams.verification_token)
-  .then(
-    function success(res) {
-      $scope.isverified = true;
-      Notification.success(res.data.msg);
-    },
-    function error(error) {
-      $window.location.href = '/index.html';
+  $scope.submitForm = function(isValid) {
+    if (isValid) {
+      $http({
+        method: 'POST',
+        url: locationService.origin + '/register',
+        data: {username: $scope.username, email: $scope.emailAddress, password: $scope.password, passwordMatch: $scope.passwordMatch}
+      })
+      .then(function(res) {
+        if (res.data && res.data.items && res.data.items.status) {
+          Notification.success(res.data.msg);
+          $scope.showSuccessMsg = true;
+        } else {
+          Notification.error(res.data.msg);
+        }
+      });
+    } else {
+      Notification.error("Registration form has invalid fields");
     }
-  );
+  };
+
+  $scope.isMatch = function() {
+    return $scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7 ? true : false;
+  };
 }]);
 
 app.controller('resetPasswordController', ['$http', 'Notification', 'locationService', '$scope', 'userService', '$window', '$routeParams', function($http, Notification, locationService, $scope, userService, $window, $routeParams) {
 
   $http.get(locationService.origin + "/resetPassword/" +  $routeParams.passwordToken)
-  .then(
-    function success(res) {
-    },
-    function error(error) {
-      Notification.error("An internal error has occurred.");
-      $window.location.href = '/index.html';
-    }
-  );
+  .catch(function() {
+    Notification.error("An internal error has occurred.");
+    $window.location.href = '/index.html';
+  });
 
   $scope.$watch('userService.isloggedin()', function(newVal, oldVal) {
     if (userService.isloggedin()) {
@@ -51124,11 +51146,7 @@ app.controller('resetPasswordController', ['$http', 'Notification', 'locationSer
   });
 
   $scope.isMatch = function() {
-    if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
-      return true;
-    } else {
-      return false;
-    }
+    return $scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7 ? true : false;
   };
 
   $scope.submitForm = function(isValid) {
@@ -51137,7 +51155,14 @@ app.controller('resetPasswordController', ['$http', 'Notification', 'locationSer
         method: 'POST',
         url: locationService.origin + '/resetPassword',
         withCredentials: true,
-        data: {username: $scope.username, email: $scope.email, tempPassword: $scope.tempPassword, password: $scope.password, passwordMatch: $scope.passwordMatch, token: $routeParams.passwordToken}
+        data: {
+          username: $scope.username,
+          email: $scope.email,
+          tempPassword: $scope.tempPassword,
+          password: $scope.password,
+          passwordMatch: $scope.passwordMatch,
+          token: $routeParams.passwordToken
+        }
       })
       .then(function(res) {
         if (res.data && res.data.items && res.data.items.status) {
@@ -51164,14 +51189,6 @@ app.controller('storyController', ['$http', '$scope', function($http, $scope) {
 
 }]);
 
-app.controller('CommentController', function() {
-  this.comment = {};
-
-  this.addComment = function(story) {
-    chapter.comment.push(this.comment);
-  };
-});
-
 app.directive('login', ['$http', 'Notification', 'locationService', 'userService', function($http, Notification, locationService, userService) {
   return {
     restrict: 'E',
@@ -51179,9 +51196,8 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
     templateUrl: 'views/loginView.html',
     link: function($scope, ele, attr) {
       $scope.submitForm = function(form) {
-        if (!form) {
-          return;
-        }
+        if (!form) return;
+
         $http({
           method: 'POST',
           url: locationService.origin + '/login',
@@ -51226,42 +51242,6 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
             userService.setUser(res || {});
           }
         });
-      };
-    }
-  };
-}]);
-
-app.directive('register', ['$http', 'Notification', 'locationService', function($http, Notification, locationService) {
-  return {
-    restrict: 'E',
-    scope: {},
-    templateUrl: 'views/registerForm.html',
-    link: function($scope, ele, attr) {
-      $scope.submitForm = function(isValid) {
-        if (isValid) {
-          $http({
-            method: 'POST',
-            url: locationService.origin + '/register',
-            data: {username: $scope.username, email: $scope.emailAddress, password: $scope.password, passwordMatch: $scope.passwordMatch}
-          })
-          .then(function(res) {
-            if (res.data && res.data.items && res.data.items.status) {
-              Notification.success(res.data.msg);
-              $scope.showSuccessMsg = true;
-            } else {
-              Notification.error(res.data.msg);
-            }
-          });
-        } else {
-          Notification.error("Registration form has invalid fields");
-        }
-      };
-      $scope.isMatch = function() {
-        if ($scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7) {
-          return true;
-        } else {
-          return false;
-        }
       };
     }
   };
@@ -51330,6 +51310,5 @@ app.service('userService', ['$http', 'locationService', function($http, location
       return user;
     },
     setUser: setUser
-    //updateUser: updateUser
   };
 }]);

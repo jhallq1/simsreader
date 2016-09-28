@@ -1,11 +1,9 @@
 'use strict';
 
-const expect = require('chai').expect,
-      pwEncrypt = require('./encryption.js'),
-      checkEmail = require('./../getUserByEmail.js'),
+const checkEmail = require('./getUserByEmail.js'),
       moment = require('moment');
 
-function checkExpiration(db, email, token) {
+function checkTokenExpiration(db, email, token) {
   return checkEmail.getUserByEmail(email, db)
   .then(function(res) {
     if (res[0].email === email) {
@@ -25,17 +23,6 @@ function checkExpiration(db, email, token) {
   });
 }
 
-function updatePassword(email, password, db) {
-  return pwEncrypt.hashPass(password)
-  .then(function(hash) {
-    return db.query("UPDATE members SET password = '" + hash + "' WHERE email = ?", email)
-    .catch(function(error) {
-      throw error;
-    });
-  });
-}
-
 module.exports = {
-  checkExpiration: checkExpiration,
-  updatePassword: updatePassword
+  checkTokenExpiration: checkTokenExpiration
 };

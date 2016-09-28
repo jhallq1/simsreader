@@ -1,1 +1,59 @@
-<register></register>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div ng-show="showSuccessMsg"><p>Registration successful. You will receive an email confirming your account. Please check your inbox.</p></div>
+    <div class="col-md-4" ng-show="!showSuccessMsg">
+      <form name="registerForm" ng-submit="submitForm(registerForm.$valid)" novalidate>
+        <h2 align="center">Create Your Account</h2>
+        <div class="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            ng-model="username"
+            placeholder="Username"
+            required />
+          <p ng-show="registerForm.username.$invalid && registerForm.username.$pristine" class="help-block">This field is required.</p>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input
+            type="email"
+            name="emailAddress"
+            class="form-control"
+            ng-model="emailAddress"
+            placeholder="Email Address"
+            required />
+          <p ng-show="registerForm.emailAddress.$invalid && registerForm.emailAddress.$pristine" class="help-block">This field is required.</p>
+          <p ng-show="registerForm.emailAddress.$invalid && !registerForm.emailAddress.$pristine" class="help-block">A valid email address is required.</p>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            ng-minlength="8"
+            ng-model="password"
+            placeholder="Password"
+            required />
+          <p ng-show="registerForm.password.$error.minlength" class="help-block">Minimum 8 characters required.</p>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            name="passwordMatch"
+            class="form-control"
+            ng-model="passwordMatch"
+            placeholder="Confirm Password"
+            required />
+          <p ng-show="(passwordMatch.$invalid || !isMatch()) && (passwordMatch.length > 7)" class="help-block">Passwords do not match!</p>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid || !isMatch()">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>
