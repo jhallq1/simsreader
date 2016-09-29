@@ -23,6 +23,8 @@
     "./src/**/*.js",
     "!./src/**/*.mocha.js"
   ],
+  "api": ["./api/**/*.js"],
+  "test": ["./api/**/*.mocha.js"],
   "templates": ["./src/**/*.html"],
   "css": ["./src/**/*.css"],
   "fonts": ["./src/fonts/*.*"],

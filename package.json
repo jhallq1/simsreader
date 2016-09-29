@@ -4,7 +4,8 @@
   "description": "site",
   "main": "main.js",
   "scripts": {
-    "test": "karma start"
+    "karma": "karma start",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R ./api/**/*.mocha.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "author": "Jennifer Nguyen",
   "license": "ISC",
@@ -43,8 +44,7 @@
     "password-hash-and-salt": "^0.1.3",
     "promise-mysql": "^1.3.2",
     "validator": "^5.4.0",
-    "winston": "^2.2.0",
-    "xoauth2": "^1.2.0"
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.7",
@@ -64,9 +64,12 @@
     "gulp-babel-istanbul": "^1.4.0",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
+    "gulp-coveralls": "^0.1.4",
     "gulp-eslint": "^3.0.1",
+    "gulp-istanbul": "^1.1.1",
     "gulp-jshint": "^2.0.1",
-    "gulp-mocha": "^2.2.0",
+    "gulp-mocha": "^3.0.1",
+    "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.8",
@@ -82,6 +85,7 @@
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-requirejs": "^1.0.0",
     "mocha": "^2.5.3",
+    "mocha-lcov-reporter": "^1.2.0",
     "requirejs": "^2.2.0",
     "run-sequence": "^1.2.2",
     "winston": "^2.2.0"
