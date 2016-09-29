@@ -6,7 +6,7 @@ const checkEmail = require('./getUserByEmail.js'),
 function checkTokenExpiration(db, email, token) {
   return checkEmail.getUserByEmail(email, db)
   .then(function(res) {
-    if (res[0].email === email) {
+    if (res.length && res[0].email === email) {
       return db.query("SELECT `expiration` FROM `tokens` WHERE `user_id` = ? AND `token` = ?", [res[0].id, token])
       .then(function(res) {
         return (res[0] && moment(res[0].expiration).isAfter(moment().format('YYYY-MM-DD HH:mm:ss'))) ? true : false;

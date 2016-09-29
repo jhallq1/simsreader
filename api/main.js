@@ -25,7 +25,7 @@ const express = require('express'),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
       requestTempPassword = require('./users/forgotPassword.js'),
       resetPassword = require('./users/resetPassword.js'),
-      checkExpiration = require('./db/user/checkTokenExpiration.js'),
+      checkExpiration = require('./db/user/isPwTokenValid.js'),
       checkEmail = require('./db/user/getUserByEmail.js'),
       validator = require('./users/util/registrationValidator.js');
 
@@ -156,12 +156,11 @@ app.post('/forgotPassword', function(req, res) {
 /* reset password
 /**************************/
 app.get('/resetPassword/:passwordToken', function(req, res) {
-  return checkExpiration.checkTokenExpiration(db.conn(), req.params.passwordToken)
+  return checkExpiration.isPwTokenValid(db.conn(), req.params.passwordToken)
   .then(function(response) {
     return responseHandler(response, res);
   })
   .catch(function(error) {
-    console.log(error);
     return responseHandler(error, res, 401);
   });
 });
