@@ -1,0 +1,111 @@
+<div ng-show="!mediaQuery('gt-sm')" ng-cloak layout-fill id="chapter-mobile-view">
+  <md-toolbar class="md-menu-toolbar mobile-toolbar">
+    <div layout="row" layout-align="center center">
+      <md-menu-bar>
+        <md-menu>
+          <md-button ng-click="$mdOpenMenu()">
+            MANAGE STORIES<md-icon md-svg-icon="menu-down"></md-icon>
+          </md-button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="file-document"></md-icon>Create New Story</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="plus-box"></md-icon>Add Chapter</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ngf-select="uploadFiles($files)" ng-model="files" multiple accept="image/*" ngf-keep="true"><md-icon md-svg-icon="image"></md-icon>Add Screenshots</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="message-text"></md-icon>View Comments</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="view-list"></md-icon>View Stats</md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="content-save"></md-icon>Save Draft</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button><md-icon md-svg-icon="publish"></md-icon>Save & Publish</md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button style="text-align: center;">WORK ON ANOTHER STORY</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-menu>
+                <md-button ng-click="$mdOpenMenu()">Fish Of The West</md-button>
+                <md-menu-content>
+                  <md-menu-item><md-button ng-href="">Chapter 1: Drinks Of The Seas</md-button></md-menu-item>
+                  <md-menu-item><md-button ng-href="">Chapter 2: Cats And Reptiles</md-button></md-menu-item>
+                  <md-menu-item><md-button ng-href="">Chapter 3: Strange Biology</md-button></md-menu-item>
+                  <md-menu-item><md-button ng-href="">Chapter 4: Nifty Earth</md-button></md-menu-item>
+                  <md-menu-item><md-button ng-href="">Chapter 5: Ancients And Dogs</md-button></md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button href="">
+                Opponent Of A Cat
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button href="">
+                Cooking With My Cousin
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </md-menu-bar>
+    </div>
+  </md-toolbar>
+
+  <div layout="column" ng-show="!mediaQuery('landscape')" class="pagesContent">
+    <empty-chapter ng-show="!files.length"></empty-chapter>
+    <now-editing ng-show="files.length"></now-editing>
+    <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" class="mobileRepeat">
+        <div layout="column" flex="100" style="margin-bottom: 10px;">
+          <div layout="row">
+            Page #{{$index + 1}}
+            <div flex=""></div>
+            <a class="pointer" ng-click="removeFile($index)"><md-icon md-svg-icon="delete" style="color: red;"></md-icon></a>
+          </div>
+          <div layout="column" layout-align="center center">
+            <figure>
+              <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
+              <figcaption class="break-wrap">{{file.name}}</figcaption>
+            </figure>
+            <textarea layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div layout="column" ng-show="mediaQuery('landscape')" class="pagesContent">
+    <empty-chapter ng-show="!files.length"></empty-chapter>
+    <now-editing ng-show="files.length"></now-editing>
+    <div ng-if="files" dragula='"bag-three"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" class="mobileRepeat">
+        <div layout="column" flex="100" class="desktopRepeat">
+          <div layout="row">
+            Page #{{$index + 1}}
+            <div flex=""></div>
+            <a class="pointer" ng-click="removeFile($index)"><md-icon md-svg-icon="delete" style="color: red;"></md-icon></a>
+          </div>
+          <div layout="row">
+            <figure layout="column" flex="45">
+              <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
+              <figcaption class="break-wrap">{{file.name}}</figcaption>
+            </figure>
+            <textarea flex="55" layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

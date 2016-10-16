@@ -24493,6 +24493,29 @@ userpage
   box-shadow: none;
 }
 
+
+#chapter-desktop-view .manage-stories-view {
+  background-color: white;
+}
+
+#chapter-desktop-view .desktop-toolbar {
+  background-color: lightblue;
+  margin-bottom: 20px;
+}
+
+.pagesContent {
+  padding: 10px;
+}
+.desktopRepeat {
+  margin-bottom: 10px;
+}
+#chapter-mobile-view .mobile-toolbar {
+  background-color: lightblue;
+  margin-bottom: 20px;
+}
+.mobileRepeat {
+  padding-bottom: 50px;
+}
 .storyHeader{
   width: 800px;
   margin: 0 auto;
