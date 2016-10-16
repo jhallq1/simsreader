@@ -103,7 +103,7 @@
     </div>
   </div>
 </div>
-<!--
+
 <div ng-show="!mediaQuery('gt-sm')" ng-cloak style="background-color: white;" layout-fill>
   <md-toolbar class="md-menu-toolbar" style="background-color: lightblue; margin-bottom: 20px;">
     <div layout="row" layout-align="center center">
@@ -170,8 +170,8 @@
   <div layout="column" ng-show="!mediaQuery('landscape')" style="padding: 10px;">
     <empty-chapter ng-show="!files.length"></empty-chapter>
     <now-editing ng-show="files.length"></now-editing>
-    <div dragula='"bag-two"'>
-      <div layout="column" ng-repeat="file in files" dragula-scope="$parent" dragula-model="files" style="padding-bottom: 50px;">
+    <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" style="padding-bottom: 50px;">
         <div layout="column" flex="100" style="margin-bottom: 10px;">
           <div layout="row">
             Page #{{$index + 1}}
@@ -194,8 +194,8 @@
   <div layout="column" ng-show="mediaQuery('landscape')" style="padding: 10px;">
     <empty-chapter ng-show="!files.length"></empty-chapter>
     <now-editing ng-show="files.length"></now-editing>
-    <div dragula='"bag-three"'>
-      <div layout="column" ng-repeat="file in files" dragula-scope="$parent" dragula-model="files" style="padding-bottom: 50px;">
+    <div ng-if="files" dragula='"bag-three"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" style="padding-bottom: 50px;">
         <div layout="column" flex="100" style="margin-bottom: 10px;">
           <div layout="row">
             Page #{{$index + 1}}
@@ -214,4 +214,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
