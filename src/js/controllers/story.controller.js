@@ -1,3 +1,3 @@
-app.controller('storyController', ['$http', '$scope', function($http, $scope) {
+app.controller('storyController', ['$scope', function($scope) {
 
 }]);

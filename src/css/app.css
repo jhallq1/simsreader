@@ -1,59 +1,41 @@
-/*!
-social login
-*/
-#login-dp{
-    min-width: 250px;
-    padding: 14px 14px 0;
-    overflow:hidden;
-    background-color:rgba(255,255,255,.8);
+.ribbon {
+  width: 100%;
+  height: 30vh;
+  background-color: #3F51B5;
+  flex-shrink: 0;
 }
-#login-dp .help-block{
-    font-size:12px
+.main {
+  margin-top: -30vh;
 }
-#login-dp .bottom{
-    background-color:rgba(255,255,255,.8);
-    border-top:1px solid #ddd;
-    clear:both;
-    padding:14px;
+.container {
+  max-width: 1600px;
+  width: calc(100% - 16px);
 }
-#login-dp .social-buttons{
-    margin:12px 0
-}
-#login-dp .social-buttons a{
-    width: 49%;
-}
-#login-dp .form-group {
-    margin-bottom: 10px;
-}
-.btn-fb{
-    color: #fff;
-    background-color:#3b5998;
-}
-.btn-fb:hover{
-    color: #fff;
-    background-color:#496ebc
-}
-.btn-tw{
-    color: #fff;
-    background-color:#55acee;
-}
-.btn-tw:hover{
-    color: #fff;
-    background-color:#59b5fa;
-}
-@media(max-width:768px){
-    #login-dp{
-        background-color: inherit;
-        color: #fff;
-    }
-    #login-dp .bottom{
-        background-color: inherit;
-        border-top:0 none;
-    }
+
+/* Main Classes */
+.float-right {
+  float: right;
+  margin-right: 5px;
+  color: red;
 }
 /*!
 3 col layout
 */
+html{
+    height: 100vh !important; /* make sure it is at least as tall as the viewport */
+    min-height: 100%;
+}
+body{
+    height: initial;
+    min-height: 100%;
+    background-color: #e6e6e6;
+}
+
+div[ng-view]{
+     height: 100%;
+     border: solid 1px #cccccc;
+}
+
 body {
     padding-top: 0px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
 }
@@ -64,58 +46,6 @@ body {
 
 footer {
     margin: 50px 0;
-}
-/*!
-story
-*/
-.thumbnail img {
-    width: 100%;
-}
-.ratings {
-    padding-right: 10px;
-    padding-left: 10px;
-    color: #d17581;
-}
-.thumbnail {
-    padding: 0;
-}
-.thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
-}
-footer {
-    margin: 50px 0;
-}
-.ng-invalid.ng-dirty {
-  border-color: #FA787E;
-}
-.ng-valid.ng-dirty {
-  border-color: #78FA89;
-}
-
-#wrapper {
-    width: 100%;
-}
-/*!
-userpage
-*/
-#wrapper {
-    width: 100%;
-}
-
-#page-wrapper {
-    padding: 0 15px;
-    min-height: 568px;
-    background-color: #fff;
-}
-
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px;
-        padding: 0 30px;
-        border-left: 1px solid #e7e7e7;
-    }
 }
 
 .navbar-top-links {

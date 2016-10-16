@@ -2,7 +2,7 @@ app.directive('logout', ['userService', '$http', 'locationService', '$location',
   return {
     restrict: 'E',
     scope: {},
-    template: "<a type=\"button\" class=\"btn btn-default logout-btn\" ng-click=\"logout()\">Logout</a>",
+    template: "<md-button ng-click=\"logout()\">Logout</md-button",
     link: function($scope, ele, attr) {
       $scope.logout = function() {
         $http({

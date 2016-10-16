@@ -1,10 +1,13 @@
 var app = angular.module('simsReader', [
+  'ngFileUpload',
   'ngRoute',
+  angularDragula(angular),
   'templateCache',
   'ui-notification',
+  'ngMaterial'
 ]);
 
-app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', function($routeProvider, $locationProvider, NotificationProvider) {
+app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdIconProvider', '$mdThemingProvider', function($routeProvider, $locationProvider, NotificationProvider, $mdIconProvider, $mdThemingProvider) {
   $routeProvider
     .when('/', {
       templateUrl : 'views/homeView.html',
@@ -18,13 +21,17 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
       templateUrl : 'views/registerView.html',
       controller : 'registerController'
     })
-    .when('/story', {
-      templateUrl : 'views/storyView.html',
+    .when('/manageStories', {
+      templateUrl : 'views/manageStoriesView.html',
+      controller : 'createStoryController'
+    })
+    .when('/viewStory', {
+      templateUrl : 'views/viewStoryView.html',
       controller : 'storyController'
     })
     .when('/user', {
       templateUrl : 'views/userView.html',
-      controller : ''
+      controller : 'panelController'
     })
     .when('/verify/:verification_token', {
       templateUrl : 'views/regconfView.html',
@@ -55,9 +62,27 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', funct
     });
 
   $locationProvider.html5Mode(true);
+
+  $mdIconProvider.defaultIconSet('/fonts/mdi.svg');
+
+  $mdThemingProvider.theme('default')
+    .primaryPalette('blue')
+    .accentPalette('pink');
 }]);
 
+app.run(function($templateRequest){
+  // Pre-fetch icons sources by URL and cache in the $templateCache...
+  // subsequent $templateRequest calls will look there first.
+
+  let urls = [ '/fonts/mdi.svg'];
+
+  angular.forEach(urls, function(url) {
+    $templateRequest(url);
+  });
+});
+
 app.run(['userService', '$rootScope', '$location', function(userService, $rootScope, $location) {
+
   userService.getIsLoggedIn()
   .then(function(res) {
     if (res) {

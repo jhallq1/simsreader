@@ -4,85 +4,67 @@
     <meta charset="utf-8">
     <title>simsReader.com</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, intial-scale=1">
+    <meta name="viewport" content="width=device-width">
 
     <script type="text/javascript" src="/js/main.js"></script>
     <script type="text/javascript" src="/templates/templates.js"></script>
 
     <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="/css/angular-ui-notification.css"/>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
     <base href="/">
   </head>
-  <body ng-cloak>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">simsReader</a>
+
+  <header>
+    <div ng-show="mediaQuery('gt-sm')">
+      <md-toolbar md-whiteframe="1">
+        <div class="md-toolbar-tools">
+          <md-button href="/">
+            <md-icon md-svg-icon="home" aria-label="Home"></md-icon>
+          </md-button>
+          <md-button href="/viewStory">View Story</md-button>
+          <md-button href="/manageStories">Manage Stories</md-button>
+          <span flex></span>
+          <md-button ng-if="userService.isloggedin()">Hello, {{userService.getUser().username}}</md-button>
+          <md-button href="/register" ng-if="!userService.isloggedin()">Register</md-button>
+          <md-button login template="loginView" ctrl="app.forgotPasswordController" ng-if="!userService.isloggedin()">Login</md-button>
+          <logout ng-if="userService.isloggedin()"></logout>
         </div>
-        <div class="collapse navbar-collapse" id="bs-navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/home">Home</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/story">Story</a></li>
-            <li><a href="/user">User</a></li>
-            <li><a href="/resetPassword">Reset Password</a></li>
-            <li><a href="/forgotPassword">Forgot Password</a></li>
-          </ul>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-          <ul class="nav navbar-nav navbar-right" ng-if="userService.isloggedin()">
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown"><span><b>Hi, {{userService.getUser().username}}</b></span><span class="caret"></span></a>
-                <ul id="login-dp" class="dropdown-menu">
-                  <li>
-                    <logout></logout>
-                  </li>
-                </ul>
-              </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right" ng-if="!userService.isloggedin()">
-            <li><p class="navbar-text">Already have an account?</p></li>
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b><span class="caret"></span></a>
-                <ul id="login-dp" class="dropdown-menu">
-                  <li>
-                    <div class="row">
-                      <div class="col-md-12">
-                        Login via
-                        <div class="social-buttons">
-                          <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                          <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-                        </div>
-                        <login></login>
-                      </div>
-                      <div class="bottom text-center">
-                        New here? <a href="/register">Join Us</a>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div id="main" ng-view>
-      <div>
-      </div>
-      <hr>
-      <footer>
-      </footer>
+      </md-toolbar>
     </div>
+
+    <div ng-show="!mediaQuery('gt-sm')">
+      <md-toolbar md-whiteframe="1">
+        <div layout="row" class="md-menu-toolbar">
+          <md-button href="/">
+            <md-icon md-svg-icon="home" aria-label="Home"></md-icon>
+          </md-button>
+          <div flex=""></div>
+          <md-menu md-position-mode="target-right target">
+            <md-button>
+              <md-icon md-svg-icon="menu" ng-click="$mdOpenMenu()" aria-label="Menu"></md-icon>
+            </md-button>
+            <md-menu-content width="2">
+              <md-menu-item ng-if="!userService.isloggedin()"><md-button ng-href="/register" class="md-primary">REGISTER</md-button></md-menu-item>
+              <md-menu-item login template="loginView" ctrl="app.forgotPasswordController" ng-if="!userService.isloggedin()"><md-button class="md-primary">LOGIN</md-button></md-menu-item>
+              <md-menu-item ng-if="userService.isloggedin()"><logout></logout></md-menu-item>
+              <md-menu-item ng-hide="currentPath === '/manageStories'"><md-button ng-href="/manageStories" class="md-primary">MANAGE STORIES</md-button></md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </md-toolbar>
+    </div>
+  </header>
+  <body ng-cloak>
+    <div class="ribbon"></div>
+      <main class="main" ng-show="mediaQuery('gt-sm')">
+        <div layout="column" flex-offset="25" flex="50" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
+        </div>
+      </main>
+
+      <main class="main" ng-show="!mediaQuery('gt-sm')">
+        <div layout="column" flex-offset="5" flex="90" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
+        </div>
+      </main>
   </body>
 </html>

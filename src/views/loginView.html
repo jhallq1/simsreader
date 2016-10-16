@@ -1,31 +1,27 @@
-<form login class="form" name="loginForm" role="form" accept-charset="UTF-8" id="login-nav" ng-submit="submitForm(loginForm.$valid)" novalidate>
-  <div class="form-group">
-    <label class="sr-only" for="inputEmail">Email address</label>
-    <input
-      type="email"
-      name="email"
-      class="form-control"
-      id="inputEmail"
-      ng-model="email"
-      placeholder="Email address"
-      required>
-    <p ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="help-block">A valid email address is required.</p>
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h4>Login</h4>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="cancel()">
+      <md-icon md-svg-icon="close-box" aria-label="Close dialog"></md-icon>
+    </md-button>
   </div>
-  <div class="form-group">
-    <label class="sr-only" for="inputPassword">Password</label>
-    <input
-      type="password"
-      name="password"
-      class="form-control"
-      id="inputPassword"
-      ng-minlength="8"
-      ng-model="password"
-      placeholder="Password"
-      required>
-    <p ng-show="loginForm.password.$error.minlength" class="help-block">Minimum 8 characters required.</p>
-    <div class="help-blick text-right"><a href="/forgotPassword">Forgot password?</a></div>
-  </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-primary btn-block" ng-disabled="loginForm.$invalid">Sign in</button>
-  </div>
-</form>
+</md-toolbar>
+
+<md-dialog-content>
+  <form name="loginForm" layout="column" ng-cloak ng-submit="submitForm(loginForm.$valid)">
+    <md-content layout-padding>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Email</label>
+        <input required name="email" ng-model="user.email" />
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Password</label>
+        <input required name="password" ng-model="user.password" type="password" minlength="8"/>
+      </md-input-container>
+    </md-content>
+    <md-button class="md-raised md-primary" type="submit" ng-disabled="loginForm.$invalid">Login</md-button>
+    <md-button ng-click="$parent.showForgotPassword = true;">Forgot Password</md-button>
+    <md-button href="/register" ng-click="cancel()">New? Sign Up Now</md-button>
+  </form>
+</md-dialog-content>

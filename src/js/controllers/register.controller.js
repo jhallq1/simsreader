@@ -1,11 +1,12 @@
 app.controller('registerController', ['$http', 'Notification', 'locationService', '$scope', function($http, Notification, locationService, $scope) {
+  let user = {};
 
   $scope.submitForm = function(isValid) {
     if (isValid) {
       $http({
         method: 'POST',
         url: locationService.origin + '/register',
-        data: {username: $scope.username, email: $scope.emailAddress, password: $scope.password, passwordMatch: $scope.passwordMatch}
+        data: {username: $scope.user.username, email: $scope.user.emailAddress, password: $scope.user.password, passwordMatch: $scope.user.passwordMatch}
       })
       .then(function(res) {
         if (res.data && res.data.items && res.data.items.status) {
@@ -21,6 +22,6 @@ app.controller('registerController', ['$http', 'Notification', 'locationService'
   };
 
   $scope.isMatch = function() {
-    return $scope.password && $scope.passwordMatch === $scope.password && $scope.password.length > 7 ? true : false;
+    return $scope.user.password && $scope.user.passwordMatch === $scope.user.password && $scope.user.password.length > 7 ? true : false;
   };
 }]);
