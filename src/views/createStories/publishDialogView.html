@@ -1,0 +1,34 @@
+<md-dialog aria-label="Login" style="width: 400px;">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h4>Save & Publish</h4>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="close-box" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div layout="row" layout-align="center center" style="text-align: center;">
+      <h4>
+        Congratulations on completing this chapter!
+        <br/>
+        What would you like to name it?
+      </h4>
+    </div>
+    <form name="publishForm" layout="column" ng-cloak ng-submit="submitForm(publishForm.$valid)">
+      <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Chapter Title</label>
+          <input required name="Title" ng-model="story.chapter.title" placeholder="Examples: Chapter 3 or Bye Bye Servo!"/>
+        </md-input-container>
+      </md-content>
+      <div layout="row">
+        <md-button style="width: 30%;" class="md-raised md-primary" ng-disabled="publishForm.$invalid" ng-click="cancel()">Not yet!</md-button>
+        <div flex=""></div>
+        <md-button style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="publishForm.$invalid">Publish</md-button>
+      </div>
+    </form>
+  </md-dialog-content>
+</md-dialog>

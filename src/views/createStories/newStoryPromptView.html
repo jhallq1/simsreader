@@ -1,0 +1,29 @@
+<md-dialog aria-label="Login" style="width: 500px;">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h4>New Story</h4>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="close-box" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <form name="newStoryForm" layout="column" ng-cloak ng-submit="submitForm(newStoryForm.$valid)">
+      <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Title</label>
+          <input required name="Title" ng-model="story.title"/>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Description</label>
+          <textarea required name="Description" ng-model="story.description" md-maxlength="500"></textarea>
+        </md-input-container>
+      </md-content>
+      <div layout="row" layout-align="center center">
+        <md-button style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="newStoryForm.$invalid">Go!</md-button>
+      </div>
+    </form>
+  </md-dialog-content>
+</md-dialog>

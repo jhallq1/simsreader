@@ -1,4 +1,4 @@
-app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
+app.directive('publish', ['$mdDialog', function($mdDialog) {
   return {
     restrict: 'A',
     scope: {
@@ -6,13 +6,13 @@ app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
     },
     link: function($scope, ele, attr) {
       ele.on('click', (ev) => {
-        $scope.showNewStoryDialog(ev);
+        $scope.showPublishDialog(ev);
       });
 
-      $scope.showNewStoryDialog = function(ev) {
+      $scope.showPublishDialog = function(ev) {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: 'views/createStories/newStoryPromptView.html',
+          templateUrl: 'views/createStories/publishDialogView.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:true,

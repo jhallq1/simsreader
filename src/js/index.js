@@ -22,11 +22,11 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'registerController'
     })
     .when('/manageStories', {
-      templateUrl : 'views/manageStoriesView.html',
+      templateUrl : 'views/createStories/manageStoriesView.html',
       controller : 'createStoryController'
     })
     .when('/viewStory', {
-      templateUrl : 'views/viewStoryView.html',
+      templateUrl : 'views/readStories/viewStoryView.html',
       controller : 'storyController'
     })
     .when('/user', {

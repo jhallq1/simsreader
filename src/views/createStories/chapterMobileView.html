@@ -8,7 +8,7 @@
           </md-button>
           <md-menu-content>
             <md-menu-item>
-              <md-button><md-icon md-svg-icon="file-document"></md-icon>Create New Story</md-button>
+              <md-button new-story-prompt><md-icon md-svg-icon="file-document"></md-icon>Create New Story</md-button>
             </md-menu-item>
             <md-menu-item>
               <md-button><md-icon md-svg-icon="plus-box"></md-icon>Add Chapter</md-button>
@@ -27,7 +27,7 @@
               <md-button><md-icon md-svg-icon="content-save"></md-icon>Save Draft</md-button>
             </md-menu-item>
             <md-menu-item>
-              <md-button><md-icon md-svg-icon="publish"></md-icon>Save & Publish</md-button>
+              <md-button publish><md-icon md-svg-icon="publish"></md-icon>Save & Publish</md-button>
             </md-menu-item>
             <md-menu-divider></md-menu-divider>
             <md-menu-item>
@@ -63,7 +63,6 @@
 
   <div layout="column" ng-show="!mediaQuery('landscape')" class="pagesContent">
     <empty-chapter ng-show="!files.length"></empty-chapter>
-    <now-editing ng-show="files.length"></now-editing>
     <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">
       <div layout="column" ng-repeat="file in files" class="mobileRepeat">
         <div layout="column" flex="100" style="margin-bottom: 10px;">
@@ -87,7 +86,6 @@
 
   <div layout="column" ng-show="mediaQuery('landscape')" class="pagesContent">
     <empty-chapter ng-show="!files.length"></empty-chapter>
-    <now-editing ng-show="files.length"></now-editing>
     <div ng-if="files" dragula='"bag-three"' dragula-scope="$parent" dragula-model="files">
       <div layout="column" ng-repeat="file in files" class="mobileRepeat">
         <div layout="column" flex="100" class="desktopRepeat">

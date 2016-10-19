@@ -85923,11 +85923,11 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'registerController'
     })
     .when('/manageStories', {
-      templateUrl : 'views/manageStoriesView.html',
+      templateUrl : 'views/createStories/manageStoriesView.html',
       controller : 'createStoryController'
     })
     .when('/viewStory', {
-      templateUrl : 'views/viewStoryView.html',
+      templateUrl : 'views/readStories/viewStoryView.html',
       controller : 'storyController'
     })
     .when('/user', {
@@ -86239,7 +86239,20 @@ app.controller('createStoryController', ['$scope', function ($scope) {
   $scope.files = [];
 }]);
 
-app.directive('login', ['$http', 'Notification', 'locationService', 'userService', '$mdDialog', function($http, Notification, locationService, userService, $mdDialog) {
+app.directive('addChapterBtn', [function() {
+  return {
+    restrict: 'E',
+    template: '<button class="btn btn-primary">Add Chapter</button>',
+    scope: {
+    },
+    link: function($scope, ele, attr) {
+
+    }
+  };
+}]);
+
+
+app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
   return {
     restrict: 'A',
     scope: {
@@ -86247,13 +86260,13 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
     },
     link: function($scope, ele, attr) {
       ele.on('click', (ev) => {
-        $scope.showLogin(ev);
+        $scope.showNewStoryDialog(ev);
       });
 
-      $scope.showLogin = function(ev) {
+      $scope.showNewStoryDialog = function(ev) {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: 'views/navBarUserLoginView.html',
+          templateUrl: 'views/createStories/newStoryPromptView.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:true,
@@ -86274,79 +86287,7 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
         $scope.cancel = function() {
           $mdDialog.cancel();
         };
-
-        $scope.submitForm = function(form) {
-          if (!form) return;
-          console.log($scope);
-          $http({
-            method: 'POST',
-            url: locationService.origin + '/login',
-            data: $scope.user,
-            withCredentials: true
-          })
-          .then(function(res) {
-            if (res.data && res.data.items && res.data.items.login) {
-              Notification.success(res.data.msg);
-              userService.setIsLoggedIn(true);
-              userService.setUser(res.data.items);
-              $scope.cancel();
-            } else {
-              Notification.error(res.data.msg);
-              userService.setIsLoggedIn(false);
-            }
-          });
-        };
       }
-    }
-  };
-}]);
-
-app.directive('logout', ['userService', '$http', 'locationService', '$location', 'Notification', function(userService, $http, locationService, $location, Notification) {
-  return {
-    restrict: 'E',
-    scope: {},
-    template: "<md-button ng-click=\"logout()\">Logout</md-button",
-    link: function($scope, ele, attr) {
-      $scope.logout = function() {
-        $http({
-          method: 'GET',
-          url: locationService.origin + '/logout',
-          withCredentials: true
-        })
-        .then(function(res) {
-          if (userService.isloggedin()) {
-            Notification.success("Logged out");
-            $location.path('/home');
-            userService.setIsLoggedIn(false);
-            userService.setUser(res || {});
-          }
-        });
-      };
-    }
-  };
-}]);
-
-app.directive('addChapterBtn', [function() {
-  return {
-    restrict: 'E',
-    template: '<button class="btn btn-primary">Add Chapter</button>',
-    scope: {
-    },
-    link: function($scope, ele, attr) {
-
-    }
-  };
-}]);
-
-
-app.directive('createStoryBtn', [function() {
-  return {
-    restrict: 'E',
-    template: '<button class="btn btn-primary">Create Story</button>',
-    scope: {
-    },
-    link: function($scope, ele, attr) {
-
     }
   };
 }]);
@@ -86437,16 +86378,42 @@ app.directive('addPage', function() {
   };
 });
 
-app.directive('saveBtn', [function() {
+app.directive('publish', ['$mdDialog', function($mdDialog) {
   return {
-    restrict: 'E',
-    template: '<button class="btn btn-primary">Save</button>',
+    restrict: 'A',
     scope: {
-      files: '=',
-      progress: '='
+
     },
     link: function($scope, ele, attr) {
-      
+      ele.on('click', (ev) => {
+        $scope.showPublishDialog(ev);
+      });
+
+      $scope.showPublishDialog = function(ev) {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: 'views/createStories/publishDialogView.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          locals: {
+            items: $scope
+          },
+          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+      };
+
+      function DialogController($scope, $mdDialog) {
+        $scope.user = {};
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+      }
     }
   };
 }]);
@@ -86480,6 +86447,93 @@ app.directive('uploadFilesBtn', ['Upload', function(Upload) {
           //     $scope.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
           // });
         }
+      };
+    }
+  };
+}]);
+
+app.directive('login', ['$http', 'Notification', 'locationService', 'userService', '$mdDialog', function($http, Notification, locationService, userService, $mdDialog) {
+  return {
+    restrict: 'A',
+    scope: {
+
+    },
+    link: function($scope, ele, attr) {
+      ele.on('click', (ev) => {
+        $scope.showLogin(ev);
+      });
+
+      $scope.showLogin = function(ev) {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: 'views/navBarUserLoginView.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          locals: {
+            items: $scope
+          },
+          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+      };
+
+      function DialogController($scope, $mdDialog) {
+        $scope.user = {};
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+
+        $scope.submitForm = function(form) {
+          if (!form) return;
+          console.log($scope);
+          $http({
+            method: 'POST',
+            url: locationService.origin + '/login',
+            data: $scope.user,
+            withCredentials: true
+          })
+          .then(function(res) {
+            if (res.data && res.data.items && res.data.items.login) {
+              Notification.success(res.data.msg);
+              userService.setIsLoggedIn(true);
+              userService.setUser(res.data.items);
+              $scope.cancel();
+            } else {
+              Notification.error(res.data.msg);
+              userService.setIsLoggedIn(false);
+            }
+          });
+        };
+      }
+    }
+  };
+}]);
+
+app.directive('logout', ['userService', '$http', 'locationService', '$location', 'Notification', function(userService, $http, locationService, $location, Notification) {
+  return {
+    restrict: 'E',
+    scope: {},
+    template: "<md-button ng-click=\"logout()\">Logout</md-button",
+    link: function($scope, ele, attr) {
+      $scope.logout = function() {
+        $http({
+          method: 'GET',
+          url: locationService.origin + '/logout',
+          withCredentials: true
+        })
+        .then(function(res) {
+          if (userService.isloggedin()) {
+            Notification.success("Logged out");
+            $location.path('/home');
+            userService.setIsLoggedIn(false);
+            userService.setUser(res || {});
+          }
+        });
       };
     }
   };
