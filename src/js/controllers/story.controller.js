@@ -1,3 +1,3 @@
-app.controller('storyController', ['$scope', function($scope) {
+app.controller('storyController', [function() {
 
 }]);

@@ -24622,3 +24622,13 @@ footer {
 #hide-md-menu-dropdown {
   display: none;
 }
+
+#scrollArea {
+
+  overflow: auto;
+}
+
+#bottom {
+  display: block;
+
+}
