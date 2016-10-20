@@ -6,28 +6,28 @@ This is a web application built with AngularJS, Material Design, node.js, and Ex
 
 ### screenshots
 
-![Alt text](http://i.imgur.com/u8VjLrQ.png)
 *Registration*
-
-
-![Alt text](http://imgur.com/EcZoIfb.png)
-*Login dialog*
-
-
 ![Alt text](http://i.imgur.com/u8VjLrQ.png)
+
+
+*Login dialog*
+![Alt text](http://imgur.com/EcZoIfb.png)
+
+
 *Story cover page*
+![Alt text](http://i.imgur.com/crq2R0d.png)
 
 
-![Alt text](http://i.imgur.com/8HhYfAp.png)
 *Uploading images to include in chapter*
-
-
 ![Alt text](http://i.imgur.com/8HhYfAp.png)
+
+
 *Swapping first and second images*
+![Alt text](http://i.imgur.com/307XDxE.png)
 
 
-![Alt text](http://i.imgur.com/8HhYfAp.png)
 *Images and their respective captions have swapped*
+![Alt text](http://i.imgur.com/tQKL00s.png)
 
 
 ![Alt text](http://i.imgur.com/EURPVKc.png)
