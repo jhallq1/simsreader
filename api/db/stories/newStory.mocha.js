@@ -8,19 +8,21 @@ const expect = require('chai').expect,
 function newStory(email, story, db) {
   return getId.getUserId(email, db)
   .then(function(res) {
-    return db.query("INSERT INTO stories SET ?", {user_id: res, title: story.title, description: story.description})
-    .then(function(response) {
-      if (response && response.affectedRows === 1) {
-        return true;
-      }
-    })
-    .catch(function(error) {
-      throw {
-        log: "error",
-        send: true,
-        msg: "An internal error has occurred"
-      };
-    });
+    if (!isNaN(parseFloat(res)) && isFinite(res)) {
+      return db.query("INSERT INTO stories SET ?", {user_id: res, title: story.title, description: story.description})
+      .then(function(response) {
+        if (response && response.affectedRows === 1) {
+          return response.insertId;
+        }
+      })
+      .catch(function(error) {
+        throw {
+          log: "error",
+          send: true,
+          msg: "An internal error has occurred"
+        };
+      });
+    }
   });
 }
 
@@ -42,18 +44,18 @@ describe ('newStory:', function() {
     });
   });
 
-  it('inserts story details into table', function() {
+  it('inserts story details into table and returns insertId', function() {
     return newStory(email, story, db)
     .then(function(res) {
-      expect(res).to.equal(true);
+      expect(typeof res).to.equal('number');
     });
   });
 
-  it('throws error if cannot find userid', function() {
+  it('throws error if userid is not an integer', function() {
     email = "notindb@db.com";
     return newStory(email, story, db)
     .catch(function(error) {
-      expect(error.msg).to.equal("an internal error has occurred");
+      expect(error.msg).to.equal("An internal error has occurred");
     });
   });
 
