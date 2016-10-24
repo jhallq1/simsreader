@@ -60,7 +60,7 @@ var registrationValidator = {
 };
 
 
-describe ('Validates user registration form data /', function() {
+describe ('Validates user registration form data', function() {
 
   beforeEach(function() {
     data = {

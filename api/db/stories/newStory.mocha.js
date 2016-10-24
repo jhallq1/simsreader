@@ -26,7 +26,7 @@ function newStory(email, story, db) {
   });
 }
 
-describe ('newStory:', function() {
+describe ('add newStory:', function() {
   let db,
       response,
       email = "",
