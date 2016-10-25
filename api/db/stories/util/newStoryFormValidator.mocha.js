@@ -26,7 +26,7 @@ function descriptionValid(data) {
   if (validator.isLength(data.description, {min: 1, max: 30})) {
     msg = "Description is valid";
   } else {
-    response.invalidDescription = "Description cannot contain more than 100 characters.";
+    response.invalidDescription = "Description cannot contain more than 300 characters.";
   }
   return;
 }
@@ -71,6 +71,6 @@ describe('Validates new story form data', function() {
   it('throws error if description is too long', function() {
     data.description = "12345678910 12345678910 12345678910";
     descriptionValid(data);
-    expect(response.invalidDescription).to.equal("Description cannot contain more than 100 characters.");
+    expect(response.invalidDescription).to.equal("Description cannot contain more than 300 characters.");
   });
 });

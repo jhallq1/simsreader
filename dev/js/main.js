@@ -86252,7 +86252,7 @@ app.directive('addChapterBtn', [function() {
 }]);
 
 
-app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
+app.directive('newStoryPrompt', ['$mdDialog', 'Notification', function($mdDialog, Notification) {
   return {
     restrict: 'A',
     scope: {
@@ -86278,7 +86278,7 @@ app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
       };
 
       function DialogController($scope, $mdDialog) {
-        $scope.user = {};
+        $scope.story = {};
 
         $scope.hide = function() {
           $mdDialog.hide();
@@ -86286,6 +86286,25 @@ app.directive('newStoryPrompt', ['$mdDialog', function($mdDialog) {
 
         $scope.cancel = function() {
           $mdDialog.cancel();
+        };
+
+        $scope.submitForm = function(form) {
+          if (!form) return;
+
+          $http({
+            method: 'POST',
+            url: locationService.origin + '/newStory',
+            data: $scope.story,
+            withCredentials: true
+          })
+          .then(function(res) {
+            if (res.data && res.data.items) {
+              Notification.success(res.data.msg);
+              $scope.cancel();
+            } else {
+              Notification.error(res.data.msg);
+            }
+          });
         };
       }
     }

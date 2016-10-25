@@ -5,7 +5,7 @@
 const expect = require('chai').expect,
       getId = require('../user/getUserIdByEmail.js');
 
-function newStory(email, story, db) {
+function insertNewStory(email, story, db) {
   return getId.getUserId(email, db)
   .then(function(res) {
     if (!isNaN(parseFloat(res)) && isFinite(res)) {
@@ -45,7 +45,7 @@ describe ('add newStory:', function() {
   });
 
   it('inserts story details into table and returns insertId', function() {
-    return newStory(email, story, db)
+    return insertNewStory(email, story, db)
     .then(function(res) {
       expect(typeof res).to.equal('number');
     });
@@ -53,13 +53,13 @@ describe ('add newStory:', function() {
 
   it('throws error if userid is not an integer', function() {
     email = "notindb@db.com";
-    return newStory(email, story, db)
+    return insertNewStory(email, story, db)
     .catch(function(error) {
       expect(error.msg).to.equal("An internal error has occurred");
     });
   });
 
-  afterEach(function() {
+  after(function() {
     return db.query("DELETE FROM stories WHERE user_id = 1");
   });
 });
