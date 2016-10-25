@@ -27,7 +27,8 @@ const express = require('express'),
       resetPassword = require('./users/resetPassword.js'),
       checkExpiration = require('./db/user/isPwTokenValid.js'),
       checkEmail = require('./db/user/getUserByEmail.js'),
-      validator = require('./users/util/registrationValidator.js');
+      validator = require('./users/util/registrationValidator.js'),
+      toSimpleUser = require('./users/toSimpleUser.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -96,7 +97,7 @@ app.post('/login', function(req, res) {
   return login.loginUser(req.body)
   .then(function(response) {
     req.session.isloggedin = true;
-    req.session.user =  response.items;
+    req.session.user =  toSimpleUser(response.items);
 
     updateTimestamp(db.conn(), req.body.email)
     .catch(function(error) {

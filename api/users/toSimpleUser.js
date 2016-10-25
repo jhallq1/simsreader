@@ -1,10 +1,9 @@
 module.exports = function toSimpleUser(user) {
   return {
+    id: user.id,
     username: user.username,
     email: user.email,
-    bio: user.bio,
-    last_login: user.last_login,
     registration_date: user.registration_date,
-    id: user.id
+    last_login: user.last_login
   };
 };

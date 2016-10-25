@@ -36,7 +36,6 @@ app.directive('login', ['$http', 'Notification', 'locationService', 'userService
 
         $scope.submitForm = function(form) {
           if (!form) return;
-          console.log($scope);
           $http({
             method: 'POST',
             url: locationService.origin + '/login',

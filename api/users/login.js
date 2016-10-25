@@ -3,7 +3,8 @@
 const loginValidator = require('./util/loginValidator.js'),
       checkEmail = require('../db/user/getUserByEmail.js'),
       checkUsername = require('../db/user/getUserByUsername.js'),
-      pwVerify = require('../db/user/util/encryption.js');
+      pwVerify = require('../db/user/util/encryption.js'),
+      toSimpleUser = require('./toSimpleUser.js');
 
 let data;
 
@@ -30,7 +31,7 @@ function loginUser(user) {
   return checkEmail.getUserByEmail(user.email, db)
   .then(function(res) {
     if (res && res.length && res[0].email === user.email) {
-      response_user = res[0];
+      response_user = toSimpleUser(res[0]);
       return res;
     }
 

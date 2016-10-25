@@ -12,7 +12,7 @@ app.service('userService', ['$http', 'locationService', function($http, location
   };
 
   let setUser = function(newUser) {
-    user = newUser || {};
+    user = {id: newUser.id, username: newUser.username, email: newUser.email} || {};
   };
 
   let getIsLoggedIn = function() {
@@ -24,7 +24,11 @@ app.service('userService', ['$http', 'locationService', function($http, location
     .then(function(res) {
       if (res.data && res.data.items) {
         isloggedin = true;
-        user = res.data.items;
+        user = {
+          id: res.data.items.id,
+          username: res.data.items.username,
+          email: res.data.items.email
+        };
       } else {
         isloggedin = false;
         user = {};
