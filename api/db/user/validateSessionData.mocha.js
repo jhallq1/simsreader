@@ -8,7 +8,7 @@ const expect = require('chai').expect,
 function validateSessionData(user, db) {
   return parse.parseSessionData(user, db)
   .then(function(res) {
-    return (user.id === res.user.id ? true : false);
+    return (user.id === res.user.id);
   })
   .catch(function(error) {
     throw error;
@@ -43,6 +43,14 @@ describe('validate session data', function() {
     return validateSessionData(user, db)
     .then(function(res) {
       expect(res).to.equal(false);
+    });
+  });
+
+  it('throws error if sesdsionID not found', function() {
+    user.session_id = "ssssssssssssssddd";
+    return validateSessionData(user, db)
+    .catch(function(error) {
+      expect(error).to.equal("Invalid sessionID");
     });
   });
 

@@ -52,10 +52,6 @@ describe ('Checks if account has been verified:', function() {
     token = "jrtyhegrwefw";
   });
 
-  it ('authenticates db connection', function() {
-    expect(db.connection.state).to.equal('authenticated');
-  });
-
   it ('checks verified field and finds value 0', function() {
     return checkIsVerified(token)
     .then(function(res) {

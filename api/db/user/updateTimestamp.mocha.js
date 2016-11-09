@@ -32,10 +32,6 @@ describe ('Update user:', function() {
     });
   });
 
-  it ('authenticates db connection', function() {
-    expect(db.connection.state).to.equal('authenticated');
-  });
-
   it ('updates last_login column', function() {
     return updateTimestamp()
     .then(function(res) {

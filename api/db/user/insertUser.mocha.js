@@ -36,10 +36,6 @@ describe ('insertuser:', function() {
     });
   });
 
-  it ('db state is authenticated', function() {
-    expect(db.connection.state).to.equal('authenticated');
-  });
-
   it ('inserts data', function() {
     return insertUser()
     .then(function(res) {

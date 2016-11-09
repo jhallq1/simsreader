@@ -86239,8 +86239,115 @@ app.service('userService', ['$http', 'locationService', function($http, location
   };
 }]);
 
-app.controller('createStoryController', ['$scope', function ($scope) {
-  $scope.files = [];
+app.directive('chapterPage', ['$window', function ($window) {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/readStories/chapterPageView.html',
+    link: function($scope, ele, attr) {
+      $scope.scroll = function () {
+        $window.scrollTo(0, 0);
+      };
+    }
+  };
+}]);
+
+app.directive('coverPage', [function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'views/readStories/coverPageView.html',
+    scope: {
+
+    },
+    link: function($scope, ele, attr) {
+
+    }
+  };
+}]);
+
+app.directive('login', ['$http', 'Notification', 'locationService', 'userService', '$mdDialog', function($http, Notification, locationService, userService, $mdDialog) {
+  return {
+    restrict: 'A',
+    scope: {
+
+    },
+    link: function($scope, ele, attr) {
+      ele.on('click', (ev) => {
+        $scope.showLogin(ev);
+      });
+
+      $scope.showLogin = function(ev) {
+        $mdDialog.show({
+          controller: DialogController,
+          templateUrl: 'views/navBarUserLoginView.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true,
+          locals: {
+            items: $scope
+          },
+          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+      };
+
+      function DialogController($scope, $mdDialog) {
+        $scope.user = {};
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+
+        $scope.submitForm = function(form) {
+          if (!form) return;
+          $http({
+            method: 'POST',
+            url: locationService.origin + '/login',
+            data: $scope.user,
+            withCredentials: true
+          })
+          .then(function(res) {
+            if (res.data && res.data.items && res.data.items.login) {
+              Notification.success(res.data.msg);
+              userService.setIsLoggedIn(true);
+              userService.setUser(res.data.items);
+              $scope.cancel();
+            } else {
+              Notification.error(res.data.msg);
+              userService.setIsLoggedIn(false);
+            }
+          });
+        };
+      }
+    }
+  };
+}]);
+
+app.directive('logout', ['userService', '$http', 'locationService', '$location', 'Notification', function(userService, $http, locationService, $location, Notification) {
+  return {
+    restrict: 'E',
+    scope: {},
+    template: "<md-button ng-click=\"logout()\">Logout</md-button",
+    link: function($scope, ele, attr) {
+      $scope.logout = function() {
+        $http({
+          method: 'GET',
+          url: locationService.origin + '/logout',
+          withCredentials: true
+        })
+        .then(function(res) {
+          if (userService.isloggedin()) {
+            Notification.success("Logged out");
+            $location.path('/home');
+            userService.setIsLoggedIn(false);
+            userService.setUser(res || {});
+          }
+        });
+      };
+    }
+  };
 }]);
 
 app.directive('addChapterBtn', [function() {
@@ -86475,113 +86582,6 @@ app.directive('uploadFilesBtn', ['Upload', function(Upload) {
   };
 }]);
 
-app.directive('login', ['$http', 'Notification', 'locationService', 'userService', '$mdDialog', function($http, Notification, locationService, userService, $mdDialog) {
-  return {
-    restrict: 'A',
-    scope: {
-
-    },
-    link: function($scope, ele, attr) {
-      ele.on('click', (ev) => {
-        $scope.showLogin(ev);
-      });
-
-      $scope.showLogin = function(ev) {
-        $mdDialog.show({
-          controller: DialogController,
-          templateUrl: 'views/navBarUserLoginView.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:true,
-          locals: {
-            items: $scope
-          },
-          fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-        });
-      };
-
-      function DialogController($scope, $mdDialog) {
-        $scope.user = {};
-
-        $scope.hide = function() {
-          $mdDialog.hide();
-        };
-
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-        };
-
-        $scope.submitForm = function(form) {
-          if (!form) return;
-          $http({
-            method: 'POST',
-            url: locationService.origin + '/login',
-            data: $scope.user,
-            withCredentials: true
-          })
-          .then(function(res) {
-            if (res.data && res.data.items && res.data.items.login) {
-              Notification.success(res.data.msg);
-              userService.setIsLoggedIn(true);
-              userService.setUser(res.data.items);
-              $scope.cancel();
-            } else {
-              Notification.error(res.data.msg);
-              userService.setIsLoggedIn(false);
-            }
-          });
-        };
-      }
-    }
-  };
-}]);
-
-app.directive('logout', ['userService', '$http', 'locationService', '$location', 'Notification', function(userService, $http, locationService, $location, Notification) {
-  return {
-    restrict: 'E',
-    scope: {},
-    template: "<md-button ng-click=\"logout()\">Logout</md-button",
-    link: function($scope, ele, attr) {
-      $scope.logout = function() {
-        $http({
-          method: 'GET',
-          url: locationService.origin + '/logout',
-          withCredentials: true
-        })
-        .then(function(res) {
-          if (userService.isloggedin()) {
-            Notification.success("Logged out");
-            $location.path('/home');
-            userService.setIsLoggedIn(false);
-            userService.setUser(res || {});
-          }
-        });
-      };
-    }
-  };
-}]);
-
-app.directive('chapterPage', ['$window', function ($window) {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/readStories/chapterPageView.html',
-    link: function($scope, ele, attr) {
-      $scope.scroll = function () {
-        $window.scrollTo(0, 0);
-      };
-    }
-  };
-}]);
-
-app.directive('coverPage', [function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'views/readStories/coverPageView.html',
-    scope: {
-
-    },
-    link: function($scope, ele, attr) {
-
-    }
-  };
+app.controller('createStoryController', ['$scope', function ($scope) {
+  $scope.files = [];
 }]);
