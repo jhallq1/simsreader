@@ -27,7 +27,7 @@ function createStory(story, user, db) {
 
   return validateSession.sessionValidator(user, db)
   .then(function(res) {
-    if (true) {
+    if (res) {
       return insertStory.insertNewStory(user, story, db);
     }
 
@@ -45,21 +45,41 @@ function createStory(story, user, db) {
 }
 
 describe('createStory.js', function() {
-  let story = {
-    title: "Title",
-    description: "Description"
-  };
+  let story, user;
 
-  let user = {
-    id: "43",
-    session_id: "23c957cc892185d62e69"
-  };
+  beforeEach(function() {
+    story = {
+      title: "Title",
+      description: "Description"
+    };
+
+    user = {
+      id: "43",
+      session_id: "23c957cc892185d62e69"
+    };
+  });
 
   before(function() {
     return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
     .then(function(connection) {
       db = connection;
       return db;
+    });
+  });
+
+  it('throws error if fails form validation', function() {
+    story.title = "";
+    return createStory(story, user, db)
+    .catch(function(error) {
+      expect(error.msg.incomplete).to.equal("All fields mandatory");
+    });
+  });
+
+  it('throws error if cannot validate session', function() {
+    user.id = "999";
+    return createStory(story, user, db)
+    .catch(function(error) {
+      expect(error.msg).to.equal("Could not validate session");
     });
   });
 
