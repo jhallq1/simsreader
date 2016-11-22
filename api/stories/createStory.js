@@ -1,18 +1,15 @@
-/*global describe, it, before, beforeEach, after, afterEach */
 'use strict';
 
 const newStoryFormValidator = require('../db/stories/util/newStoryFormValidator.js'),
       insertStory =  require('../db/stories/insertNewStory.js'),
       validateSession = require('../db/user/sessionValidator.js');
 
-let db = require('../db/db.conn.js').conn();
 let response = {
   log: 'info',
   send: true
 };
 
-function createStory(story, user, db) {
-
+function createStory(story, user, sid, db) {
   let data = newStoryFormValidator(story);
   if (Object.keys(data).length > 0) {
     response.msg = data;
@@ -24,19 +21,25 @@ function createStory(story, user, db) {
      });
   }
 
-  return validateSession.sessionValidator(user, db)
+  return validateSession.sessionValidator(user, sid, db)
   .then(function(res) {
-    if (true) {
-      return insertStory.insertNewStory(user, story, db);
+    if (res) {
+      return insertStory.insertNewStory(story, user, db);
     }
 
     throw {
        log: "warn",
        send: true,
        msg: "Could not validate session",
-       login: false,
-       validation: true
+       login: false
      };
+  })
+  .then(function(res) {
+    if (typeof res === 'number') {
+      response.items = {story_id: res};
+      response.msg = "Your Story Has Been Created!";
+      return response;
+    }
   })
   .catch(function(error) {
     throw error;

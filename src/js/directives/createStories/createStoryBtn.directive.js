@@ -1,4 +1,4 @@
-app.directive('newStoryPrompt', ['$mdDialog', 'Notification', function($mdDialog, Notification) {
+app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'locationService', function($mdDialog, Notification, $http, locationService) {
   return {
     restrict: 'A',
     scope: {
@@ -39,7 +39,7 @@ app.directive('newStoryPrompt', ['$mdDialog', 'Notification', function($mdDialog
 
           $http({
             method: 'POST',
-            url: locationService.origin + '/newStory',
+            url: locationService.origin + '/createStory',
             data: $scope.story,
             withCredentials: true
           })

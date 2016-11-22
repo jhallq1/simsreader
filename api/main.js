@@ -28,7 +28,8 @@ const express = require('express'),
       checkExpiration = require('./db/user/isPwTokenValid.js'),
       checkEmail = require('./db/user/getUserByEmail.js'),
       validator = require('./users/util/registrationValidator.js'),
-      toSimpleUser = require('./users/toSimpleUser.js');
+      toSimpleUser = require('./users/toSimpleUser.js'),
+      createNewStory = require('./stories/createStory.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -97,7 +98,7 @@ app.post('/login', function(req, res) {
   return login.loginUser(req.body)
   .then(function(response) {
     req.session.isloggedin = true;
-    req.session.user =  toSimpleUser(response.items);
+    req.session.user = toSimpleUser(response.items);
 
     updateTimestamp(db.conn(), req.body.email)
     .catch(function(error) {
@@ -178,6 +179,19 @@ app.post('/resetPassword', function(req, res) {
     }
     return responseHandler({msg: 'This link has already expired.', send: true}, res);
   })
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+/**************************/
+/* story calls
+/**************************/
+app.post('/createStory', function (req, res) {
+  return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
   })
