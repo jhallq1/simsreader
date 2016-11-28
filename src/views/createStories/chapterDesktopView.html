@@ -17,7 +17,7 @@
               <md-menu-divider></md-menu-divider>
               <md-menu-item>
                 <md-menu>
-                  <md-button ng-click="$mdOpenMenu()">Fish Of The West</md-button>
+                  <md-button ng-click="$mdOpenMenu()">{{storiesService.getStories().storyTitle}}</md-button>
                   <md-menu-content>
                     <md-menu-item><md-button ng-href="">Chapter 1: Drinks Of The Seas</md-button></md-menu-item>
                     <md-menu-item><md-button ng-href="">Chapter 2: Cats And Reptiles</md-button></md-menu-item>

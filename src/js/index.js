@@ -70,7 +70,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
     .accentPalette('pink');
 }]);
 
-app.run(function($templateRequest){
+app.run(function($templateRequest) {
   // Pre-fetch icons sources by URL and cache in the $templateCache...
   // subsequent $templateRequest calls will look there first.
 
