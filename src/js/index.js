@@ -7,7 +7,7 @@ var app = angular.module('simsReader', [
   'ngMaterial'
 ]);
 
-app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdIconProvider', '$mdThemingProvider', function($routeProvider, $locationProvider, NotificationProvider, $mdIconProvider, $mdThemingProvider) {
+app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdIconProvider', '$mdThemingProvider', '$httpProvider', function($routeProvider, $locationProvider, NotificationProvider, $mdIconProvider, $mdThemingProvider, $httpProvider) {
   $routeProvider
     .when('/', {
       templateUrl : 'views/homeView.html',
@@ -68,6 +68,8 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
     .accentPalette('pink');
+
+  $httpProvider.useApplyAsync(true);
 }]);
 
 app.run(function($templateRequest) {

@@ -29,7 +29,8 @@ const express = require('express'),
       checkEmail = require('./db/user/getUserByEmail.js'),
       validator = require('./users/util/registrationValidator.js'),
       toSimpleUser = require('./users/toSimpleUser.js'),
-      createNewStory = require('./stories/createStory.js');
+      createNewStory = require('./stories/createStory.js'),
+      getStories = require('./db/stories/getStoriesByUserId.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -190,10 +191,20 @@ app.post('/resetPassword', function(req, res) {
 /**************************/
 /* story calls
 /**************************/
-app.post('/createStory', function (req, res) {
+app.post('/createStory', function(req, res) {
   return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+app.get('/getStories', function(req, res) {
+  return getStories.getStoriesByUserId(req.session.user, db.conn())
+  .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
   })
   .catch(function(error) {
     return responseHandler(error, res);

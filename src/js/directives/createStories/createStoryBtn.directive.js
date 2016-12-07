@@ -1,4 +1,4 @@
-app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'locationService', 'storiesService', function($mdDialog, Notification, $http, locationService, storiesService) {
+app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'locationService', function($mdDialog, Notification, $http, locationService) {
   return {
     restrict: 'A',
     scope: {
@@ -48,7 +48,6 @@ app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'location
           .then(function(res) {
             if (res.data && res.data.items) {
               Notification.success(res.data.msg);
-              storiesService.setStories(res.data.items);
               $scope.cancel();
             } else {
               Notification.error(res.data.msg);

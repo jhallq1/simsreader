@@ -12,7 +12,7 @@ function sessionValidator(user, db) {
     }
   })
   .then(function(res) {
-    return (user.id == res.user.id);
+    return user.id == res.user.id ? true : "Invalid session";
   });
 }
 
@@ -39,11 +39,15 @@ describe('sessionValidator:', function() {
     });
   });
 
-  it('returns false for invalid session', function() {
+  it('returns error msg for invalid session', function() {
     user.id = 568;
     return sessionValidator(user, db)
     .then(function(res) {
-      expect(res).to.equal(false);
+      expect(res).to.equal("Invalid session");
     });
   });
 });
+
+module.exports = {
+  sessionValidator: sessionValidator
+};

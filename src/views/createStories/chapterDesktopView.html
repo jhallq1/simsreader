@@ -15,9 +15,10 @@
                 </md-button>
               </md-menu-item>
               <md-menu-divider></md-menu-divider>
-              <md-menu-item>
+
+              <md-menu-item ng-repeat="story in stories track by $index">
                 <md-menu>
-                  <md-button ng-click="$mdOpenMenu()">{{storiesService.getStories().storyTitle}}</md-button>
+                  <md-button ng-click="$mdOpenMenu()">{{story.title}}</md-button>
                   <md-menu-content>
                     <md-menu-item><md-button ng-href="">Chapter 1: Drinks Of The Seas</md-button></md-menu-item>
                     <md-menu-item><md-button ng-href="">Chapter 2: Cats And Reptiles</md-button></md-menu-item>
@@ -26,16 +27,6 @@
                     <md-menu-item><md-button ng-href="">Chapter 5: Ancients And Dogs</md-button></md-menu-item>
                   </md-menu-content>
                 </md-menu>
-              </md-menu-item>
-              <md-menu-item>
-                <md-button href="">
-                  Opponent Of A Cat
-                </md-button>
-              </md-menu-item>
-              <md-menu-item>
-                <md-button href="">
-                  Cooking With My Cousin
-                </md-button>
               </md-menu-item>
             </md-menu-content>
           </md-menu>

@@ -63,3 +63,7 @@ describe ('add newStory:', function() {
     return db.query("DELETE FROM stories WHERE user_id = 1");
   });
 });
+
+module.exports = {
+  insertNewStory: insertNewStory
+};

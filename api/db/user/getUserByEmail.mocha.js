@@ -2,8 +2,6 @@
 
 'use strict';
 
-/* jslint node: true */
-/* jshint esversion: 6 */
 const chai = require('chai'),
       expect = require('chai').expect;
 

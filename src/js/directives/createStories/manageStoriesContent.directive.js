@@ -2,7 +2,8 @@ app.directive('manageStoriesContent', ['$mdMedia', 'Upload', function($mdMedia, 
   return {
     restrict: 'E',
     scope: {
-      files: '='
+      files: '=',
+      stories: '='
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/createStories/chapterDesktopView.html\' : \'views/createStories/chapterMobileView.html\'"></div>',
     link: function($scope) {
