@@ -47,6 +47,9 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'resetPasswordController',
       isLoggedOut: true
     })
+    .when('/userSubmissionAgreement', {
+      templateUrl : 'views/legal/userContentSubmissionAgreementView.html'
+    })
     .otherwise({
       redirectTo: '/'
     });

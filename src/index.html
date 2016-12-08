@@ -55,16 +55,31 @@
       </md-toolbar>
     </div>
   </header>
+
   <body ng-cloak>
     <div class="ribbon"></div>
-      <main class="main" ng-show="mediaQuery('gt-sm')">
+      <main class="main" ng-show="mediaQuery('gt-sm')" style="padding-bottom: 10vh;">
         <div layout="column" flex-offset="25" flex="50" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
         </div>
       </main>
 
-      <main class="main" ng-show="!mediaQuery('gt-sm')">
+      <main class="main" ng-show="!mediaQuery('gt-sm')" style="padding-bottom: 10vh;">
         <div layout="column" flex-offset="5" flex="90" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
         </div>
       </main>
   </body>
+
+  <footer>
+    <md-bottom-sheet style="background-color: rgb(33,150,243); height: 0px; color: #fff;">
+      <div layout="column">
+        <div layout="row" layout-align="center center">
+          <md-button ng-href="" target="_blank">Contact Us</md-button>
+          <md-button ng-href="" target="_blank">Privacy Policy</md-button>
+          <md-button ng-href="" target="_blank">Terms of Use</md-button>
+          <md-button ng-href="/userSubmissionAgreement">User Submission Agreement</md-button>
+        </div>
+        <div layout="row" layout-align="center center">© 2016 SimsReader</div>
+      </div>
+    </md-bottom-sheet>
+  </footer>
 </html>

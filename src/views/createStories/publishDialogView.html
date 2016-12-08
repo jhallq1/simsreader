@@ -1,4 +1,4 @@
-<md-dialog aria-label="Login" style="width: 400px;">
+<md-dialog aria-label="Publish" style="width: 400px;">
   <md-toolbar>
     <div class="md-toolbar-tools">
       <h4>Save & Publish</h4>
@@ -22,6 +22,11 @@
         <md-input-container class="md-block" flex-gt-sm>
           <label>Chapter Title</label>
           <input required name="Title" ng-model="story.chapter.title" placeholder="Examples: Chapter 3 or Bye Bye Servo!"/>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <md-checkbox ng-model="story.chapter.checkbox" aria-label="Checkbox 1">
+            I certify that this chapter is appropriate for publishing according to the <a show-user-content-agreement href="">User Content Submission Agreement</a>.
+          </md-checkbox>
         </md-input-container>
       </md-content>
       <div layout="row">
