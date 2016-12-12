@@ -27,12 +27,15 @@ describe ('Inserts comment data into table', function() {
       chapterID = "",
       comment = {};
 
+
   beforeEach(function() {
     userID = 43;
     chapterID = 11;
     comment.text = "Great job! What a cool story!";
     comment.rating = 3;
+  });
 
+  before(function() {
     return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
     .then(function(connection) {
       db = connection;

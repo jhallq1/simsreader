@@ -6,11 +6,11 @@ msg = "";
 response = {};
 
 function formCompleted(data) {
-  if (validator.isNull(data.comment) && (validator.isNull(data.rating))) {
+  if (validator.isNull(data.comment) || (validator.isNull(data.rating))) {
     response.incomplete = "Both fields empty";
     return;
   }
-  return "Form is valid";
+  return "Form is complete";
 }
 
 function commentValid(data) {
@@ -26,18 +26,18 @@ describe('Validates comment form data', function() {
   beforeEach(function() {
     data = {
       comment: "Pol Roger",
-      rating: 1
+      rating: "1"
     };
 
     msg = "";
     response = {};
   });
 
-  it('verifies at least one field has data', function() {
-    expect(formCompleted(data)).to.equal("Form is valid");
+  it('verifies at least both fields have data', function() {
+    expect(formCompleted(data)).to.equal("Form is complete");
   });
 
-  it('throws error both fields are empty', function() {
+  it('throws error if a field is empty', function() {
     data.comment = "";
     data.rating = "";
     formCompleted(data);

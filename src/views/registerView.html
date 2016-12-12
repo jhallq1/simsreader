@@ -34,9 +34,14 @@
         </div>
       </md-input-container>
       <br/>
-      <div layout="row" layout-align="center center">
-        <md-button class="md-raised md-primary" type="submit" ng-disabled="registerForm.$invalid">Submit</md-button>
-      <div>
+      <div layout="column" flex="50">
+        <div layout="row" layout-align="center center">
+          <md-button class="md-raised md-primary" type="submit" ng-disabled="registerForm.$invalid">Submit</md-button>
+        </div>
+        <div layout="row">
+          <p>By signing up, you verify that you are at least 13 years of age and accept the <a href="/termsOfUse">Terms of Use</a> and <a href="/privacyPolicy">Privacy Policy</a>.</p>
+        </div>
+      </div>
     </md-content>
   </form>
 </div>

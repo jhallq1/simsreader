@@ -23,11 +23,6 @@
           <label>Chapter Title</label>
           <input required name="Title" ng-model="story.chapter.title" placeholder="Examples: Chapter 3 or Bye Bye Servo!"/>
         </md-input-container>
-        <md-input-container class="md-block" flex-gt-sm>
-          <md-checkbox ng-model="story.chapter.checkbox" aria-label="Checkbox 1">
-            I certify that this chapter is appropriate for publishing according to the <a show-user-content-agreement href="">User Content Submission Agreement</a>.
-          </md-checkbox>
-        </md-input-container>
       </md-content>
       <div layout="row">
         <md-button style="width: 30%;" class="md-raised md-primary" ng-disabled="publishForm.$invalid" ng-click="cancel()">Not yet!</md-button>

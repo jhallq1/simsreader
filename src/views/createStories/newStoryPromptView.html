@@ -20,6 +20,13 @@
           <label>Description</label>
           <textarea required name="Description" ng-model="story.description" md-maxlength="300"></textarea>
         </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <md-checkbox ng-model="story.age_restricted" aria-label="Checkbox">
+             Restrict to ages 18+
+             <md-tooltip>If story will contain content that (1) is obscene, pornographic, sexually explicit, or vulgar; (2) or contains or advocates violent acts.</md-tooltip>
+           </md-checkbox>
+         </md-input-container>
+         {{story.age_restricted}}
       </md-content>
       <div layout="row" layout-align="center center">
         <md-button style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="newStoryForm.$invalid">Go!</md-button>

@@ -9,7 +9,6 @@ app.controller('createStoryController', ['$scope', '$http', 'locationService', f
   .then(function(res) {
     if (res.data && res.data.items) {
       $scope.stories = res.data.items;
-      console.log($scope.stories);
     }
   });
 }]);

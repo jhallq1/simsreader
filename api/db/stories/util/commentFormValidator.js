@@ -5,8 +5,8 @@ const validator = require('validator');
 module.exports = function commentFormValidator(data) {
   var response = {};
 
-  if (validator.isNull(data.comment) && (validator.isNull(data.rating))) {
-    response.incomplete = "Both fields empty";
+  if (validator.isNull(data.comment) || (validator.isNull(data.rating))) {
+    response.incomplete = "Both fields required";
   }
 
   if (!validator.isLength(data.comment, {min: 0, max: 250})) {

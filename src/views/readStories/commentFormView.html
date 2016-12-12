@@ -6,12 +6,12 @@
           <md-content style="overflow-x: hidden; overflow-y: auto; max-width: 500px;">
             <md-input-container class="md-block">
               <label>Comment:</label>
-              <textarea name="comment" ng-model="comment.text" type="text" placeholder="What feedback would you like to share with the author?" md-maxlength="250"></textarea>
+              <textarea name="comment" ng-model="comment.text" type="text" placeholder="What feedback would you like to share with the author?" md-maxlength="250" required></textarea>
             </md-input-container>
             <md-input-container class="md-block">
               <label>Rating:</label>
               </br>
-              <md-slider flex class="md-primary" md-discrete ng-model="comment.rating" step="1" min="1" max="5" aria-label="rating"></md-slider>
+              <md-slider flex class="md-primary" md-discrete ng-model="comment.rating" step="1" min="1" max="5" aria-label="rating" required></md-slider>
             </md-input-container>
             <div layout="row" layout-align="center center">
               <md-button class="md-raised md-primary" type="submit" ng-disabled="commentForm.$invalid">Submit</md-button>

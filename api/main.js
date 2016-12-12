@@ -30,7 +30,8 @@ const express = require('express'),
       validator = require('./users/util/registrationValidator.js'),
       toSimpleUser = require('./users/toSimpleUser.js'),
       createNewStory = require('./stories/createStory.js'),
-      getStories = require('./db/stories/getStoriesByUserId.js');
+      getStories = require('./db/stories/getStoriesByUserId.js'),
+      newComment = require('./stories/newComment.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -205,6 +206,19 @@ app.get('/getStories', function(req, res) {
   return getStories.getStoriesByUserId(req.session.user, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+/**************************/
+/* comments calls
+/**************************/
+app.post('/newComment', function(req, res) {
+  return newComment.newComment(req.body, req.session.user, req.sessionID, db.conn())
+  .then(function(response) {
+    return responseHandler(response, res);
   })
   .catch(function(error) {
     return responseHandler(error, res);

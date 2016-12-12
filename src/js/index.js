@@ -47,6 +47,12 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'resetPasswordController',
       isLoggedOut: true
     })
+    .when('/privacyPolicy', {
+      templateUrl : 'views/legal/privacyPolicyView.html'
+    })
+    .when('/termsOfUse', {
+      templateUrl : 'views/legal/termsOfUseView.html'
+    })
     .when('/userSubmissionAgreement', {
       templateUrl : 'views/legal/userContentSubmissionAgreementView.html'
     })
