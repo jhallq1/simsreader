@@ -7,9 +7,8 @@ app.controller('createStoryController', ['$scope', '$http', 'locationService', f
     withCredentials: true
   })
   .then(function(res) {
-    console.log(res.data.items);
     if (res.data && res.data.items) {
-      $scope.stories = res.data.items;
+      $scope.stories = res.data.items.stories;
     }
   });
 }]);

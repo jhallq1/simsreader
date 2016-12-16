@@ -194,7 +194,6 @@ app.post('/resetPassword', function(req, res) {
 /* story calls
 /**************************/
 app.post('/createStory', function(req, res) {
-  console.log(req.body);
   return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
