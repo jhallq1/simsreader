@@ -31,7 +31,8 @@ const express = require('express'),
       toSimpleUser = require('./users/toSimpleUser.js'),
       createNewStory = require('./stories/createStory.js'),
       getStories = require('./db/stories/getStoriesByUserId.js'),
-      newComment = require('./stories/newComment.js');
+      newComment = require('./stories/newComment.js'),
+      createNewChapter = require('./stories/createChapter.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -193,6 +194,7 @@ app.post('/resetPassword', function(req, res) {
 /* story calls
 /**************************/
 app.post('/createStory', function(req, res) {
+  console.log(req.body);
   return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
@@ -212,11 +214,8 @@ app.get('/getStories', function(req, res) {
   });
 });
 
-/**************************/
-/* comments calls
-/**************************/
-app.post('/newComment', function(req, res) {
-  return newComment.newComment(req.body, req.session.user, req.sessionID, db.conn())
+app.post('/createChapter', function(req, res) {
+  return createNewChapter.createChapter(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
   })
@@ -224,6 +223,20 @@ app.post('/newComment', function(req, res) {
     return responseHandler(error, res);
   });
 });
+
+/**************************/
+/* comments calls
+/**************************/
+//TODO: finish this
+// app.post('/newComment', function(req, res) {
+//   return newComment.newComment(req.body, req.session.user, req.sessionID, db.conn())
+//   .then(function(response) {
+//     return responseHandler(response, res);
+//   })
+//   .catch(function(error) {
+//     return responseHandler(error, res);
+//   });
+// });
 
 /**************************/
 /* response handler

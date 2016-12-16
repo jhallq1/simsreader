@@ -60,7 +60,7 @@
   </md-toolbar>
 
   <div layout="column" ng-show="!mediaQuery('landscape')" class="pagesContent">
-    <empty-chapter ng-show="!files.length"></empty-chapter>
+    <!-- <empty-chapter ng-show="!files.length"></empty-chapter> -->
     <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">
       <div layout="column" ng-repeat="file in files" class="mobileRepeat">
         <div layout="column" flex="100" style="margin-bottom: 10px;">
@@ -83,7 +83,7 @@
   </div>
 
   <div layout="column" ng-show="mediaQuery('landscape')" class="pagesContent">
-    <empty-chapter ng-show="!files.length"></empty-chapter>
+    <!-- <empty-chapter ng-show="!files.length"></empty-chapter> -->
     <div ng-if="files" dragula='"bag-three"' dragula-scope="$parent" dragula-model="files">
       <div layout="column" ng-repeat="file in files" class="mobileRepeat">
         <div layout="column" flex="100" class="desktopRepeat">

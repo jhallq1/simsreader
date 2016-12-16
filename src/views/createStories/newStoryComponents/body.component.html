@@ -1,0 +1,21 @@
+<form name="newStoryForm" layout="column" ng-cloak ng-submit="submitForm(newStoryForm)">
+  <md-content layout-padding>
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Title</label>
+      <input required name="Title" ng-model="story.title" md-maxlength="100"/>
+    </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Description</label>
+      <textarea required name="Description" ng-model="story.description" md-maxlength="300"></textarea>
+    </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+      <md-checkbox name="Age_Restricted" ng-model="story.age_restricted" aria-label="Checkbox">
+         Restrict to ages 18+
+         <md-tooltip>If story will contain content that (1) is obscene, pornographic, sexually explicit, or vulgar; (2) or contains or advocates violent acts.</md-tooltip>
+       </md-checkbox>
+     </md-input-container>
+  </md-content>
+  <div layout="row" layout-align="center center">
+    <md-button style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="newStoryForm.$invalid">Go!</md-button>
+  </div>
+</form>

@@ -2,12 +2,35 @@ app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'location
   return {
     restrict: 'A',
     scope: {
-
+      stories: '='
     },
     link: function($scope, ele, attr) {
       ele.on('click', (ev) => {
         $scope.showNewStoryDialog(ev);
       });
+
+      $scope.initNewStory = function() {
+        $scope.story = {};
+      };
+
+      $scope.submitForm = function(form) {
+        if (!form.$valid) return;
+
+        $http({
+          method: 'POST',
+          url: locationService.origin + '/createStory',
+          data: {title: form.Title.$modelValue, description: form.Description.$modelValue, age_restricted: form.Age_Restricted.$modelValue || false},
+          withCredentials: true
+        })
+        .then(function(res) {
+          if (res.data && res.data.items) {
+            Notification.success(res.data.msg);
+            $mdDialog.cancel();
+          } else {
+            Notification.error(res.data.msg);
+          }
+        });
+      };
 
       $scope.showNewStoryDialog = function(ev) {
         $mdDialog.show({
@@ -17,17 +40,13 @@ app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'location
           targetEvent: ev,
           clickOutsideToClose:true,
           locals: {
-            items: $scope
+            localScope: $scope
           },
           fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         });
       };
 
-      function DialogController($scope, $mdDialog) {
-        $scope.story = {};
-
-        $scope.stories = [];
-
+      function DialogController($scope, $mdDialog, localScope) {
         $scope.hide = function() {
           $mdDialog.hide();
         };
@@ -36,25 +55,12 @@ app.directive('newStoryPrompt', ['$mdDialog', 'Notification', '$http', 'location
           $mdDialog.cancel();
         };
 
-        $scope.submitForm = function(form) {
-          if (!form) return;
+        $scope.submitForm = localScope.submitForm;
 
-          $http({
-            method: 'POST',
-            url: locationService.origin + '/createStory',
-            data: $scope.story,
-            withCredentials: true
-          })
-          .then(function(res) {
-            if (res.data && res.data.items) {
-              Notification.success(res.data.msg);
-              $scope.cancel();
-            } else {
-              Notification.error(res.data.msg);
-            }
-          });
-        };
+        localScope.initNewStory();
       }
+
+      if (!$scope.stories) $scope.initNewStory();
     }
   };
 }]);

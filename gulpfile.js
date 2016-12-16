@@ -89,11 +89,11 @@ gulp.task('watch', function() {
     });
   });
 
-  gulp.watch(paths.test, function() {
-    return rs('coverage', function(err) {
-      if (err) {
-        console.log(err);
-      }
-    });
-  });
+  // gulp.watch(paths.test, function() {
+  //   return rs('coverage', function(err) {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //   });
+  // });
 });
