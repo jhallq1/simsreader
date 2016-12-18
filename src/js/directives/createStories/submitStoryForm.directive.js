@@ -1,4 +1,4 @@
-app.directive('submitStoryForm', ['$mdDialog', 'Notification', '$http', 'locationService', function($mdDialog, Notification, $http, locationService) {
+app.directive('submitStoryForm', ['$mdDialog', 'Notification', '$http', 'locationService', '$location', function($mdDialog, Notification, $http, locationService, $location) {
   return {
     restrict: 'A',
     link: function($scope, ele, attr) {
@@ -15,6 +15,7 @@ app.directive('submitStoryForm', ['$mdDialog', 'Notification', '$http', 'locatio
           if (res.data && res.data.items) {
             $mdDialog.cancel();
             Notification.success(res.data.msg);
+            $location.path('/manageChapters');
           } else {
             Notification.error(res.data.msg);
           }

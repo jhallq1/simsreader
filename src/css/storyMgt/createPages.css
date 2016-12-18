@@ -1,9 +1,9 @@
 
-#chapter-desktop-view .manage-stories-view {
+.chapter-desktop-view .manage-stories-view {
   background-color: white;
 }
 
-#chapter-desktop-view .desktop-toolbar {
+md-toolbar.chapter-desktop-view {
   background-color: lightblue;
   margin-bottom: 20px;
 }
@@ -14,7 +14,7 @@
 .desktopRepeat {
   margin-bottom: 10px;
 }
-#chapter-mobile-view .mobile-toolbar {
+md-toolbar.chapter-mobile-view {
   background-color: lightblue;
   margin-bottom: 20px;
 }

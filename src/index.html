@@ -22,8 +22,9 @@
           <md-button href="/">
             <md-icon md-svg-icon="home" aria-label="Home"></md-icon>
           </md-button>
-          <md-button href="/viewStory">View Story</md-button>
+          <md-button href="/readStory">Read Story</md-button>
           <md-button href="/manageStories">Manage Stories</md-button>
+          <md-button href="/manageChapters">Manage Chapters</md-button>
           <span flex></span>
           <md-button ng-if="userService.isloggedin()">Hello, {{userService.getUser().username}}</md-button>
           <md-button href="/register" ng-if="!userService.isloggedin()">Register</md-button>

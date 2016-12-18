@@ -33,7 +33,7 @@ body{
 
 div[ng-view]{
      height: 100%;
-     border: solid 1px #cccccc;
+     /*border: solid 1px #cccccc;*/
 }
 
 body {

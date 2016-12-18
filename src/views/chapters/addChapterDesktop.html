@@ -1,0 +1,17 @@
+<div layout="column">
+  <div style="text-align: center;">
+    <h4>Add Chapter</h4>
+    Need to add a chapter to your story? Let's start with a title:
+  </div>
+  <form ng-controller="createChapterController" name="newChapterForm" layout="column" ng-cloak ng-submit="submitForm(newChapterForm)">
+    <md-content layout-padding>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Chapter Title</label>
+        <input required name="Title" ng-model="chapter.title" placeholder="Examples: Chapter 3 or Bye Bye Servo!"/>
+      </md-input-container>
+    </md-content>
+    <div layout="row">
+      <md-button style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="newChapterForm.$invalid">Create</md-button>
+    </div>
+  </form>
+</div>

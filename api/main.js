@@ -214,6 +214,7 @@ app.get('/getStories', function(req, res) {
 });
 
 app.post('/createChapter', function(req, res) {
+  console.log('body', req.body);
   return createNewChapter.createChapter(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
