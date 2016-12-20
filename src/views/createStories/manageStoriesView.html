@@ -18,7 +18,7 @@
 
               <md-menu-item ng-repeat="story in stories track by $index">
                 <md-menu>
-                  <md-button ng-click="$mdOpenMenu()">{{story.title}}</md-button>
+                  <md-button aria-label="Story Title" ng-click="$mdOpenMenu()">{{story.title}}</md-button>
                   <md-menu-content>
                     <md-menu-item><md-button ng-href="/manageChapters">New Chapter</md-button></md-menu-item>
                     <md-menu-divider></md-menu-divider>
@@ -105,7 +105,7 @@
             </md-menu-item>
             <md-menu-item ng-repeat="story in stories track by $index">
               <md-menu>
-                <md-button ng-click="$mdOpenMenu()">{{story.title}}</md-button>
+                <md-button aria-label="Story Title" ng-click="$mdOpenMenu()">{{story.title}}</md-button>
                 <md-menu-content>
                   <md-menu-item><md-button ng-href="">New Chapter</md-button></md-menu-item>
                   <md-menu-divider></md-menu-divider>

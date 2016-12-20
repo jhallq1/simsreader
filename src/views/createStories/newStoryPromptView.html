@@ -23,10 +23,10 @@
     <div ng-show="editing" flex="75">
       <form name="editStory" layout="row">
           <md-input-container flex-gt-sm>
-            <input name="Title" flex="35" ng-model="story.title" ng-maxlength="100"/>
+            <input name="Title" flex="35" ng-model="story.title" aria-label="Story Title" ng-maxlength="100"/>
           </md-input-container>
           <md-input-container flex-gt-sm>
-            <textarea name="Description" flex="40" ng-model="story.description" ng-maxlength="300"></textarea>
+            <textarea name="Description" flex="40" ng-model="story.description" aria-label="Story Description" ng-maxlength="300"></textarea>
           </md-input-container>
           <md-input-container flex-gt-sm>
             <md-checkbox name="Age_Restricted" flex="10" ng-model="story.age_restricted" aria-label="Checkbox"></md-checkbox>
@@ -37,8 +37,8 @@
 
 
     <div flex="15" layout="row" style="text-align: center;">
-      <md-button class="md-icon-button md-accent" ng-click="editing = !editing"><md-icon md-svg-icon="pencil-box-outline"></md-icon></md-button>
-      <md-button class="md-icon-button md-primary"><md-icon md-svg-icon="arrow-right-bold"></md-icon></md-button>
+      <md-button class="md-icon-button md-accent" ng-click="editing = !editing" aria-label="Edit Story"><md-icon md-svg-icon="pencil-box-outline"></md-icon></md-button>
+      <md-button class="md-icon-button md-primary" aria-label="Go to Chapters"><md-icon md-svg-icon="arrow-right-bold"></md-icon></md-button>
     </div>
 
     <div flex=""></div>
