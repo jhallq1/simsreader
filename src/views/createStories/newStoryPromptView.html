@@ -14,7 +14,7 @@
     <div flex="5"></div>
   </div>
   <div layout="row" ng-repeat="story in stories" style="padding-bottom: 10px;">
-    <div ng-show="editing"><md-button class="md-icon-button md-primary"><md-icon md-svg-icon="delete"></md-icon></md-button></div>
+    <div ng-show="editing"><delete-story story="story"></delete-story></div>
     <div ng-show="!editing" flex="35">{{story.title}}</div>
     <div ng-show="!editing" flex="40">{{story.description}}</div>
     <div ng-show="story.age_restricted && !editing" flex="10" style="text-align: center;">Yes</div>
