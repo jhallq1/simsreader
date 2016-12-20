@@ -1,7 +1,7 @@
-app.directive('deleteStory', ['$http', 'locationService', 'Notification', function($http, locationService, Notification) {
+app.directive('deleteStory', ['$http', 'locationService', 'Notification', '$mdDialog', function($http, locationService, Notification, $mdDialog) {
   return {
     restrict: 'E',
-    template: '<md-button aria-label="Delete Story" class="md-icon-button md-primary" ng-click="delete(story.id)"><md-icon md-svg-icon="delete"></md-icon></md-button>',
+    template: '<md-button aria-label="Delete Story" class="md-icon-button md-primary" ng-click="showConfirm($event)" ><md-icon md-svg-icon="delete"></md-icon></md-button>',
     scope: {
       story: '='
     },
@@ -19,6 +19,22 @@ app.directive('deleteStory', ['$http', 'locationService', 'Notification', functi
           } else {
             Notification.error(res.data.msg);
           }
+        });
+      };
+
+      $scope.showConfirm = function(ev) {
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete this story?')
+              .textContent('This action cannot be undone.')
+              .ariaLabel('Delete Story')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Never Mind!');
+
+        $mdDialog.show(confirm).then(function() {
+          $scope.delete($scope.story.id);
+        }, function() {
+          $mdDialog.cancel();
         });
       };
     }
