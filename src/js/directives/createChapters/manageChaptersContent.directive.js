@@ -1,12 +1,27 @@
-app.directive('manageChaptersContent', ['$mdMedia', 'Upload', function($mdMedia, Upload) {
+app.directive('manageChaptersContent', ['$mdMedia', 'Upload', 'storiesService', '$http', 'locationService', function($mdMedia, Upload, storiesService, $http, locationService) {
   return {
     restrict: 'E',
     scope: {
       files: '=',
       stories: '='
     },
-    template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/chapters/addChapterDesktop.html\' : \'views/chapters/addChapterMobile.html\'"></div>',
+    template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/chapters/manageChaptersView.html\' : \'views/chapters/addChapterMobile.html\'"></div>',
     link: function($scope) {
+      $scope.story = storiesService.getStory();
+      $scope.story_id = storiesService.getStory().id;
+
+      $http({
+        method: 'GET',
+        url: locationService.origin + '/getChapters',
+        params: {story_id: $scope.story_id},
+        withCredentials: true
+      })
+      .then(function(res) {
+        if (res.data && res.data.items) {
+          $scope.chapters = res.data.items;
+        }
+      });
+
       $scope.mediaQuery = $mdMedia;
 
       $scope.uploadFiles = function (files) {

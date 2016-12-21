@@ -3,12 +3,12 @@ app.directive('getChapters', ['$http', 'locationService', 'storiesService', '$lo
     restrict: 'E',
     template: '<md-button class="md-icon-button md-primary" aria-label="Go to Chapters" ng-click="goToChapters()"><md-icon md-svg-icon="arrow-right-bold"></md-icon></md-button>',
     scope: {
-      storyid: '=',
+      story: '=',
     },
     link: function($scope, ele, attr) {
       $scope.goToChapters = function() {
         $location.url('/manageChapters');
-        storiesService.setStory($scope.storyid);
+        storiesService.setStory($scope.story);
       };
 
       // $scope.getChapters = function() {

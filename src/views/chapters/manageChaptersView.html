@@ -1,1 +1,39 @@
-<h1>Hello World!</h1>
+<div layout="row">
+  <strong>{{story.title}}</strong>
+  <div flex=""></div>
+  <md-icon ng-show="story.age_restricted" md-svg-icon="alert" style="color: red;"><md-tooltip>Age Restricted</md-tooltip></md-icon>
+  </div>
+
+  <div ng-show="chapters.length" layout="column">
+    <div layout="row" layout-wrap style="text-align: center;">
+      <div flex="50">Chapter Title</div>
+      <div flex="45">Published?</div>
+      <div flex="5"></div>
+    </div>
+    <div layout="row" ng-repeat="chapter in chapters" style="padding-bottom: 10px;">
+      <div ng-show="editing"><delete-chapter chapter="chapter"></delete-chapter></div>
+      <div ng-show="!editing" flex="85">{{chapter.title}}</div>
+      <div ng-show="chapter.published" flex="10">Yes</div>
+      <div ng-show="!chapter.published" flex="10">Not Yet</div>
+
+      <div ng-show="editing" flex="85">
+        <form name="editChapter" layout="row">
+            <md-input-container flex-gt-sm>
+              <input name="Title" flex="35" ng-model="chapter.title" aria-label="Chapter Title" ng-maxlength="100"/>
+            </md-input-container>
+            <md-button class="md-primary">Save Changes</md-button>
+        </form>
+      </div>
+
+      <div flex="15" layout="row" style="text-align: center;">
+        <md-button class="md-icon-button md-accent" ng-click="editing = !editing" aria-label="Edit Chapter"><md-icon md-svg-icon="pencil-box-outline"><md-tooltip>Edit This Chapter</md-tooltip></md-icon></md-button>
+        <md-button class="md-icon-button md-primary" aria-label="Open This Chapter"><md-icon md-svg-icon="arrow-right-bold"><md-tooltip>Open This Chapter</md-tooltip></md-icon></md-button>
+      </div>
+
+      <div flex=""></div>
+    </div>
+  </div>
+
+<div ng-show="!chapters.length" layout="column">
+  <empty-story></empty-story>
+</div>

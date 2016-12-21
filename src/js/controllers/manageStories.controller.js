@@ -17,6 +17,5 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
   } else if ($scope.currentRoute === '/manageChapters') {
     console.log('get chapters');
     story_id = storiesService.getStory();
-    console.log(story_id);
   }
 }]);

@@ -7,7 +7,7 @@ module.exports = {
       if (res[0] && res[0].story_id == story_id) {
         return res;
       } else {
-        return "This story does not contain any chapters";
+        return 0;
       }
     })
     .catch(function(error) {
