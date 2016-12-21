@@ -1,4 +1,4 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', function ($scope, $http, locationService, $location) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', function ($scope, $http, locationService, $location, storiesService) {
   $scope.files = [];
 
   $scope.currentRoute = $location.url();
@@ -16,5 +16,7 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
     });
   } else if ($scope.currentRoute === '/manageChapters') {
     console.log('get chapters');
+    story_id = storiesService.getStory();
+    console.log(story_id);
   }
 }]);
