@@ -30,7 +30,9 @@ function deleteChapter(chapter, db) {
 describe ('Delete chapter row from table:', function() {
   beforeEach(function() {
     chapter.id = 7;
+  });
 
+  before(function() {
     return require('E:\\Programming\\simsreader\\api\\db\\db.conn.mocha.js').connect()
     .then(function(connection) {
       db = connection;
