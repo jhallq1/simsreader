@@ -5,9 +5,6 @@
 const expect = require('chai').expect,
       moment = require('moment');
 
-
-var date = moment().format('YYYY-MM-DD HH:mm:ss');
-
 function updateStory(story, db) {
   return db.query("UPDATE stories SET title = '" + story.title + "', description = '" + story.description + "', last_updated = '" + moment().format('YYYY-MM-DD HH:mm:ss') + "', age_restricted = '" + story.age_restricted + "' WHERE id = ?", story.id)
   .then(function(res) {
