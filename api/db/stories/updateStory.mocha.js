@@ -6,7 +6,7 @@ const expect = require('chai').expect,
       moment = require('moment');
 
 function updateStory(story, db) {
-  return db.query("UPDATE stories SET title = '" + story.title + "', description = '" + story.description + "', last_updated = '" + moment().format('YYYY-MM-DD HH:mm:ss') + "', age_restricted = '" + story.age_restricted + "' WHERE id = ?", story.id)
+  return db.query(`UPDATE stories SET title = '${story.title}', description = '${story.description}', last_updated = '${moment().format('YYYY-MM-DD HH:mm:ss')}', age_restricted = '${story.age_restricted}' WHERE id = ?`, story.id)
   .then(function(res) {
     if (res.affectedRows == 1) {
       return "Story Has Been Updated";

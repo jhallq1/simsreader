@@ -35,7 +35,7 @@ describe('Validates new story form data', function() {
   beforeEach(function() {
     data = {
       title: "Pol Roger",
-      description: "Open sesame seeds please."
+      description: "Open sesame seeds please. I'm a jar."
     };
 
     msg = "";

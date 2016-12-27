@@ -40,7 +40,7 @@ describe ('get stories by user id:', function() {
   });
 
   it ('returns msg if cannot locate any stories for user', function() {
-    user.id = 55;
+    user.id = 522;
     return getStoriesByUserId(user, db)
     .then(function(res) {
       expect(res).to.equal('User has not created any stories');

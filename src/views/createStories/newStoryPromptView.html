@@ -21,7 +21,7 @@
     <div ng-show="!story.age_restricted && !editing" flex="10" style="text-align: center;">No</div>
 
     <div ng-show="editing" flex="75">
-      <form name="editStory" layout="row">
+      <form name="editStory" layout="row" ng-submit="submitForm(editStory)">
           <md-input-container flex-gt-sm>
             <input name="Title" flex="35" ng-model="story.title" aria-label="Story Title" ng-maxlength="100"/>
           </md-input-container>
@@ -29,9 +29,9 @@
             <textarea name="Description" flex="40" ng-model="story.description" aria-label="Story Description" ng-maxlength="300"></textarea>
           </md-input-container>
           <md-input-container flex-gt-sm>
-            <md-checkbox name="Age_Restricted" flex="10" ng-model="story.age_restricted" aria-label="Checkbox"></md-checkbox>
+            <md-checkbox name="Age_Restricted" flex="10" ng-model="story.age_restricted" ng-true-value="1" ng-false-value="0" aria-label="Checkbox"></md-checkbox>
           </md-input-container>
-          <md-button class="md-primary">Save Changes</md-button>
+          <md-button class="md-primary" edit-story type="submit" ng-disabled="editStory.$invalid">Save Changes</md-button>
       </form>
     </div>
 
