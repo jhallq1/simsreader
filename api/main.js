@@ -35,7 +35,8 @@ const express = require('express'),
       createNewChapter = require('./stories/createChapter.js'),
       deleteStory = require('./stories/deleteStory.js'),
       getChapters = require('./db/stories/getChaptersByStoryId.js'),
-      editStory = require('./stories/editStory.js');
+      editStory = require('./stories/editStory.js'),
+      deleteChapter = require('./stories/deleteChapter.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -228,6 +229,16 @@ app.get('/getStories', function(req, res) {
 
 app.post('/deleteStory', function(req, res) {
   return deleteStory.deleteStoryByID(req.body.story_id, db.conn())
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+app.post('/deleteChapter', function(req, res) {
+  return deleteChapter.deleteChapterByID(req.body.chapter_id, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
   })
