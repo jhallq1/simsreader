@@ -9,8 +9,8 @@ let response = {
   send: true
 };
 
-function createChapter(story, user, sid, db) {
-  let data = newChapterFormValidator(story);
+function createChapter(story_id, chapter_title, user, sid, db) {
+  let data = newChapterFormValidator(chapter_title);
   if (Object.keys(data).length > 0) {
     response.msg = data;
     return Promise.reject({
@@ -24,7 +24,7 @@ function createChapter(story, user, sid, db) {
   return validateSession.sessionValidator(user, sid, db)
   .then(function(res) {
     if (res) {
-      return insertChapter.insertChapter(story, user, db);
+      return insertChapter.insertChapter(story_id, chapter_title, db);
     }
 
     throw {
@@ -36,8 +36,7 @@ function createChapter(story, user, sid, db) {
   })
   .then(function(res) {
     if (typeof res === 'number') {
-      console.log('res', res);
-      // response.items = {story_id: res};
+      response.items = {chapter_id: res};
       response.msg = "New Chapter Added";
       return response;
     }

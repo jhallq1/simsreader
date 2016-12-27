@@ -3,7 +3,7 @@ app.directive('manageChaptersContent', ['$mdMedia', 'Upload', 'storiesService', 
     restrict: 'E',
     scope: {
       files: '=',
-      stories: '='
+      stories: '=',
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/chapters/manageChaptersView.html\' : \'views/chapters/addChapterMobile.html\'"></div>',
     link: function($scope) {

@@ -5,6 +5,22 @@
   </div>
 
   <div ng-show="chapters.length" layout="column">
+    <md-button class="md-icon-button md-accent" ng-click="add = !add" aria-label="Add Another Chapter"><md-icon md-svg-icon="plus"><md-tooltip>Add Another Chapter</md-tooltip></md-icon></md-button>
+    <div ng-show="add">
+      <h4>Add a new chapter:</h4>
+      <form name="newChapterForm" layout="column" ng-cloak ng-submit="submitForm(newChapterForm)">
+        <md-content layout-padding>
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Title</label>
+            <input required name="Title" ng-model="chapter.title" md-maxlength="100" placeholder="Examples: Chapter 3 or Bye Bye Servo!"/>
+          </md-input-container>
+        </md-content>
+        <div layout="row">
+          <md-button add-chapter style="width: 30%;" class="md-raised md-primary" type="submit" ng-disabled="newChapterForm.$invalid">Add Chapter</md-button>
+        </div>
+      </form>
+    </div>
+
     <div layout="row" layout-wrap style="text-align: center;">
       <div flex="50">Chapter Title</div>
       <div flex="45">Published?</div>

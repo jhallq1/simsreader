@@ -248,7 +248,7 @@ app.post('/deleteChapter', function(req, res) {
 });
 
 app.post('/createChapter', function(req, res) {
-  return createNewChapter.createChapter(req.body, req.session.user, req.sessionID, db.conn())
+  return createNewChapter.createChapter(req.body.story_id, req.body.chapter_title, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler(response, res);
   })
