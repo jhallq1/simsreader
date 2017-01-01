@@ -3,7 +3,7 @@ app.directive('newChapter', [function() {
     restrict: 'E',
     templateUrl: 'views/createStories/newChapterFormView.html',
     scope: {
-      files: '=',
+      // files: '=',
     },
     link: function($scope, ele, attr) {
       $scope.submitForm = function(form) {

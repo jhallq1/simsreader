@@ -3,7 +3,7 @@ app.directive('emptyStory', [function() {
     restrict: 'E',
     templateUrl: 'views/chapters/newChapterFormView.html',
     scope: {
-      files: '=',
+      // files: '=',
     },
     link: function($scope, ele, attr) {
 

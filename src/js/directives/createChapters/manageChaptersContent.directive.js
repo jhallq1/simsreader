@@ -2,7 +2,7 @@ app.directive('manageChaptersContent', ['$mdMedia', 'Upload', 'storiesService', 
   return {
     restrict: 'E',
     scope: {
-      files: '=',
+      // files: '=',
       stories: '=',
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/chapters/manageChaptersView.html\' : \'views/chapters/addChapterMobile.html\'"></div>',
@@ -24,10 +24,10 @@ app.directive('manageChaptersContent', ['$mdMedia', 'Upload', 'storiesService', 
 
       $scope.mediaQuery = $mdMedia;
 
-      $scope.uploadFiles = function (files) {
-        $scope.files = files;
-
-        if (files && files.length) {
+      // $scope.uploadFiles = function (files) {
+      //   $scope.files = files;
+      //
+      //   if (files && files.length) {
           // console.log(files);
           // Upload.upload({
           //     url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
@@ -46,12 +46,12 @@ app.directive('manageChaptersContent', ['$mdMedia', 'Upload', 'storiesService', 
           //     $scope.progress =
           //         Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
           // });
-        }
-      };
+      //   }
+      // };
 
-      $scope.removeFile = function(index) {
-        $scope.files.splice(index, 1);
-      };
+      // $scope.removeFile = function(index) {
+      //   $scope.files.splice(index, 1);
+      // };
     }
   };
 }]);
