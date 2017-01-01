@@ -13,7 +13,7 @@ const registrationValidator = require('./util/registrationValidator.js').registr
       insertEmail = require(`${global.apiPath}/db/email/insertEmail.js`),
       emailer = require(`${global.apiPath}/db/email/transport.js`),
       toSimpleUser = require('./toSimpleUser.js'),
-      createUAK = require('../aws/s3/createUserAssetKey.js');
+      createUAK = require('../aws/s3/createAwsFolder.js');
 
 let data;
 let type_id = 1;
@@ -71,10 +71,10 @@ function registerUser(user) {
   })
   .then(function(path) {
     user.assetPath = path;
-    return createUAK(path);
+    return createUAK(`users/${path}/stories`);
   })
   .then(function() {
-        return insertUser(user, db);
+    return insertUser(user, db);
   })
   .then(function(res) {
     user.id = res.insertId;

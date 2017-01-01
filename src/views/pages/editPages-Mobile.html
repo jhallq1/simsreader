@@ -1,0 +1,45 @@
+<div ng-show="!mediaQuery('gt-sm')" ng-cloak layout-fill class="chapter-mobile-view">
+  <div layout="column" ng-show="!mediaQuery('landscape')" class="pagesContent">
+    <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" class="mobileRepeat">
+        <div layout="column" flex="100" style="margin-bottom: 10px;">
+          <div layout="row">
+            Page #{{$index + 1}}
+            <div flex=""></div>
+            <a class="pointer" ng-click="removeFile($index)"><md-icon md-svg-icon="delete" style="color: red;"></md-icon></a>
+          </div>
+          <div layout="column" layout-align="center center">
+            <figure>
+              <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
+              <figcaption class="break-wrap">{{file.name}}</figcaption>
+            </figure>
+            <textarea layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div layout="column" ng-show="mediaQuery('landscape')" class="pagesContent">
+    <div ng-if="files" dragula='"bag-three"' dragula-scope="$parent" dragula-model="files">
+      <div layout="column" ng-repeat="file in files" class="mobileRepeat">
+        <div layout="column" flex="100" class="desktopRepeat">
+          <div layout="row">
+            Page #{{$index + 1}}
+            <div flex=""></div>
+            <a class="pointer" ng-click="removeFile($index)"><md-icon md-svg-icon="delete" style="color: red;"></md-icon></a>
+          </div>
+          <div layout="row">
+            <figure layout="column" flex="45">
+              <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
+              <figcaption class="break-wrap">{{file.name}}</figcaption>
+            </figure>
+            <textarea flex="55" layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

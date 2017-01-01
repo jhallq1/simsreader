@@ -15,7 +15,7 @@ var params = {Bucket: 'simsreader', Body: ''};
 let createUAK =
 
 module.exports = function(key) {
-  params.Key = `users/${key}/init`;
+  params.Key = `${key}/init`;
   return new Promise(function(resolve, reject) {
     return s3.putObject(params, function(error, res) {
       if (error) {

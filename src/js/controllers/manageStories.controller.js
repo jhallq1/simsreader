@@ -15,7 +15,8 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
       }
     });
   } else if ($scope.currentRoute === '/manageChapters') {
-    console.log('get chapters');
-    story_id = storiesService.getStory();
+    story_id = storiesService.getStory().id;
+  } else if ($scope.currentRoute === '/managePages') {
+    chapter_id = storiesService.getChapter().id;
   }
 }]);
