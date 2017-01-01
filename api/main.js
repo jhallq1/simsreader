@@ -7,6 +7,7 @@ var Promise = require('bluebird');
 global.apiPath = __dirname.split('\\').join('/');
 
 const express = require('express'),
+      AWS = require('aws-sdk'),
       port = 2112,
       register = require('./users/register.js'),
       login = require('./users/login.js'),
