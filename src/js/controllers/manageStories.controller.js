@@ -1,4 +1,4 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', 'Upload', function ($scope, $http, locationService, $location, storiesService, Upload) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', 'Upload', 'Notification', function ($scope, $http, locationService, $location, storiesService, Upload, Notification) {
   $scope.files = [];
 
   $scope.currentRoute = $location.url();
@@ -17,12 +17,13 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
   } else if ($scope.currentRoute === '/manageChapters') {
     story_id = storiesService.getStory().id;
   } else if ($scope.currentRoute === '/managePages') {
+    story_id = storiesService.getStory().id;
     chapter_id = storiesService.getChapter().id;
   }
 
-  $scope.uploadFiles = function (files) {
+  $scope.uploadFiles = function(files) {
     $scope.files = files;
-    console.log($scope.files);
+    console.log(files);
     if (files && files.length) {
       // console.log(files);
       // Upload.upload({
@@ -42,6 +43,27 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
       //     $scope.progress =
       //         Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
       // });
+    }
+  };
+
+  $scope.addPages = function(files) {
+    if ($scope.files.length) {
+      $http({
+        method: 'POST',
+        url: locationService.origin + '/addPages',
+        data: {files: $scope.files, story_id: story_id, chapter_id: chapter_id},
+        withCredentials: true
+      })
+      .then(function(res) {
+        console.log(res.data.items);
+        if (res.data && res.data.items.msg) {
+          let keys = res.data.items.keys;
+          console.log(keys);
+          Notification.success(res.data.items.msg);
+        } else {
+          Notification.error(res.data.msg);
+        }
+      });
     }
   };
 

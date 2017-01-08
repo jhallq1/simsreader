@@ -39,7 +39,8 @@ const express = require('express'),
       editStory = require('./stories/editStory.js'),
       deleteChapter = require('./stories/deleteChapter.js'),
       editChapter = require('./stories/editChapter.js'),
-      getPages = require('./db/stories/getPagesByChapterId.js');
+      getPages = require('./db/stories/getPagesByChapterId.js'),
+      addPages = require('./stories/addPages.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -273,6 +274,17 @@ app.post('/editChapter', function(req, res) {
 app.get('/getChapters', function(req, res) {
   return getChapters.getChapters(req.query.story_id, db.conn())
   .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+app.post('/addPages', function(req, res) {
+  return addPages.addPages(req.body.story_id, req.body.chapter_id, req.body.files, req.session.user, req.sessionID, db.conn())
+  .then(function(response) {
+    console.log(response);
     return responseHandler({items: response, send: true}, res);
   })
   .catch(function(error) {

@@ -2,11 +2,16 @@
 
 'use strict';
 
-const expect = require('chai').expect;
+const expect = require('chai').expect,
+      crypto = require('crypto');
 
 let response = {};
 
 function insertPages(pages, db) {
+  for (let i = 0; i < pages.length; i++) {
+    pages[i].path = crypto.randomBytes(4).toString('hex');
+  }
+
   let values = pages.map(function(a) {return [a.id, a.chapter_id, a.caption, a.path];});
   return db.query(`INSERT INTO pages (id, chapter_id, caption, path) VALUES ?`, [values])
   .then(function(res) {
@@ -34,19 +39,19 @@ describe ('Inserts page data into table:', function() {
         id: 1,
         chapter_id: 5,
         caption: "First caption",
-        path: "First path"
+        path: ""
       },
       {
         id: 2,
         chapter_id: 5,
         caption: "Second caption",
-        path: "Second path"
+        path: ""
       },
       {
         id: 3,
         chapter_id: 5,
         caption: "Third caption",
-        path: "Third path"
+        path: ""
       }
     ];
   });
@@ -66,7 +71,7 @@ describe ('Inserts page data into table:', function() {
     });
   });
 
-  after(function() {
-    db.query('DELETE FROM pages WHERE ?', {chapter_id: 5});
-  });
+  // after(function() {
+  //   db.query('DELETE FROM pages WHERE ?', {chapter_id: 5});
+  // });
 });
