@@ -40,7 +40,9 @@ const express = require('express'),
       deleteChapter = require('./stories/deleteChapter.js'),
       editChapter = require('./stories/editChapter.js'),
       getPages = require('./db/stories/getPagesByChapterId.js'),
-      addPages = require('./stories/addPages.js');
+      addPages = require('./stories/addPages.js'),
+      multer = require('multer'),
+      upload = multer();
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -281,10 +283,9 @@ app.get('/getChapters', function(req, res) {
   });
 });
 
-app.post('/addPages', function(req, res) {
-  return addPages.addPages(req.body.story_id, req.body.chapter_id, req.body.files, req.session.user, req.sessionID, db.conn())
+app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
+  return addPages.addPages(req.files, req.body.story_id, req.body.chapter_id, req.body.captions, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
-    console.log(response);
     return responseHandler({items: response, send: true}, res);
   })
   .catch(function(error) {

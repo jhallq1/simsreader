@@ -1,4 +1,4 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', 'Upload', 'Notification', function ($scope, $http, locationService, $location, storiesService, Upload, Notification) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', 'Upload', 'Notification', '$timeout', function ($scope, $http, locationService, $location, storiesService, Upload, Notification, $timeout) {
   $scope.files = [];
 
   $scope.currentRoute = $location.url();
@@ -23,14 +23,13 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
 
   $scope.uploadFiles = function(files) {
     $scope.files = files;
-    console.log(files);
     if (files && files.length) {
-      // console.log(files);
       // Upload.upload({
-      //     url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+      //     url: locationService.origin + '/addPages',
       //     data: {
       //         files: files
-      //     }
+      //     },
+      //     withCredentials: true
       // }).then(function (response) {
       //     $timeout(function () {
       //         $scope.result = response.data;
@@ -47,18 +46,26 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
   };
 
   $scope.addPages = function(files) {
+    let captions = [];
+    let text = {};
+
     if ($scope.files.length) {
-      $http({
-        method: 'POST',
-        url: locationService.origin + '/addPages',
-        data: {files: $scope.files, story_id: story_id, chapter_id: chapter_id},
-        withCredentials: true
+      for (let i = 0; i < $scope.files.length; i++) {
+        captions.push(text);
+        captions[i].text = $scope.files[i].caption;
+        text = {};
+        // captions.push([$scope.files[i].caption]);
+      }
+
+      Upload.upload({
+          url: locationService.origin + '/addPages',
+          data: {captions: captions, story_id: story_id, chapter_id: chapter_id, files: $scope.files},
+          method: 'POST',
+          withCredentials: true
       })
       .then(function(res) {
-        console.log(res.data.items);
         if (res.data && res.data.items.msg) {
-          let keys = res.data.items.keys;
-          console.log(keys);
+
           Notification.success(res.data.items.msg);
         } else {
           Notification.error(res.data.msg);
