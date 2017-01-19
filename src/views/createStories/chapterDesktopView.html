@@ -14,7 +14,7 @@
           <div layout="row">
             <figure layout="column" flex="45">
               <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
-              <figcaption class="break-wrap">{{file.name}}</figcaption>
+              <figcaption class="break-wrap" ng-if="file.path || file.name">{{file.path || file.name}}</figcaption>
             </figure>
             <textarea flex="55" layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
             </textarea>

@@ -1,8 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk'),
-      secrets = require('../aws.json'),
-      fs = require('fs');
+      secrets = require('../aws.json');
 
 let s3 = new AWS.S3({
       apiVersion: '2006-03-01',

@@ -48,6 +48,7 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
   $scope.addPages = function(files) {
     let captions = [];
     let text = {};
+    let values;
 
     if ($scope.files.length) {
       for (let i = 0; i < $scope.files.length; i++) {
@@ -65,6 +66,13 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
       })
       .then(function(res) {
         if (res.data && res.data.items.msg) {
+          $scope.$applyAsync(function() {
+            values = res.data.items.items;
+            for (let ii = 0; ii < values.length; ii++) {
+              $scope.files[ii].chapter_id = values[ii].chapter_id;
+              $scope.files[ii].path = values[ii].path;
+            }
+          });
 
           Notification.success(res.data.items.msg);
         } else {

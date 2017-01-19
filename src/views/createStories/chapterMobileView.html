@@ -12,7 +12,7 @@
           <div layout="column" layout-align="center center">
             <figure>
               <img ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
-              <figcaption class="break-wrap">{{file.name}}</figcaption>
+              <figcaption class="break-wrap">{{file.path || file.name}}</figcaption>
             </figure>
             <textarea layout="column" class="caption" ng-model="file.caption" placeholder="Write a caption to accompany this screenshot">
             </textarea>

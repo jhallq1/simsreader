@@ -35,7 +35,8 @@ function addPages(files, story_id, chapter_id, captions, user, sid, db) {
      };
   })
   .then(function(res) {
-    if (res > 0) {
+    if (res) {
+      response.items = res.data;
       response.msg = "Your draft has been successfully saved";
       return response;
     }

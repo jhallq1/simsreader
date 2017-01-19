@@ -36,7 +36,7 @@ module.exports = {
       files[i].path = captions[i].path;
     }
 
-    let response = {
+    response = {
       data: captions,
       msg: "gj!"
     };
@@ -47,7 +47,7 @@ module.exports = {
     })
     .then(function(res) {
       if (res > 0) {
-        return res;
+        return response;
       }
     });
   }
