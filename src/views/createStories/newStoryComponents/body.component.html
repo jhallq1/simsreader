@@ -2,7 +2,10 @@
   <md-content layout-padding>
     <md-input-container class="md-block" flex-gt-sm>
       <label>Title</label>
-      <input required name="Title" ng-model="story.title" aria-label="Story Title" md-maxlength="100"/>
+      <input required name="Title" ng-model="story.title" aria-label="Story Title" md-minlength="1" md-maxlength="100" ng-pattern="/^[a-zA-Z0-9\.\?\:\!\(\)\s]+$/"/>
+      <div ng-messages="newStoryForm.Title.$error">
+        <p ng-show="newStoryForm.Title.$error.pattern">Titles may not contain underscores (_)</p>
+      </div>
     </md-input-container>
     <md-input-container class="md-block" flex-gt-sm>
       <label>Description</label>
