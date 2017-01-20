@@ -39,7 +39,7 @@ const express = require('express'),
       editStory = require('./stories/editStory.js'),
       deleteChapter = require('./stories/deleteChapter.js'),
       editChapter = require('./stories/editChapter.js'),
-      getPages = require('./db/stories/getPagesByChapterId.js'),
+      getPages = require('./stories/getPages.js'),
       addPages = require('./stories/addPages.js'),
       multer = require('multer'),
       upload = multer();
@@ -294,7 +294,7 @@ app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
 });
 
 app.get('/getPages', function(req, res) {
-  return getPages(req.query.chapter_id, db.conn())
+  return getPages.getPages(req.session.user, req.query.story_id, req.query.chapter_id, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })

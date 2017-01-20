@@ -10,7 +10,8 @@ let s3 = new AWS.S3({
       region: secrets.region
     }),
     uploadParams = {
-      Bucket: 'simsreader'
+      Bucket: 'simsreader',
+      ACL: 'public-read'
     };
 
 function createImgPromise(file, assets_path, story_id, chapter_id) {
