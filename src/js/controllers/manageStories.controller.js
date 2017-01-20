@@ -1,12 +1,14 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$location', 'storiesService', 'Upload', 'Notification', '$timeout', function ($scope, $http, locationService, $location, storiesService, Upload, Notification, $timeout) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$route', 'storiesService', 'Upload', 'Notification', '$timeout', function ($scope, $http, locationService, $route, storiesService, Upload, Notification, $timeout) {
   $scope.files = [];
+  $scope.view = 0;
 
-  $scope.currentRoute = $location.url();
+  let currentRouteParams = $route.current.params;
 
-  if ($scope.currentRoute === '/manageStories') {
+  if (Object.keys(currentRouteParams).length === 0) {
+    $scope.view = 0;
     $http({
       method: 'get',
-      url: locationService.origin + '/getStories',
+      url: `${locationService.origin}/getStories`,
       withCredentials: true
     })
     .then(function(res) {
@@ -14,9 +16,11 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
         $scope.stories = res.data.items;
       }
     });
-  } else if ($scope.currentRoute === '/manageChapters') {
+  } else if (currentRouteParams.story_title && !currentRouteParams.chapter_id) {
+    $scope.view = 1;
     story_id = storiesService.getStory().id;
-  } else if ($scope.currentRoute === '/managePages') {
+  } else if (currentRouteParams.story_title && currentRouteParams.chapter_id) {
+    $scope.view = 2;
     story_id = storiesService.getStory().id;
     chapter_id = storiesService.getChapter().id;
   }
@@ -85,4 +89,6 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$locatio
   $scope.removeFile = function(index) {
     $scope.files.splice(index, 1);
   };
+
+  console.log($scope);
 }]);

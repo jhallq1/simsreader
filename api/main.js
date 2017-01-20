@@ -274,6 +274,8 @@ app.post('/editChapter', function(req, res) {
 });
 
 app.get('/getChapters', function(req, res) {
+  //TODO: handle req.query.story_title
+
   return getChapters.getChapters(req.query.story_id, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
@@ -294,6 +296,7 @@ app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
 });
 
 app.get('/getPages', function(req, res) {
+  //TODO: handle req.query.story_name
   return getPages.getPages(req.session.user, req.query.story_id, req.query.chapter_id, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);

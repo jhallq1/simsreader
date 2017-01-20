@@ -7,23 +7,9 @@ app.directive('getChapters', ['$http', 'locationService', 'storiesService', '$lo
     },
     link: function($scope, ele, attr) {
       $scope.goToChapters = function() {
-        $location.url('/manageChapters');
+        $location.url($location.path() + '/' + $scope.story.title);
         storiesService.setStory($scope.story);
       };
-
-      // $scope.getChapters = function() {
-      //   $http({
-      //     method: 'GET',
-      //     url: locationService.origin + '/getChapters',
-      //     params: {story_id: $scope.storyid},
-      //     withCredentials: true
-      //   })
-      //   .then(function(res) {
-      //     if (res.data && res.data.items) {
-      //       $scope.chapters = res.data.items;
-      //     }
-      //   });
-      // };
     }
   };
 }]);

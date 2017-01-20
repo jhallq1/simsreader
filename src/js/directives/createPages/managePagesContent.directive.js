@@ -1,4 +1,4 @@
-app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$http', 'locationService', function($mdMedia, Upload, storiesService, $http, locationService) {
+app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$http', '$route', 'locationService', function($mdMedia, Upload, storiesService, $http, $route, locationService) {
   return {
     restrict: 'E',
     scope: {
@@ -12,15 +12,17 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
       $scope.story_id = storiesService.getStory().id;
       $scope.chapter_id = storiesService.getChapter().id;
 
+      let currentRouteParams = $route.current.params;
+
       $http({
         method: 'GET',
         url: locationService.origin + '/getPages',
-        params: {story_id: $scope.story_id, chapter_id: $scope.chapter_id},
+        params: {story_id: $scope.story_id, story_name: currentRouteParams.story_title, chapter_id: ($scope.chapter_id || currentRouteParams.chapter_id)},
         withCredentials: true
       })
       .then(function(res) {
         if (res.data && res.data.items) {
-          $scope.pages = res.data.items.items;
+          $scope.files = res.data.items.items;
         }
       });
 

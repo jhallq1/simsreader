@@ -25,11 +25,11 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       templateUrl : 'views/createStories/manageStoriesView.html',
       controller : 'manageStories'
     })
-    .when('/manageChapters', {
+    .when('/manageStories/:story_title', {
       templateUrl : 'views/createStories/manageStoriesView.html',
       controller : 'manageStories'
     })
-    .when('/managePages', {
+    .when('/manageStories/:story_title/:chapter_id', {
       templateUrl : 'views/createStories/manageStoriesView.html',
       controller : 'manageStories'
     })
