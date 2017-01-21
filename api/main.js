@@ -35,7 +35,8 @@ const express = require('express'),
       newComment = require('./stories/newComment.js'),
       createNewChapter = require('./stories/createChapter.js'),
       deleteStory = require('./stories/deleteStory.js'),
-      getChapters = require('./db/stories/getChaptersByStoryId.js'),
+      getChaptersById = require('./db/stories/getChaptersByStoryId.js'),
+      getChaptersByTitle = require('./stories/getChaptersByStoryTitle.js'),
       editStory = require('./stories/editStory.js'),
       deleteChapter = require('./stories/deleteChapter.js'),
       editChapter = require('./stories/editChapter.js'),
@@ -274,15 +275,23 @@ app.post('/editChapter', function(req, res) {
 });
 
 app.get('/getChapters', function(req, res) {
-  //TODO: handle req.query.story_title
-
-  return getChapters.getChapters(req.query.story_id, db.conn())
-  .then(function(response) {
-    return responseHandler({items: response, send: true}, res);
-  })
-  .catch(function(error) {
-    return responseHandler(error, res);
-  });
+  if (req.query.story_id) {
+    return getChaptersById.getChaptersByStoryId(req.query.story_id, db.conn())
+    .then(function(response) {
+      return responseHandler({items: response, send: true}, res);
+    })
+    .catch(function(error) {
+      return responseHandler(error, res);
+    });
+  } else if (req.query.story_title) {
+    return getChaptersByTitle.getChaptersByStoryTitle(req.query.story_title, req.session.user.id, db.conn())
+    .then(function(response) {
+      return responseHandler({items: response, send: true}, res);
+    })
+    .catch(function(error) {
+      return responseHandler(error, res);
+    });
+  }
 });
 
 app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
