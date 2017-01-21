@@ -17,7 +17,7 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
       $http({
         method: 'GET',
         url: locationService.origin + '/getPages',
-        params: {story_id: $scope.story_id, story_name: currentRouteParams.story_title, chapter_id: ($scope.chapter_id || currentRouteParams.chapter_id)},
+        params: {story_id: $scope.story_id, story_title: currentRouteParams.story_title, chapter_id: $scope.chapter_id, chapter_index: currentRouteParams.chapter_id},
         withCredentials: true
       })
       .then(function(res) {

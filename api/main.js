@@ -275,23 +275,14 @@ app.post('/editChapter', function(req, res) {
 });
 
 app.get('/getChapters', function(req, res) {
-  if (req.query.story_id) {
-    return getChaptersById.getChaptersByStoryId(req.query.story_id, db.conn())
-    .then(function(response) {
-      return responseHandler({items: response, send: true}, res);
-    })
-    .catch(function(error) {
-      return responseHandler(error, res);
-    });
-  } else if (req.query.story_title) {
-    return getChaptersByTitle.getChaptersByStoryTitle(req.query.story_title, req.session.user.id, db.conn())
-    .then(function(response) {
-      return responseHandler({items: response, send: true}, res);
-    })
-    .catch(function(error) {
-      return responseHandler(error, res);
-    });
-  }
+  return (req.query.story_id ? getChaptersById.getChaptersByStoryId(req.query.story_id, db.conn())
+                             : getChaptersByTitle.getChaptersByStoryTitle(req.query.story_title, req.session.user.id, db.conn()))
+  .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
 });
 
 app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
@@ -305,8 +296,7 @@ app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
 });
 
 app.get('/getPages', function(req, res) {
-  //TODO: handle req.query.story_name
-  return getPages.getPages(req.session.user, req.query.story_id, req.query.chapter_id, db.conn())
+  return getPages.getPages(req.session.user, req.query.story_id, req.query.story_title, req.query.chapter_id, req.query.chapter_index, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })
