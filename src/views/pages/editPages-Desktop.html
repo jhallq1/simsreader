@@ -1,6 +1,6 @@
 <div class="chapter-desktop-view">
   <div layout="column" class="pagesContent">
-    {{files}}
+    {{files.length}}
     <empty-chapter ng-show="!pages.length"></empty-chapter>
     <div ng-if="files" dragula='"bag-one"' dragula-scope="$parent" dragula-model="files">
       <div layout="column" ng-repeat="file in files">
@@ -12,6 +12,7 @@
           </div>
           <div layout="row">
             <figure layout="column" flex="45">
+              {{file}}
               <img ng-if="!file.url" ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
               <img ng-if="file.url" ng-src="{{file.url}}" ngf-size="{width: 200, height: 200, quality: 1}">
               <figcaption class="break-wrap">{{file.name}}</figcaption>

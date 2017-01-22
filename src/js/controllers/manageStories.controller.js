@@ -1,4 +1,4 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$route', 'storiesService', 'Upload', 'Notification', '$timeout', function ($scope, $http, locationService, $route, storiesService, Upload, Notification, $timeout) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$route', 'storiesService', 'Upload', 'Notification', '$timeout', 'filesService', function ($scope, $http, locationService, $route, storiesService, Upload, Notification, $timeout, filesService) {
   $scope.files = [];
   $scope.view = 0;
 
@@ -8,7 +8,7 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
     showSave: false,
     showManage: false
   };
-  
+
   let currentRouteParams = $route.current.params;
 
   if (Object.keys(currentRouteParams).length === 0) {
@@ -35,6 +35,7 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
   }
 
   $scope.uploadFiles = function(files) {
+    $scope.data = filesService.setFiles(files);
     $scope.files = files;
   };
 
