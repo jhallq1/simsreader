@@ -2,6 +2,13 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
   $scope.files = [];
   $scope.view = 0;
 
+  $scope.toolbarOptions = {
+    showMyStories: true,
+    showAddScreenshots: false,
+    showSave: false,
+    showManage: false
+  };
+  
   let currentRouteParams = $route.current.params;
 
   if (Object.keys(currentRouteParams).length === 0) {
@@ -21,32 +28,14 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
     story_id = storiesService.getStory().id;
   } else if (currentRouteParams.story_title && currentRouteParams.chapter_id) {
     $scope.view = 2;
+    $scope.toolbarOptions.showAddScreenshots = true;
+    $scope.toolbarOptions.showSave = true;
     story_id = storiesService.getStory().id;
     chapter_id = storiesService.getChapter().id;
   }
 
   $scope.uploadFiles = function(files) {
     $scope.files = files;
-    if (files && files.length) {
-      // Upload.upload({
-      //     url: locationService.origin + '/addPages',
-      //     data: {
-      //         files: files
-      //     },
-      //     withCredentials: true
-      // }).then(function (response) {
-      //     $timeout(function () {
-      //         $scope.result = response.data;
-      //     });
-      // }, function (response) {
-      //     if (response.status > 0) {
-      //         $scope.errorMsg = response.status + ': ' + response.data;
-      //     }
-      // }, function (evt) {
-      //     $scope.progress =
-      //         Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-      // });
-    }
   };
 
   $scope.addPages = function(files) {
@@ -89,6 +78,4 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
   $scope.removeFile = function(index) {
     $scope.files.splice(index, 1);
   };
-
-  console.log($scope);
 }]);

@@ -8,7 +8,6 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/pages/editPages-Desktop.html\' : \'views/pages/editPages-Mobile.html\'"></div>',
     link: function($scope) {
-      $scope.files = $scope.files || [];
       $scope.story_id = storiesService.getStory().id;
       $scope.chapter_id = storiesService.getChapter().id;
 
