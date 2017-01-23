@@ -28,7 +28,7 @@
           <span flex></span>
           <md-button ng-if="userService.isloggedin()">Hello, {{userService.getUser().username}}</md-button>
           <md-button href="/register" ng-if="!userService.isloggedin()">Register</md-button>
-          <md-button login template="loginView" ctrl="app.forgotPasswordController" ng-if="!userService.isloggedin()">Login</md-button>
+          <md-button login template="loginView" ng-if="!userService.isloggedin()">Login</md-button>
           <logout ng-if="userService.isloggedin()"></logout>
         </div>
       </md-toolbar>
@@ -59,15 +59,9 @@
 
   <body ng-cloak>
     <div class="ribbon"></div>
-      <main class="main" ng-show="mediaQuery('gt-sm')" style="padding-bottom: 10vh;">
-        <div layout="column" flex-offset="25" flex="50" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
-        </div>
-      </main>
-
-      <main class="main" ng-show="!mediaQuery('gt-sm')" style="padding-bottom: 10vh;">
-        <div layout="column" flex-offset="5" flex="90" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view>
-        </div>
-      </main>
+    <main class="main" style="padding-bottom: 10vh;">
+      <div layout="column" flex-offset="{{mediaQuery('gt-sm') ? 25 : 5}}" flex="{{mediaQuery('gt-sm') ? 50 : 90}}" layout-align="start center" md-whiteframe="1" style="min-height: 500px; background-color: white; margin-top:5%;" ng-view></div>
+    </main>
   </body>
 
   <footer>

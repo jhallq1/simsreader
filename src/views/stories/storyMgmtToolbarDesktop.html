@@ -27,7 +27,7 @@
         </md-menu-content>
       </md-menu>
       <md-menu ng-show="toolbarOptions.showAddScreenshots">
-        <button ng-click="angular.noop()" ngf-select="uploadFiles($files)" ng-model="files" multiple accept="image/*" ngf-keep="true">
+        <button ng-click="angular.noop()" ngf-before-model-change="beforeChange($files)" ngf-select="selectFiles($files)" ng-model="files" multiple accept="image/*" ngf-keep="true">
           ADD SCREENSHOTS
         </button>
         <md-menu-content id="hide-md-menu-dropdown">

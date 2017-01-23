@@ -2,13 +2,17 @@ app.directive('storyMgmtToolbar', ['$mdMedia', 'Upload', 'filesService', functio
   return {
     restrict: 'E',
     scope: {
-      toolbarOptions: '=',
+      toolbarOptions: '='
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/stories/storyMgmtToolbarDesktop.html\' : \'views/stories/storyMgmtToolbarMobile.html\'"></div>',
-    link: function($scope) {
+    link: function($scope, element, attrs) {
       $scope.mediaQuery = $mdMedia;
 
-      $scope.uploadFiles = function(files) {
+      $scope.beforeChange = function(files) {
+        filesService.setProgress(true);
+      };
+
+      $scope.selectFiles = function(files) {
         filesService.addFiles(files);
       };
     }

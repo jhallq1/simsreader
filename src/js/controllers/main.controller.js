@@ -1,4 +1,4 @@
-app.controller('mainController', ['$scope', '$http', 'userService', '$mdMedia', function($scope, $http, userService, $mdMedia) {
+app.controller('mainController', ['$scope', 'userService', '$mdMedia', function($scope, userService, $mdMedia) {
   $scope.userService = userService;
   $scope.mediaQuery = $mdMedia;
 }]);

@@ -7,6 +7,22 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/pages/editPages-Desktop.html\' : \'views/pages/editPages-Mobile.html\'"></div>',
     link: function($scope) {
+      $scope.progress = filesService.getProgress().show;
+
+      $scope.$watch('filesService.getProgress().show', function(newVal, oldVal) {
+        if (newVal && newVal != oldVal) {
+          setTimeout(function () {
+            $scope.$apply(function(){
+                $scope.progress = filesService.getProgress().show;
+            });
+          }, 0);
+        }
+
+        if (!newVal) {
+          $scope.progress = false;
+        }
+      });
+
       $scope.story_id = storiesService.getStory().id;
       $scope.chapter_id = storiesService.getChapter().id;
       $scope.filesService = filesService;

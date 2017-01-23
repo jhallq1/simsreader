@@ -3,6 +3,17 @@ app.factory('filesService', [function() {
     files: []
   };
 
+  let progress = {show: false};
+
+  function setProgress(bool) {
+    progress.show = bool;
+    return progress;
+  }
+
+  function getProgress() {
+    return progress;
+  }
+
   function setFiles(data) {
     items.files = data;
     return items.files;
@@ -21,6 +32,8 @@ app.factory('filesService', [function() {
   return {
     setFiles: setFiles,
     getFiles: getFiles,
-    addFiles: addFiles
+    addFiles: addFiles,
+    setProgress: setProgress,
+    getProgress: getProgress
   };
 }]);

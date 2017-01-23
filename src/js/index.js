@@ -10,12 +10,10 @@ var app = angular.module('simsReader', [
 app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdIconProvider', '$mdThemingProvider', '$httpProvider', function($routeProvider, $locationProvider, NotificationProvider, $mdIconProvider, $mdThemingProvider, $httpProvider) {
   $routeProvider
     .when('/', {
-      templateUrl : 'views/homeView.html',
-      controller : 'mainController'
+      templateUrl : 'views/homeView.html'
     })
     .when('/home', {
-      templateUrl : 'views/homeView.html',
-      controller : 'mainController'
+      templateUrl : 'views/homeView.html'
     })
     .when('/register', {
       templateUrl : 'views/registerView.html',

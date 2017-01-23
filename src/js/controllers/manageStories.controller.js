@@ -12,6 +12,7 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
   let currentRouteParams = $route.current.params;
 
   if (Object.keys(currentRouteParams).length === 0) {
+
     $scope.view = 0;
     $http({
       method: 'get',
@@ -33,11 +34,6 @@ app.controller('manageStories', ['$scope', '$http', 'locationService', '$route',
     story_id = storiesService.getStory().id;
     chapter_id = storiesService.getChapter().id;
   }
-
-  $scope.uploadFiles = function(files) {
-    $scope.data = filesService.setFiles(files);
-    $scope.files = files;
-  };
 
   $scope.addPages = function(files) {
     let captions = [];
