@@ -10,7 +10,7 @@
           <div layout="row">
             Page #{{$index + 1}}
             <div flex=""></div>
-            <a class="pointer" ng-click="removeFile($index)"><md-icon md-svg-icon="delete" style="color: red"></md-icon></a>
+            <remove-page files="files" index="$index"></remove-page>
           </div>
           <div layout="row">
             <figure layout="column" flex="45">

@@ -12,7 +12,7 @@ app.directive('publish', ['$mdDialog', function($mdDialog) {
       $scope.showPublishDialog = function(ev) {
         $mdDialog.show({
           controller: DialogController,
-          templateUrl: 'views/createStories/publishDialogView.html',
+          templateUrl: 'views/createStories/publishChapterDialogView.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:true,

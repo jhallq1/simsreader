@@ -36,8 +36,7 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'readStoriesController'
     })
     .when('/user', {
-      templateUrl : 'views/userView.html',
-      controller : 'panelController'
+      templateUrl : 'views/userView.html'
     })
     .when('/verify/:verification_token', {
       templateUrl : 'views/regconfView.html',
