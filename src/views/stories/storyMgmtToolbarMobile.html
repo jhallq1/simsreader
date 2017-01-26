@@ -12,7 +12,7 @@
           <md-button><md-icon md-svg-icon="plus-box"></md-icon>Add Chapter</md-button>
         </md-menu-item>
         <md-menu-item ng-show="toolbarOptions.showAddScreenshots">
-          <md-button ngf-select="uploadFiles($files)" ng-model="files" multiple accept="image/*" ngf-keep="true"><md-icon md-svg-icon="image"></md-icon>Add Screenshots</md-button>
+          <md-button ng-click="angular.noop()" ngf-before-model-change="beforeChange($files)" ngf-select="selectFiles($files)" ng-model="files" multiple accept="image/*" ngf-keep="true"><md-icon md-svg-icon="image"></md-icon>Add Screenshots</md-button>
         </md-menu-item>
         <md-menu-item ng-show="toolbarOptions.showManage">
           <md-button><md-icon md-svg-icon="message-text"></md-icon>Review Comments</md-button>

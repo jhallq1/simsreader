@@ -1,5 +1,7 @@
-app.controller('manageStories', ['$scope', '$http', 'locationService', '$route', 'storiesService', 'Upload', 'Notification', '$timeout', 'filesService', function ($scope, $http, locationService, $route, storiesService, Upload, Notification, $timeout, filesService) {
+app.controller('manageStories', ['$scope', '$http', 'locationService', '$route', 'storiesService', 'Upload', 'Notification', '$timeout', 'filesService',
+function ($scope, $http, locationService, $route, storiesService, Upload, Notification, $timeout, filesService) {
   $scope.files = [];
+  $scope.spinner = {};
   $scope.view = 0;
 
   $scope.toolbarOptions = {

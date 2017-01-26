@@ -2,10 +2,10 @@
   <div layout="column" class="pagesContent">
     Files.length: {{files.length}}
 
-    <div ng-show="!!progress" layout="row" layout-sm="column" layout-align="space-around"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
+    <div ng-show="!!progress" layout="row" layout-sm="column" ng-class="{spinner: !!progress}" layout-align="space-around"><p>Rendering Images</p></div>
     <empty-chapter ng-show="!files"></empty-chapter>
     <div ng-if="files" dragula='"bag-one"' dragula-scope="$parent" dragula-model="files">
-      <div layout="column" ng-repeat="file in files">
+      <div layout="column" ng-repeat="file in files track by $index">
         <div layout="column" flex="100" class="desktopRepeat">
           <div layout="row">
             Page #{{$index + 1}}
