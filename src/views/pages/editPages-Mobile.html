@@ -1,3 +1,6 @@
+<md-toolbar class="chapter-desktop-view" class="md-menu-toolbar desktop-toolbar">
+  <story-mgmt-toolbar toolbar-options="toolbarOptions"></story-mgmt-toolbar>
+</md-toolbar>
 <div ng-show="!mediaQuery('gt-sm')" ng-cloak layout-fill class="chapter-mobile-view">
   <div layout="column" ng-show="!mediaQuery('landscape')" class="pagesContent">
     <div ng-if="files" dragula='"bag-two"' dragula-scope="$parent" dragula-model="files">

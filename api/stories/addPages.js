@@ -2,7 +2,9 @@
 
 const captionValidator = require('../db/stories/util/captionValidator.js'),
       insertPages =  require('../db/stories/insertPageData.js'),
-      validateSession = require('../db/user/sessionValidator.js');
+      validateSession = require('../db/user/sessionValidator.js'),
+      deletePages = require('../db/stories/deletePagesByChapterId.js'),
+      deleteImgs = require('../aws/s3/deleteImgs.js');
 
 let response = {
   log: 'info',
@@ -10,6 +12,17 @@ let response = {
 };
 
 function addPages(files, story_id, chapter_id, captions, user, sid, db) {
+  console.log(files, story_id, chapter_id, captions, user, sid);
+  if (chapter_id) {
+    return deletePages(chapter_id, db)
+    .then(function() {
+      return deleteImgs(user.assets_path, story_id, chapter_id);
+    })
+    .catch(function(error) {
+      throw error;
+    });
+  }
+
   let data = captionValidator(captions);
   if (Object.keys(data).length > 0) {
     response.msg = data;

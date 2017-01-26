@@ -4,15 +4,15 @@ const AWS = require('aws-sdk'),
       secrets = require('../aws.json');
 
 let s3 = new AWS.S3({
-      apiVersion: '2006-03-01',
-      secretAccessKey: secrets.secretAccessKey,
-      accessKeyId: secrets.accessKeyId,
-      region: secrets.region
-    }),
-    uploadParams = {
-      Bucket: 'simsreader',
-      ACL: 'public-read'
-    };
+  apiVersion: '2006-03-01',
+  secretAccessKey: secrets.secretAccessKey,
+  accessKeyId: secrets.accessKeyId,
+  region: secrets.region
+}),
+uploadParams = {
+  Bucket: 'simsreader',
+  ACL: 'public-read'
+};
 
 function createImgPromise(file, assets_path, story_id, chapter_id) {
   uploadParams.Body = file.buffer;

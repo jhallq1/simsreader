@@ -5,6 +5,17 @@ app.factory('filesService', [function() {
 
   let progress = {show: false};
 
+  let deleted = [];
+
+  function setDeleted(data) {
+    deleted.push(data);
+    return deleted;
+  }
+
+  function getDeleted() {
+    return deleted;
+  }
+
   function setProgress(bool) {
     progress.show = bool;
     return progress;
@@ -34,6 +45,8 @@ app.factory('filesService', [function() {
     getFiles: getFiles,
     addFiles: addFiles,
     setProgress: setProgress,
-    getProgress: getProgress
+    getProgress: getProgress,
+    setDeleted: setDeleted,
+    getDeleted: getDeleted
   };
 }]);

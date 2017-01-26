@@ -3,7 +3,8 @@ function($mdMedia, Upload, storiesService, $route, $http, locationService) {
   return {
     restrict: 'E',
     scope: {
-      stories: '='
+      stories: '=',
+      toolbarOptions: '='
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/chapters/manageChaptersView.html\' : \'views/chapters/addChapterMobile.html\'"></div>',
     link: function($scope) {

@@ -3,7 +3,8 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
     restrict: 'E',
     scope: {
       stories: '=',
-      chapters: '='
+      chapters: '=',
+      toolbarOptions: '='
     },
     template: '<div ng-include="mediaQuery(\'gt-sm\') ? \'views/pages/editPages-Desktop.html\' : \'views/pages/editPages-Mobile.html\'"></div>',
     link: function($scope) {
@@ -47,6 +48,44 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
           $scope.files = newVal;
         }
       });
+
+      $scope.addPages = function(files) {
+        console.log($scope);
+        let captions = [];
+        let text = {};
+        let values;
+
+        if ($scope.files.length) {
+          for (let i = 0; i < $scope.files.length; i++) {
+            captions.push(text);
+            captions[i].text = $scope.files[i].caption;
+            text = {};
+            // captions.push([$scope.files[i].caption]);
+          }
+
+          Upload.upload({
+              url: locationService.origin + '/addPages',
+              data: {captions: captions, story_id: story_id, chapter_id: chapter_id, files: $scope.files},
+              method: 'POST',
+              withCredentials: true
+          })
+          .then(function(res) {
+            if (res.data && res.data.items.msg) {
+              $scope.$applyAsync(function() {
+                values = res.data.items.items;
+                for (let ii = 0; ii < values.length; ii++) {
+                  $scope.files[ii].chapter_id = values[ii].chapter_id;
+                  $scope.files[ii].path = values[ii].path;
+                }
+              });
+
+              Notification.success(res.data.items.msg);
+            } else {
+              Notification.error(res.data.msg);
+            }
+          });
+        }
+      };
 
       $scope.mediaQuery = $mdMedia;
     }

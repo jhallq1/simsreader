@@ -1,9 +1,5 @@
 <div layout-fill class="manage-stories-view">
-  <md-toolbar class="chapter-desktop-view" class="md-menu-toolbar desktop-toolbar">
-    <story-mgmt-toolbar toolbar-options="toolbarOptions"></story-mgmt-toolbar>
-  </md-toolbar>
-
-  <manage-stories-content ng-if="view === 0" stories="stories" ng-cloak></manage-stories-content>
-  <manage-chapters-content ng-if="view === 1" stories="stories" files="files" ng-cloak></manage-chapters-content>
-  <manage-pages-content ng-if="view === 2" chapters="chapters" files="files" ng-cloak></manage-pages-content>
+  <manage-stories-content toolbar-options="toolbarOptions" ng-if="view === 0" stories="stories" ng-cloak></manage-stories-content>
+  <manage-chapters-content toolbar-options="toolbarOptions" ng-if="view === 1" stories="stories" files="files" ng-cloak></manage-chapters-content>
+  <manage-pages-content toolbar-options="toolbarOptions" ng-if="view === 2" chapters="chapters" files="files" ng-cloak></manage-pages-content>
 </div>

@@ -1,4 +1,4 @@
-app.directive('removePage', ['$mdDialog', function($mdDialog) {
+app.directive('removePage', ['$mdDialog', 'filesService', function($mdDialog, filesService) {
   return {
     restrict: 'E',
     template: '<a class="pointer" ng-click="showConfirm($event)"><md-icon md-svg-icon="delete" style="color: red"></md-icon></a>',
@@ -8,6 +8,7 @@ app.directive('removePage', ['$mdDialog', function($mdDialog) {
     },
     link: function($scope, ele, attr) {
       $scope.remove = function(index) {
+        filesService.setDeleted($scope.files[index].id);
         $scope.files.splice(index, 1);
       };
 
