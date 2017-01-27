@@ -1,6 +1,7 @@
 'use strict';
 
 const AWS = require('aws-sdk'),
+      logger = require('../../logger.js'),
       secrets = require('../aws.json');
 
 let s3 = new AWS.S3({
@@ -13,11 +14,11 @@ params = {
   Bucket: 'simsreader',
 };
 
-module.exports = function(assets_path, story_id, chapter_id) {
-  params.Key = `users/${assets_path.substr(0, 8)}/${assets_path.substr(9, 8)}/stories/${story_id}/${chapter_id}/pages/`;
+module.exports = function(delete_imgs_array) {
+  params.Delete = {Objects: delete_imgs_array};
 
   s3.deleteObjects(params, function(err, data) {
     if (err) console.log(err, err.stack);
-    else     console.log(data);
+    logger.info(data);
   });
 };

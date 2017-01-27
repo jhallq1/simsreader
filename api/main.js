@@ -286,8 +286,7 @@ app.get('/getChapters', function(req, res) {
 });
 
 app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
-  console.log(req.body, req.query);
-  return addPages.addPages()
+  return addPages.addPages(req.files, req.body.story_id, req.body.story_title, req.body.chapter_id, req.body.chapter_index, req.body.captions, req.body.deleted, req.body.files, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })

@@ -20,8 +20,9 @@ function createImgArray(user, story_id, chapter_id, res) {
       data.url = 'https://s3-us-west-2.amazonaws.com/simsreader/users/' + user.assets_path + '/stories/' + story_id + '/' + chapter_id + '/pages/' + res[i].path;
       imgUrls.push(Object.assign({}, data));
     }
-
-    response.items = imgUrls;
+    response.imgUrls = imgUrls;
+    response.story_id = story_id;
+    response.chapter_id = chapter_id;
     return response;
   }
 }

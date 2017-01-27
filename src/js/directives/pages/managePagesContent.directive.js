@@ -1,4 +1,4 @@
-app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$http', '$route', 'locationService', 'filesService', function($mdMedia, Upload, storiesService, $http, $route, locationService, filesService) {
+app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$http', '$route', 'locationService', 'filesService', 'Notification', function($mdMedia, Upload, storiesService, $http, $route, locationService, filesService, Notification) {
   return {
     restrict: 'E',
     scope: {
@@ -38,8 +38,10 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
       })
       .then(function(res) {
         if (res.data && res.data.items) {
-          filesService.setFiles(res.data.items.items);
+          filesService.setFiles(res.data.items.imgUrls);
           $scope.files = filesService.getFiles();
+          storiesService.setStory(res.data.items.story_id);
+          storiesService.setChapter(res.data.items.chapter_id);
         }
       });
 
@@ -50,22 +52,30 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
       });
 
       $scope.addPages = function(files) {
-        console.log($scope);
+        let story_id = storiesService.getStory();
+        let chapter_id = storiesService.getChapter();
+        let deleted = filesService.getDeleted();
         let captions = [];
         let text = {};
+        let page_id = {};
         let values;
 
-        if ($scope.files.length) {
+        if ($scope.files) {
           for (let i = 0; i < $scope.files.length; i++) {
             captions.push(text);
             captions[i].text = $scope.files[i].caption;
+            if ($scope.files[i].id) {
+              captions.push(page_id);
+              captions[i].page_id = $scope.files[i].id;
+            }
             text = {};
+            page_id = {};
             // captions.push([$scope.files[i].caption]);
           }
 
           Upload.upload({
               url: locationService.origin + '/addPages',
-              data: {captions: captions, story_id: story_id, chapter_id: chapter_id, files: $scope.files},
+              data: {captions: captions, story_id: story_id, story_title: currentRouteParams.story_title, chapter_id: chapter_id, chapter_index: currentRouteParams.chapter_id, files: $scope.files, deleted: deleted},
               method: 'POST',
               withCredentials: true
           })
