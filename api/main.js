@@ -42,6 +42,7 @@ const express = require('express'),
       editChapter = require('./stories/editChapter.js'),
       getPages = require('./stories/getPages.js'),
       addPages = require('./stories/addPages.js'),
+      getAllStories = require('./db/stories/getAllStories.js'),
       multer = require('multer'),
       upload = multer();
 
@@ -202,7 +203,7 @@ app.post('/resetPassword', function(req, res) {
 });
 
 /**************************/
-/* story calls
+/* story mgtmt calls
 /**************************/
 app.post('/createStory', function(req, res) {
   return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
@@ -304,6 +305,17 @@ app.get('/getPages', function(req, res) {
     return responseHandler(error, res);
   });
 });
+
+app.get('/getAllStories', function(req, res) {
+  return getAllStories(db.conn())
+  .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
 
 /**************************/
 /* comments calls

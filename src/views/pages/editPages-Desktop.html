@@ -17,8 +17,8 @@
           </div>
           <div layout="row">
             <figure layout="column" flex="45">
-              <img progress show="show" ng-if="!file.url" ngf-thumbnail="file" ngf-size="{width: 200, height: 200, quality: 1}">
-              <img progress ng-if="file.url" ng-src="{{file.url}}" ngf-size="{width: 200, height: 200, quality: 1}">
+              <img progress show="show" ng-if="!file.url" ngf-thumbnail="file">
+              <img progress ng-if="file.url" ng-src="{{file.url}}">
               <div progress></div>
               <figcaption class="break-wrap">{{file.name}}</figcaption>
             </figure>
