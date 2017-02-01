@@ -3,7 +3,8 @@
 const getStoryByStoryId = require('../db/stories/getStoryByStoryId.js'),
       getUser = require('../db/user/getUsernameAndAssetsPath.js'),
       getChapters = require('../db/stories/getChaptersByStoryId.js'),
-      getCoverPhoto = require('../db/stories/getCoverPhoto.js');
+      getCoverPhoto = require('../db/stories/getCoverPhoto.js'),
+      updateViewCount = require('../db/stories/updateViewCount.js');
 
 let response = {
   log: 'info',
@@ -27,6 +28,7 @@ module.exports = function(story_id, db) {
           chapter_id = res[0].id;
           return getCoverPhoto(chapter_id, db)
           .then(function(res) {
+            updateViewCount(story_id, db);
             story.cover_photo = 'https://s3-us-west-2.amazonaws.com/simsreaderresized/resized-users/' + assets_path + '/stories/' + story_id + '/' + chapter_id + '/pages/' + res;
             response.story = story;
 

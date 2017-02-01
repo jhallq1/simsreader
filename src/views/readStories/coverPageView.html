@@ -9,10 +9,13 @@
             <div layout="row">
               <span class="md-title">{{ story.title }}</span>
               <div flex=""></div>
-              <span><strong>By:</strong> {{ story.username }}</span>
+              <span class="md-title">By: {{ story.username }}</span>
             </div>
             <div layout="row">
               <span class="md-subhead">{{ story.created | date:'MMMM d, yyyy'}}</span>
+              <div flex=""></div>
+              <span class="md-subhead" ng-show="story.views == 1">{{ story.views }} view</span>
+              <span class="md-subhead" ng-show="story.views < 1 || story.views > 1">{{ story.views }} views</span>
             </div>
           </md-card-title-text>
         </md-card-title>
@@ -20,14 +23,15 @@
           <p>{{ story.description }}</p>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
+          <div flex=""></div>
           <md-button class="md-icon-button" aria-label="Favorite">
-            <md-icon md-svg-icon="heart"></md-icon>
+            <md-icon md-svg-icon="heart"><md-tooltip>Favorite Me</md-tooltip></md-icon>
           </md-button>
           <md-button class="md-icon-button" aria-label="Share">
-            <md-icon md-svg-icon="share-variant"></md-icon>
+            <md-icon md-svg-icon="share-variant"><md-tooltip>Share Me</md-tooltip></md-icon>
           </md-button>
           <md-button class="md-icon-button" aria-label="Report">
-            <md-icon md-svg-icon="alert" style="color: red;"></md-icon>
+            <md-icon md-svg-icon="alert" style="color: red;"><md-tooltip>Report Me</md-tooltip></md-icon>
           </md-button>
         </md-card-actions>
       </md-card>
