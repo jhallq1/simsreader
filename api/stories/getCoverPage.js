@@ -27,7 +27,7 @@ module.exports = function(story_id, db) {
           chapter_id = res[0].id;
           return getCoverPhoto(chapter_id, db)
           .then(function(res) {
-            story.cover_photo = 'https://s3-us-west-2.amazonaws.com/simsreader-resized/resized-users/' + assets_path + '/stories/' + story_id + '/' + chapter_id + '/pages/' + res;
+            story.cover_photo = 'https://s3-us-west-2.amazonaws.com/simsreaderresized/resized-users/' + assets_path + '/stories/' + story_id + '/' + chapter_id + '/pages/' + res;
             response.story = story;
 
             return response;

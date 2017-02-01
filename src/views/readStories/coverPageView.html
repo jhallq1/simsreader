@@ -1,16 +1,15 @@
 <div ng-cloak>
-  {{ story }}
   <md-content class="md-padding" layout="row" layout-align="center center">
-    <div flex-xs flex-gt-xs="70" layout="column">
+    <div flex-xs flex-gt-xs="90" layout="column">
       <md-card md-whiteframe="2">
         <div layout-align="center center">
-        <img text-align="center" src="{{ story.cover_photo }}"></div>
+        <img text-align="center" ng-src="{{ story.cover_photo }}"></div>
         <md-card-title>
           <md-card-title-text>
             <div layout="row">
               <span class="md-title">{{ story.title }}</span>
               <div flex=""></div>
-              <span>{{ story.username }}</span>
+              <span><strong>By:</strong> {{ story.username }}</span>
             </div>
             <div layout="row">
               <span class="md-subhead">{{ story.created | date:'MMMM d, yyyy'}}</span>

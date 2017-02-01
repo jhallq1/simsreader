@@ -1,3 +1,5 @@
-app.controller('readStoriesController', [function() {
-
+app.controller('readStoriesController', ['$scope', function($scope) {
+  $scope.range = function(n) {
+      return new Array(n);
+  };
 }]);

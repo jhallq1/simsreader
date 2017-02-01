@@ -70,7 +70,7 @@ function addPages(imgData, story_id, story_title, chapter_id, chapter_index, cap
             }
           })
           .catch(function(error) {
-            console.log(error);
+            console.log(1, error);
             throw error;
           });
         });
@@ -108,13 +108,13 @@ function addPages(imgData, story_id, story_title, chapter_id, chapter_index, cap
         }
       })
       .catch(function(error) {
-            console.log(error)
+            console.log(2, error);
         throw error;
       });
     }
   })
   .catch(function(error) {
-    console.log(error)
+    console.log(3, error);
     throw error;
   });
 }
