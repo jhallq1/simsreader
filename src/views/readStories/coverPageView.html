@@ -1,25 +1,24 @@
 <div ng-cloak>
+  {{ story }}
   <md-content class="md-padding" layout="row" layout-align="center center">
     <div flex-xs flex-gt-xs="70" layout="column">
       <md-card md-whiteframe="2">
         <div layout-align="center center">
-        <img text-align="center" src="http://placehold.it/700x400"></div>
+        <img text-align="center" src="{{ story.cover_photo }}"></div>
         <md-card-title>
           <md-card-title-text>
             <div layout="row">
-              <span class="md-title">Fish Of The West</span>
+              <span class="md-title">{{ story.title }}</span>
               <div flex=""></div>
-              <span>TheBarnacle5456</span>
+              <span>{{ story.username }}</span>
             </div>
             <div layout="row">
-              <span class="md-subhead">October 6, 2016</span>
+              <span class="md-subhead">{{ story.created | date:'MMMM d, yyyy'}}</span>
             </div>
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <p>
-            Captain Blue and Mrs. Blue reside in a cozy cottage along the Pacific coast. Since boyhood, the Captain has dreamed about opening a personal aquarium. When he finally has enough money in his savings account, he fulfills this lifelong dream. He then spends the next decade caring for his beloved aquatic friends. All is wonderful until one day Mrs. Blue approaches one of the fish tanks to find it completely empty. Thus begins a mystery as old as time: what happened to the fish of the west?
-          </p>
+          <p>{{ story.description }}</p>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <md-button class="md-icon-button" aria-label="Favorite">

@@ -13,7 +13,7 @@ let response = {
 },
 saved_msg = "Your draft has been successfully saved";
 
-function addPages(imgData, story_id, story_title, chapter_id, chapter_index, captions, deleted, files, user, sid, db) {
+function addPages(imgData, story_id, story_title, chapter_id, chapter_index, captions, files, user, sid, db) {
   return deletePage.deletePageByChapterId(chapter_id, db)
   .then(function() {
     if ((!files && !imgData) || (!files && imgData.length === 0)) {

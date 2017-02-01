@@ -29,7 +29,7 @@ function updateDb(captions, db) {
 function delete_old_imgs(user_path, list, paths, story_id, chapter_id) {
   let delete_imgs = [];
 
-  for (let kk = 0; kk < paths.length; kk++) {
+  for (let kk = 0; kk < list.length; kk++) {
     if (list[kk] && paths.indexOf(list[kk]) === -1) {
       delete_imgs.push({Key: `users/${user_path.substr(0, 8)}/${user_path.substr(9, 8)}/stories/${story_id}/${chapter_id}/pages/${list[kk]}`});
     }
@@ -66,11 +66,8 @@ module.exports = {
       return getS3List(user.assets_path, story_id, chapter_id)
       .then(function(list) {
         delete_old_imgs(user.assets_path, list, paths, story_id, chapter_id);
-        return list;
+        return uploadImgs(imgData, user.assets_path, story_id, chapter_id);
       });
-    })
-    .then(function(list) {
-      return uploadImgs(imgData, user.assets_path, story_id, chapter_id);
     })
     .then(function(res) {
       if (!res) throw "an internal error has occured";

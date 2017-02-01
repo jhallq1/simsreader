@@ -17,8 +17,13 @@ params = {
 module.exports = function(delete_imgs_array) {
   params.Delete = {Objects: delete_imgs_array};
 
-  s3.deleteObjects(params, function(err, data) {
-    if (err) console.log(err, err.stack);
+  return s3.deleteObjects(params, function(err, data) {
+    if (err) {
+      console.log(err, err.stack);
+      return logger.error(err);
+    }
+
     logger.info(data);
+    return;
   });
 };

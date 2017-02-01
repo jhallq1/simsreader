@@ -43,6 +43,7 @@ const express = require('express'),
       getPages = require('./stories/getPages.js'),
       addPages = require('./stories/addPages.js'),
       getAllStories = require('./db/stories/getAllStories.js'),
+      getCoverPage = require('./stories/getCoverPage.js'),
       multer = require('multer'),
       upload = multer();
 
@@ -287,7 +288,7 @@ app.get('/getChapters', function(req, res) {
 });
 
 app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
-  return addPages.addPages(req.files, req.body.story_id, req.body.story_title, req.body.chapter_id, req.body.chapter_index, req.body.captions, req.body.deleted, req.body.files, req.session.user, req.sessionID, db.conn())
+  return addPages.addPages(req.files, req.body.story_id, req.body.story_title, req.body.chapter_id, req.body.chapter_index, req.body.captions, req.body.files, req.session.user, req.sessionID, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })
@@ -308,6 +309,16 @@ app.get('/getPages', function(req, res) {
 
 app.get('/getAllStories', function(req, res) {
   return getAllStories(db.conn())
+  .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+app.get('/getCoverPage', function(req, res) {
+  return getCoverPage(req.query.story_id, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })

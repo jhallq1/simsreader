@@ -28,6 +28,7 @@ function createImgPromise(file, assets_path, story_id, chapter_id) {
 }
 
 module.exports = function(files, assets_path, story_id, chapter_id) {
+  if (!files || !files.length) return Promise.resolve(true);
   let promises = [];
   for(let ii = 0; ii < files.length; ii++) {
     promises.push(createImgPromise(files[ii], assets_path, story_id, chapter_id));
