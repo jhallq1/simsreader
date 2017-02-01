@@ -1,25 +1,23 @@
 <div ng-cloak>
   <md-content class="md-padding" layout="row" layout-align="center center">
-    <div flex-xs flex-gt-xs="70" layout="column">
+    <div flex-xs flex-gt-xs="90" layout="column">
       <md-card md-whiteframe="1" style="margin-bottom: 50px;">
         <div layout-align="center center">
-        <img text-align="center" src="http://placehold.it/700x400"></div>
+        <img text-align="center" ng-src="{{ pages[0].url }}"></div>
         <md-card-title>
           <md-card-title-text>
             <div layout="row">
-              <span class="md-title">Chapter 1: Drinks Of The Seas</span>
+              <span class="md-title">{{ chapter.title }}</span>
               <div flex=""></div>
-              <span>TheBarnacle5456</span>
+              <span>{{ author }}</span>
             </div>
             <div layout="row">
-              <span class="md-subhead">October 6, 2016</span>
+              <span class="md-subhead">{{ chapter.created | date:'MMMM d, yyyy'}}</span>
             </div>
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur congue turpis velit, quis cursus elit ultrices a. Morbi volutpat posuere orci, vitae commodo lectus euismod mollis. Aliquam non sodales ante, id molestie nisi. Cras convallis, arcu eget venenatis elementum, risus nisl egestas justo, eget imperdiet sem erat non ex.
-          </p>
+          <p>{{ pages[0].caption }}</p>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <md-button class="md-icon-button" aria-label="Favorite">
@@ -34,33 +32,11 @@
         </md-card-actions>
       </md-card>
 
-      <md-card md-whiteframe="1" style="margin-bottom: 50px;">
+      <md-card md-whiteframe="1" style="margin-bottom: 50px;" ng-repeat="item in pages track by $index" ng-hide="$first">
         <div layout-align="center center">
-        <img text-align="center" src="http://placehold.it/700x400"></div>
+        <img text-align="center" ng-src="{{ pages[$index].url }}"></div>
         <md-card-content>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur congue turpis velit, quis cursus elit ultrices a. Morbi volutpat posuere orci, vitae commodo lectus euismod mollis. Aliquam non sodales ante, id molestie nisi. Cras convallis, arcu eget venenatis elementum, risus nisl egestas justo, eget imperdiet sem erat non ex.
-          </p>
-        </md-card-content>
-      </md-card>
-
-      <md-card md-whiteframe="1" style="margin-bottom: 50px;">
-        <div layout-align="center center">
-        <img text-align="center" src="http://placehold.it/700x400"></div>
-        <md-card-content>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur congue turpis velit, quis cursus elit ultrices a. Morbi volutpat posuere orci, vitae commodo lectus euismod mollis. Aliquam non sodales ante, id molestie nisi. Cras convallis, arcu eget venenatis elementum, risus nisl egestas justo, eget imperdiet sem erat non ex.
-          </p>
-        </md-card-content>
-      </md-card>
-
-      <md-card md-whiteframe="1" style="margin-bottom: 50px;">
-        <div layout-align="center center">
-        <img text-align="center" src="http://placehold.it/700x400"></div>
-        <md-card-content>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur congue turpis velit, quis cursus elit ultrices a. Morbi volutpat posuere orci, vitae commodo lectus euismod mollis. Aliquam non sodales ante, id molestie nisi. Cras convallis, arcu eget venenatis elementum, risus nisl egestas justo, eget imperdiet sem erat non ex.
-          </p>
+          <p>{{ pages[$index].caption }}</p>
         </md-card-content>
       </md-card>
 

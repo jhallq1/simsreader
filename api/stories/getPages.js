@@ -29,7 +29,7 @@ function createImgArray(user, story_id, chapter_id, res) {
 
 function getPages(user, story_id, story_title, chapter_id, chapter_index, db) {
   if (chapter_id) {
-    return getPagesByChapterId(user, story_id, chapter_id, db)
+    return getPagesByChapterId(story_id, chapter_id, db)
     .then(function(res) {
       return createImgArray(user, story_id, chapter_id, res);
     })

@@ -24,7 +24,10 @@ module.exports = function(story_id, db) {
         assets_path = res.assets_path;
         return getChapters.getChaptersByStoryId(story_id, db)
         .then(function(res) {
-          story.numOfChapters = res.length;
+          story.numOfChapters = 0;
+          for (let ii = 0; ii < res.length; ii++) {
+            if (res[ii].published === 1) story.numOfChapters++;
+          }
           chapter_id = res[0].id;
           return getCoverPhoto(chapter_id, db)
           .then(function(res) {

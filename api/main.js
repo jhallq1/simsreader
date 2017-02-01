@@ -44,6 +44,7 @@ const express = require('express'),
       addPages = require('./stories/addPages.js'),
       getAllStories = require('./db/stories/getAllStories.js'),
       getCoverPage = require('./stories/getCoverPage.js'),
+      getChapterDetails = require('./stories/getChapterDetails.js'),
       multer = require('multer'),
       upload = multer();
 
@@ -319,6 +320,16 @@ app.get('/getAllStories', function(req, res) {
 
 app.get('/getCoverPage', function(req, res) {
   return getCoverPage(req.query.story_id, db.conn())
+  .then(function(response) {
+    return responseHandler({items: response, send: true}, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
+app.get('/getChapterDetails', function(req, res) {
+  return getChapterDetails.getChapterDetails(req.query.story_id, req.query.index, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })
