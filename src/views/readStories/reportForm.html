@@ -1,0 +1,48 @@
+<md-dialog aria-label="Report">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h4>Report</h4>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()" aria-label="Cancel">
+        <md-icon md-svg-icon="close-box" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <form name="reportForm" layout="column" ng-cloak ng-submit="submitForm(reportForm)">
+      <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+          <md-checkbox name="Needs Age Restriction" ng-model="reportForm.needs_age_restriction" aria-label="Checkbox">
+            Story contains adult/mature content but is not flagged as such.
+          </md-checkbox><br/>
+          <md-checkbox name="Images Not From The Sims" ng-model="reportForm.images_not_from_the_sims" aria-label="Checkbox">
+            Some or all images are not from The Sims games.
+          </md-checkbox><br/>
+          <md-checkbox name="Inappropriate Content" ng-model="reportForm.inappropriate_content" aria-label="Checkbox">
+            Content violates the User Content Submission Agreement by containing inappropriate content.
+          </md-checkbox><br/>
+          <md-checkbox name="Duplicate" ng-model="reportForm.duplicate" aria-label="Checkbox">
+            Story/chapter is an exact or partial duplicate of existing content.
+          </md-checkbox><br/>
+          <md-checkbox name="Empty Chapter" ng-model="reportForm.empty_chapter" aria-label="Checkbox">
+            Chapter published without pages.
+          </md-checkbox><br/>
+          <md-checkbox name="Empty Page" ng-model="reportForm.empty_page" aria-label="Checkbox">
+            Some or all pages missing images and/or captions.
+          </md-checkbox><br/>
+          <md-checkbox name="Other" ng-model="reportForm.other" aria-label="Checkbox">
+            Other: please explain below.
+          </md-checkbox>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+          <textarea ng-model="reportForm.explanation" placeholder="If you selected Other or if you would like to provide more information, please use this area to explain."></textarea>
+        </md-input-container>
+      </md-content>
+      <div layout="row" flex="100">
+        <div flex=""></div>
+        <md-button style="width: 30%;" class="md-raised md-primary" type="submit">Submit Report</md-button>
+      </div>
+    </form>
+  <md-dialog-content>
+</md-dialog>

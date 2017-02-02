@@ -1,4 +1,4 @@
-<div ng-cloak>
+<div ng-cloak ng-show="story">
   <md-content class="md-padding" layout="row" layout-align="center center">
     <div flex-xs flex-gt-xs="90" layout="column">
       <md-card md-whiteframe="2">
@@ -30,9 +30,7 @@
           <md-button class="md-icon-button" aria-label="Share">
             <md-icon md-svg-icon="share-variant"><md-tooltip>Share Me</md-tooltip></md-icon>
           </md-button>
-          <md-button class="md-icon-button" aria-label="Report">
-            <md-icon md-svg-icon="alert" style="color: red;"><md-tooltip>Report Me</md-tooltip></md-icon>
-          </md-button>
+          <report></report>
         </md-card-actions>
       </md-card>
     </div>

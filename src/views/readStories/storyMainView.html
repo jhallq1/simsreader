@@ -1,4 +1,4 @@
-<div ng-cloak>
+<div ng-cloak ng-show="story">
   <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="{{ story.title }}">
@@ -9,7 +9,6 @@
       <md-tab ng-repeat="a in range(story.numOfChapters) track by $index" label="{{ $index + 1 }}" ng-click="openChapter($index)">
         <md-content class="md-padding">
           <chapter-page></chapter-page>
-          <comment-form></comment-form>
         </md-content>
       </md-tab>
     </md-tabs>

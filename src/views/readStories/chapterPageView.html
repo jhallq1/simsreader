@@ -1,6 +1,6 @@
-<div ng-cloak>
+<div ng-cloak ng-show="pages">
   <md-content class="md-padding" layout="row" layout-align="center center">
-    <div flex-xs flex-gt-xs="90" layout="column">
+    <div flex-xs flex-gt-xs="90" layout="column" ng-cloak>
       <md-card md-whiteframe="1" style="margin-bottom: 50px;">
         <div layout-align="center center">
         <img text-align="center" ng-src="{{ pages[0].url }}"></div>
@@ -21,14 +21,12 @@
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <md-button class="md-icon-button" aria-label="Favorite">
-            <md-icon md-svg-icon="heart"></md-icon>
+            <md-icon md-svg-icon="heart"><md-tooltip>Add Story To Favorites</md-tooltip></md-icon>
           </md-button>
           <md-button class="md-icon-button" aria-label="Share">
-            <md-icon md-svg-icon="share-variant"></md-icon>
+            <md-icon md-svg-icon="share-variant"><md-tooltip>Share This Story</md-tooltip></md-icon>
           </md-button>
-          <md-button class="md-icon-button" aria-label="Report">
-            <md-icon md-svg-icon="alert" style="color: red;"></md-icon>
-          </md-button>
+          <report></report>
         </md-card-actions>
       </md-card>
 
@@ -38,6 +36,9 @@
         <md-card-content>
           <p>{{ pages[$index].caption }}</p>
         </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <report></report>
+        </md-card-actions>
       </md-card>
 
       <div layout="row">
