@@ -20,6 +20,7 @@ app.directive('chapterPage', ['$window', '$http', 'locationService', '$route', '
           if (res.data && res.data.items) {
             $scope.story_id = res.data.items.story_id;
             $scope.chapter = res.data.items.chapter;
+            storiesService.setChapter(res.data.items.chapter);
             $scope.pages = res.data.items.pageData;
             $scope.author = storiesService.getStory().username;
             $scope.date = storiesService.getStory().created;

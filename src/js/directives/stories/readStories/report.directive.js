@@ -4,6 +4,12 @@ app.directive('report', ['$http', 'locationService', '$route', 'storiesService',
     template: '<md-button class="md-icon-button" aria-label="Report" ng-click="showAdvanced(ev)"><md-icon md-svg-icon="alert" style="color: red;"><md-tooltip>Report Me</md-tooltip></md-icon></md-button>',
     link: function($scope, ele, attr) {
       function DialogController($scope, $mdDialog) {
+        let story_id = storiesService.getStory().id || "Not Provided";
+        let chapter_id = storiesService.getChapter().id || "Not Provided";
+        let comment_id = "Not Provided";
+
+        $scope.selected = [];
+
         $scope.hide = function() {
           $mdDialog.hide();
         };
@@ -14,6 +20,35 @@ app.directive('report', ['$http', 'locationService', '$route', 'storiesService',
 
         $scope.answer = function(answer) {
           $mdDialog.hide(answer);
+        };
+
+        $scope.toggle = function(input) {
+          if (!$scope.selected.includes(input)) {
+            $scope.selected.push(input);
+          } else {
+            $scope.selected.splice($scope.selected.indexOf(input), 1);
+          }
+        };
+
+        $scope.submitForm = function(form) {
+          if (!form.explanation && !$scope.selected.length) Notification.error("Invalid form. Please select at least one option.");
+          if (!form.explanation && $scope.selected.includes(5)) Notification.error("You selected Other. Please explain in the textarea provided.");
+
+          $http({
+            method: 'POST',
+            url: locationService.origin + '/report',
+            data: {flags: $scope.selected, explanation: form.explanation || "Not Provided", story_id: story_id, chapter_id: chapter_id, comment_id: comment_id},
+            withCredentials: true
+          })
+          .then(function(res) {
+            if (res.data && res.data.items) {
+              $mdDialog.cancel();
+              Notification.success(res.data.msg);
+              $location.path('/manageChapters');
+            } else {
+              Notification.error(res.data.msg);
+            }
+          });
         };
       }
 
@@ -27,9 +62,9 @@ app.directive('report', ['$http', 'locationService', '$route', 'storiesService',
           fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         })
         .then(function(answer) {
-          $scope.status = 'You said the information was "' + answer + '".';
+          $scope.submitForm(form);
         }, function() {
-          $scope.status = 'You cancelled the dialog.';
+          $mdDialog.hide();
         });
       };
     }

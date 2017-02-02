@@ -13,25 +13,19 @@
     <form name="reportForm" layout="column" ng-cloak ng-submit="submitForm(reportForm)">
       <md-content layout-padding>
         <md-input-container class="md-block" flex-gt-sm>
-          <md-checkbox name="Needs Age Restriction" ng-model="reportForm.needs_age_restriction" aria-label="Checkbox">
+          <md-checkbox name="Needs Age Restriction" ng-model="reportForm.needs_age_restriction" ng-click="toggle(1)" aria-label="Checkbox">
             Story contains adult/mature content but is not flagged as such.
           </md-checkbox><br/>
-          <md-checkbox name="Images Not From The Sims" ng-model="reportForm.images_not_from_the_sims" aria-label="Checkbox">
+          <md-checkbox name="Images Not From The Sims" ng-model="reportForm.images_not_from_the_sims" ng-click="toggle(2)" aria-label="Checkbox">
             Some or all images are not from The Sims games.
           </md-checkbox><br/>
-          <md-checkbox name="Inappropriate Content" ng-model="reportForm.inappropriate_content" aria-label="Checkbox">
+          <md-checkbox name="Inappropriate Content" ng-model="reportForm.inappropriate_content" ng-click="toggle(3)" aria-label="Checkbox">
             Content violates the User Content Submission Agreement by containing inappropriate content.
           </md-checkbox><br/>
-          <md-checkbox name="Duplicate" ng-model="reportForm.duplicate" aria-label="Checkbox">
+          <md-checkbox name="Duplicate" ng-model="reportForm.duplicate" ng-click="toggle(4)" aria-label="Checkbox">
             Story/chapter is an exact or partial duplicate of existing content.
           </md-checkbox><br/>
-          <md-checkbox name="Empty Chapter" ng-model="reportForm.empty_chapter" aria-label="Checkbox">
-            Chapter published without pages.
-          </md-checkbox><br/>
-          <md-checkbox name="Empty Page" ng-model="reportForm.empty_page" aria-label="Checkbox">
-            Some or all pages missing images and/or captions.
-          </md-checkbox><br/>
-          <md-checkbox name="Other" ng-model="reportForm.other" aria-label="Checkbox">
+          <md-checkbox name="Other" ng-model="reportForm.other" ng-click="toggle(5)" aria-label="Checkbox">
             Other: please explain below.
           </md-checkbox>
         </md-input-container>

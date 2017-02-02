@@ -18,7 +18,7 @@ module.exports = function emailer(subject, text, template, recipient, variables)
           text: text,
           html: html
       }, {
-          from: 'noreply@simsreader.com',
+          from: 'simsreader@gmail.com',
       });
 
       return send(
