@@ -55,6 +55,9 @@ app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdI
       controller : 'resetPasswordController',
       isLoggedOut: true
     })
+    .when('/contact', {
+      templateUrl : 'views/legal/contactView.html'
+    })
     .when('/privacyPolicy', {
       templateUrl : 'views/legal/privacyPolicyView.html'
     })

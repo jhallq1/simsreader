@@ -2,7 +2,7 @@
 <html ng-app="simsReader" ng-controller="mainController">
   <head>
     <meta charset="utf-8">
-    <title>simsReader.com</title>
+    <title>SimsReader.com</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
@@ -66,14 +66,21 @@
 
   <footer>
     <md-bottom-sheet style="background-color: rgb(33,150,243); height: 0px; color: #fff;">
-      <div layout="column">
-        <div layout="row" layout-align="center center">
-          <md-button ng-href="" target="_blank">Contact Us</md-button>
+      <div layout="column" layout-align="center center">
+        <div layout="row">
+          <small>
+            This site is not endorsed by or affiliated with Electronic Arts or its licensors. Trademarks are the property of their respective owners. Game content and materials copyright Electronic Arts Inc. and its licensors. All Rights Reserved.
+          </small>
+        </div>
+        <div layout="row">
+          <md-button ng-href="/contact">Contact Us</md-button>
           <md-button ng-href="/privacyPolicy">Privacy Policy</md-button>
           <md-button ng-href="/termsOfUse">Terms of Use</md-button>
           <md-button ng-href="/userSubmissionAgreement">User Submission Agreement</md-button>
         </div>
-        <div layout="row" layout-align="center center">© 2016 SimsReader</div>
+        <div layout="row">
+          © 2016 - 2017 SimsReader
+        </div>
       </div>
     </md-bottom-sheet>
   </footer>
