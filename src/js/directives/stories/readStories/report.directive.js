@@ -36,17 +36,16 @@ app.directive('report', ['$http', 'locationService', '$route', 'storiesService',
 
           $http({
             method: 'POST',
-            url: locationService.origin + '/report',
+            url: locationService.origin + '/sendReport',
             data: {flags: $scope.selected, explanation: form.explanation || "Not Provided", story_id: story_id, chapter_id: chapter_id, comment_id: comment_id},
             withCredentials: true
           })
           .then(function(res) {
-            if (res.data && res.data.items) {
-              $mdDialog.cancel();
+            if (res.data && res.data.msg) {
+              $scope.cancel();
               Notification.success(res.data.msg);
-              $location.path('/manageChapters');
             } else {
-              Notification.error(res.data.msg);
+              Notification.error("Oops! Something went wrong there.");
             }
           });
         };

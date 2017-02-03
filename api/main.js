@@ -46,7 +46,8 @@ const express = require('express'),
       getCoverPage = require('./stories/getCoverPage.js'),
       getChapterDetails = require('./stories/getChapterDetails.js'),
       multer = require('multer'),
-      upload = multer();
+      upload = multer(),
+      sendReport = require('./stories/sendReport.js');
 
 app.use(cookieParser('sugar_cookie'));
 
@@ -207,6 +208,16 @@ app.post('/resetPassword', function(req, res) {
 /**************************/
 /* story mgtmt calls
 /**************************/
+app.post('/sendReport', function(req, res) {
+  return sendReport.sendReport(req.body.story_id, req.body.chapter_id, req.body.comment_id, req.body.flags, req.body.explanation, db.conn())
+  .then(function(response) {
+    return responseHandler(response, res);
+  })
+  .catch(function(error) {
+    return responseHandler(error, res);
+  });
+});
+
 app.post('/createStory', function(req, res) {
   return createNewStory.createStory(req.body, req.session.user, req.sessionID, db.conn())
   .then(function(response) {

@@ -18,7 +18,7 @@ module.exports = function emailer(subject, text, template, recipient, variables)
           text: text,
           html: html
       }, {
-          from: 'simsreader@gmail.com',
+          from: 'admin@simsreader.com',
       });
 
       return send(
@@ -33,6 +33,7 @@ module.exports = function emailer(subject, text, template, recipient, variables)
     });
   })
   .catch(function(error) {
+    console.log(error);
     throw error;
   });
 };
