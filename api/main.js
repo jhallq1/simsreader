@@ -300,7 +300,7 @@ app.get('/getChapters', function(req, res) {
 });
 
 app.post('/addPages', upload.any([{name: 'files'}]), function(req, res) {
-  return addPages.addPages(req.files, req.body.story_id, req.body.story_title, req.body.chapter_id, req.body.chapter_index, req.body.captions, req.body.files, req.session.user, req.sessionID, db.conn())
+  return addPages.checkValues(req.files, req.body.story_id, req.body.story_title, req.body.chapter_id, req.body.chapter_index, req.body.captions, req.body.files, req.session.user, req.sessionID, req.body.readyForPublish, db.conn())
   .then(function(response) {
     return responseHandler({items: response, send: true}, res);
   })

@@ -4,7 +4,9 @@ var app = angular.module('simsReader', [
   angularDragula(angular),
   'templateCache',
   'ui-notification',
-  'ngMaterial'
+  'ngMaterial',
+  'angular-loading-bar',
+  'ngAnimate'
 ]);
 
 app.config(['$routeProvider', '$locationProvider', 'NotificationProvider', '$mdIconProvider', '$mdThemingProvider', '$httpProvider', function($routeProvider, $locationProvider, NotificationProvider, $mdIconProvider, $mdThemingProvider, $httpProvider) {

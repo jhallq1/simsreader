@@ -5,7 +5,7 @@ let db,
     path;
 
 module.exports = {
-  deletePageByChapterId: function (chapter_id, db) {
+  deletePagesByChapterId: function (chapter_id, db) {
     return db.query("DELETE FROM pages WHERE chapter_id = ?", chapter_id)
     .catch(function(error) {
       response = {

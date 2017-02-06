@@ -42,10 +42,10 @@
         </button>
         <md-menu-content>
           <md-menu-item>
-            <md-button ng-click="addPages($files)"><md-icon md-svg-icon="content-save"></md-icon>Save Draft</md-button>
+            <md-button ng-click="addPages($files, false)"><md-icon md-svg-icon="content-save"></md-icon>Save Draft</md-button>
           </md-menu-item>
           <md-menu-item>
-            <md-button publish><md-icon md-svg-icon="publish"></md-icon>Save & Publish</md-button>
+            <md-button ng-click="addPages($files, true)"><md-icon md-svg-icon="publish"></md-icon>Save & Publish</md-button>
           </md-menu-item>
         </md-menu-content>
       </md-menu>

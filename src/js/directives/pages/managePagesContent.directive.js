@@ -51,7 +51,7 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
         }
       });
 
-      $scope.addPages = function(files) {
+      $scope.addPages = function(files, publish) {
         let story_id = storiesService.getStory();
         let chapter_id = storiesService.getChapter();
         let deleted = filesService.getDeleted();
@@ -59,6 +59,7 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
         let text = {};
         let page_id = {};
         let values;
+        publish = publish;
 
         if ($scope.files) {
           for (let i = 0; i < $scope.files.length; i++) {
@@ -75,11 +76,12 @@ app.directive('managePagesContent', ['$mdMedia', 'Upload', 'storiesService', '$h
 
           Upload.upload({
               url: locationService.origin + '/addPages',
-              data: {captions: captions, story_id: story_id, story_title: currentRouteParams.story_title, chapter_id: chapter_id, chapter_index: currentRouteParams.chapter_id, files: $scope.files, deleted: deleted},
+              data: {captions: captions, story_id: story_id, story_title: currentRouteParams.story_title, chapter_id: chapter_id, chapter_index: currentRouteParams.chapter_id, files: $scope.files, deleted: deleted, readyForPublish: publish},
               method: 'POST',
               withCredentials: true
           })
           .then(function(res) {
+            console.log(res);
             if (res.data && res.data.items.msg) {
               $scope.$applyAsync(function() {
                 values = res.data.items.items;

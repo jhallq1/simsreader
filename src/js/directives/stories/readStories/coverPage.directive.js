@@ -22,7 +22,7 @@ function($http, locationService, $route, storiesService, $mdDialog, $location, N
           $scope.show = true;
           $scope.story = res;
           storiesService.setStory(res);
-          Notification.success("Thanks for confirming that you meet the age requirement.");
+          Notification.primary("Thanks for confirming that you meet the age requirement.");
         }, function() {
           $location.path("/");
           Notification.success("Redirected to homepage.");

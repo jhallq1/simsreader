@@ -31,23 +31,26 @@ app.directive('report', ['$http', 'locationService', '$route', 'storiesService',
         };
 
         $scope.submitForm = function(form) {
-          if (!form.explanation && !$scope.selected.length) Notification.error("Invalid form. Please select at least one option.");
-          if (!form.explanation && $scope.selected.includes(5)) Notification.error("You selected Other. Please explain in the textarea provided.");
-
-          $http({
-            method: 'POST',
-            url: locationService.origin + '/sendReport',
-            data: {flags: $scope.selected, explanation: form.explanation || "Not Provided", story_id: story_id, chapter_id: chapter_id, comment_id: comment_id},
-            withCredentials: true
-          })
-          .then(function(res) {
-            if (res.data && res.data.msg) {
-              $scope.cancel();
-              Notification.success(res.data.msg);
-            } else {
-              Notification.error("Oops! Something went wrong there.");
-            }
-          });
+          if (!form.explanation && !$scope.selected.length) {
+            Notification.error("Invalid form. Please select at least one option.");
+          } else if (!form.explanation && $scope.selected.includes(5)) {
+            Notification.error("You selected Other. Please explain in the textarea provided.");
+          } else {
+            $http({
+              method: 'POST',
+              url: locationService.origin + '/sendReport',
+              data: {flags: $scope.selected, explanation: form.explanation || "Not Provided", story_id: story_id, chapter_id: chapter_id, comment_id: comment_id},
+              withCredentials: true
+            })
+            .then(function(res) {
+              if (res.data && res.data.msg) {
+                $scope.cancel();
+                Notification.success(res.data.msg);
+              } else {
+                Notification.error("Oops! Something went wrong there.");
+              }
+            });
+          }
         };
       }
 

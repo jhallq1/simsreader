@@ -1,10 +1,10 @@
 app.factory('filesService', [function() {
   let items = {
-    files: []
+    files: [],
+    temp: []
   };
 
   let progress = {show: false};
-
   let deleted = [];
 
   function setDeleted(data) {
@@ -31,12 +31,16 @@ app.factory('filesService', [function() {
   }
 
   function getFiles() {
-    return items.files;
+    if (items.files.length > items.temp.length) {
+      return items.files;
+    } else {
+      return items.temp;
+    }
   }
 
   function addFiles(data) {
     if (Array.isArray(data)) {
-      items.files = items.files.concat(data);
+      items.temp = items.files.concat(data);
     }
   }
 

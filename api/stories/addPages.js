@@ -3,122 +3,87 @@
 const captionValidator = require('../db/stories/util/captionValidator.js'),
       insertPages =  require('../db/stories/insertPageData.js'),
       validateSession = require('../db/user/sessionValidator.js'),
-      deletePage = require('../db/stories/deletePageById.js'),
+      deletePages = require('../db/stories/deletePagesById.js'),
       getStoryId = require('../db/stories/getStoryIdByTitle.js'),
-      getChapterId = require('../db/stories/getChapterId.js');
+      getChapterId = require('../db/stories/getChapterId.js'),
+      publish = require('../db/stories/publishChapter.js'),
+      logger = require('../logger.js');
 
 let response = {
   log: 'info',
   send: true
-},
-saved_msg = "Your draft has been successfully saved";
+};
 
-function addPages(imgData, story_id, story_title, chapter_id, chapter_index, captions, files, user, sid, db) {
-  return deletePage.deletePageByChapterId(chapter_id, db)
+function addPages(imgData, story_id, chapter_id, captions, files, user, sid, readyForPublish, db) {
+  return deletePages.deletePagesByChapterId(chapter_id, db)
   .then(function() {
     if ((!files && !imgData) || (!files && imgData.length === 0)) {
-        response.msg = saved_msg;
+        response.msg = "Your draft has been successfully saved.";
         response.data = [];
         return response;
     }
+  })
+  .then(function() {
+    let data = captionValidator(captions);
+    if (Object.keys(data).length > 0) {
+      response.msg = data;
+      return Promise.reject({
+         log: "warn",
+         send: true,
+         msg: response.msg,
+         validation: false
+       });
+    }
 
-    if (!story_id && story_title) {
-      return getStoryId.getStoryId(story_title, user.id, db)
-      .then(function(res) {
-        if (res) {
-          story_id = res;
-        }
-      })
-      .then(function() {
-        return getChapterId.getChapterId(story_id, chapter_index, db)
+    return validateSession.sessionValidator(user, sid, db)
+    .then(function(res) {
+      if (res) {
+        return insertPages.insertPages(imgData, story_id, chapter_id, captions, files, user, db);
+      }
+    })
+    .then(function(res) {
+      if (res && readyForPublish.toString() === "false") {
+        response.items = res.data;
+        response.msg = "Your draft has been successfully saved.";
+        return response;
+      } else if (res && readyForPublish.toString() === "true"){
+        response.items = res.data;
+        return publish(chapter_id, db)
         .then(function(res) {
           if (res) {
-            chapter_id = res;
+            response.msg = "Your chapter has been published. Good job!";
+            return response;
           }
-        })
-        .then(function() {
-          //TODO: move to top of this
-          let data = captionValidator(captions);
-          if (Object.keys(data).length > 0) {
-            response.msg = data;
-            return Promise.reject({
-               log: "warn",
-               send: true,
-               msg: response.msg,
-               validation: false
-             });
-          }
-
-          return validateSession.sessionValidator(user, sid, db)
-          .then(function(res) {
-            if (res) {
-              return insertPages.insertPages(imgData, story_id, chapter_id, captions, files, user, db);
-            }
-
-            throw {
-               log: "warn",
-               send: true,
-               msg: "Could not validate session",
-               login: false
-             };
-          })
-          .then(function(res) {
-            if (res) {
-              response.items = res.data;
-              response.msg = saved_msg;
-              return response;
-            }
-          })
-          .catch(function(error) {
-            console.log(1, error);
-            throw error;
-          });
         });
-      });
-    } else {
-      let data = captionValidator(captions);
-      if (Object.keys(data).length > 0) {
-        response.msg = data;
-        return Promise.reject({
-           log: "warn",
-           send: true,
-           msg: response.msg,
-           validation: false
-         });
       }
-
-      return validateSession.sessionValidator(user, sid, db)
-      .then(function(res) {
-        if (res) {
-          return insertPages.insertPages(imgData, story_id, chapter_id, captions, files, user, db);
-        }
-
-        throw {
-           log: "warn",
-           send: true,
-           msg: "Could not validate session",
-           login: false
-         };
-      })
-      .then(function(res) {
-        if (res) {
-          response.items = res.data;
-          response.msg = "Your draft has been successfully saved";
-          return response;
-        }
-      })
-      .catch(function(error) {
-            console.log(2, error);
-        throw error;
-      });
-    }
-  })
-  .catch(function(error) {
-    console.log(3, error);
-    throw error;
+    })
+    .catch(function(error) {
+      if (error) logger.error(error);
+    });
   });
 }
 
+function checkValues(imgData, story_id, story_title, chapter_id, chapter_index, captions, files, user, sid, readyForPublish, db) {
+  if (typeof story_id === 'object' && typeof chapter_id === 'object') {
+    story_id = story_id.id;
+    chapter_id = chapter_id.id;
+    return addPages(imgData, story_id, chapter_id, captions, files, user, sid, readyForPublish, db);
+  } else if (!story_id && !chapter_id) {
+    return getStoryId.getStoryId(story_title, user.id, db)
+    .then(function(res) {
+      story_id = res;
+      return getChapterId.getChapterId(story_id, chapter_index, db)
+      .then(function(res) {
+        chapter_id = res;
+        return addPages(imgData, story_id, chapter_id, captions, files, user, sid, readyForPublish, db);
+      });
+    });
+  } else {
+    return addPages(imgData, story_id, chapter_id, captions, files, user, sid, readyForPublish, db);
+  }
+}
+
 module.exports = {
+  checkValues: checkValues,
   addPages: addPages
 };

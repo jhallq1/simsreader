@@ -15,6 +15,7 @@ app.directive('storyMgmtToolbar', ['$mdMedia', 'Upload', 'filesService', functio
 
       $scope.selectFiles = function(files) {
         filesService.addFiles(files);
+        $scope.files = filesService.getFiles();
       };
     }
   };
