@@ -14,15 +14,11 @@
           </md-menu-item>
           <md-menu-divider></md-menu-divider>
 
-          <md-menu-item ng-repeat="story in stories track by $index">
-            <md-menu>
-              <md-button aria-label="Story Title" ng-click="$mdOpenMenu()">{{story.title}}</md-button>
-              <md-menu-content>
-                <md-menu-item><md-button ng-href="/manageChapters">New Chapter</md-button></md-menu-item>
-                <md-menu-divider></md-menu-divider>
-                <md-menu-item><md-button ng-href="">Chapter 1: Drinks Of The Seas</md-button></md-menu-item>
-              </md-menu-content>
-            </md-menu>
+          <md-menu-item ng-show="stories" ng-repeat="story in stories track by $index">
+            <md-button aria-label="Story Title" ng-click="getChapters(story)">{{story.title}}</md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="allStories" ng-repeat="story in allStories track by $index">
+            <md-button aria-label="Story Title" ng-click="getChapters(story)">{{story.title}}</md-button>
           </md-menu-item>
         </md-menu-content>
       </md-menu>

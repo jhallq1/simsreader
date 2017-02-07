@@ -1,5 +1,6 @@
 app.factory('storiesService', [function() {
   let story = {};
+  let allStories = {};
   let chapter = {};
 
   function setStory(data) {
@@ -8,6 +9,14 @@ app.factory('storiesService', [function() {
 
   function getStory() {
     return story;
+  }
+
+  function setAllStories(data) {
+    allStories = data;
+  }
+
+  function getAllStories() {
+    return allStories;
   }
 
   function setChapter(data) {
@@ -21,6 +30,8 @@ app.factory('storiesService', [function() {
   return {
     setStory: setStory,
     getStory: getStory,
+    setAllStories: setAllStories,
+    getAllStories: getAllStories,
     setChapter: setChapter,
     getChapter: getChapter
   };

@@ -1,4 +1,4 @@
-app.directive('manageStoriesContent', ['$mdMedia', 'Upload', function($mdMedia, Upload) {
+app.directive('manageStoriesContent', ['$mdMedia', function($mdMedia) {
   return {
     restrict: 'E',
     scope: {

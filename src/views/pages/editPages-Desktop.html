@@ -3,8 +3,6 @@
 </md-toolbar>
 <div class="chapter-desktop-view">
   <div layout="column" class="pagesContent">
-    Files.length: {{files.length}}
-
     <div ng-show="!!progress" layout="row" layout-sm="column" ng-class="{spinner: !!progress}" layout-align="space-around"><p>Rendering Images</p></div>
     <empty-chapter ng-show="!files"></empty-chapter>
     <div ng-if="files" dragula='"bag-one"' dragula-scope="$parent" dragula-model="files">

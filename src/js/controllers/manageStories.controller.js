@@ -23,6 +23,7 @@ function ($scope, $http, locationService, $route, storiesService, Upload, Notifi
     .then(function(res) {
       if (res.data && res.data.items) {
         $scope.stories = res.data.items;
+        storiesService.setAllStories(res.data.items);
       }
     });
   } else if (currentRouteParams.story_title && !currentRouteParams.chapter_id) {
