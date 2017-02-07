@@ -15,20 +15,20 @@ SimsReader is a single-page application developed with MySQL, Express, AngularJS
 
 
 *Selecting images to include in chapter*
-![Alt text](http://imgur.com/wGwEuHV)
+![Alt text](http://imgur.com/wGwEuHV.png)
 
 
 *Writing captions for the selected images*
-![Alt text](http://imgur.com/Ey0Pj5L)
+![Alt text](http://imgur.com/Ey0Pj5L.png)
 
 
 *Story cover page*
-![Alt text](http://imgur.com/PBfcJq8)
+![Alt text](http://imgur.com/PBfcJq8.png)
 
 
 *Chapter page*
-![Alt text](http://imgur.com/oDZKLmt)
+![Alt text](http://imgur.com/oDZKLmt.png)
 
 
 *Report dialog*
-![Alt text](http://imgur.com/xYYQlLE)
+![Alt text](http://imgur.com/xYYQlLE.png)
